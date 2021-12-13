@@ -5,11 +5,11 @@ import Link from "next/link";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div>
-      <nav>
+      <nav className="m-10">
           <Link href="/">
             <a>🚪 Backdoor</a>
           </Link>
-          <Link href="/listitem">
+          <Link href="/listItem">
             <a>🎨 List Item</a>
           </Link>
           <Link href="/favourites">
