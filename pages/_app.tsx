@@ -7,13 +7,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     <div>
       <nav className="m-10">
           <Link href="/">
-            <a>🚪 Backdoor</a>
+            <a className="mr-10">🚪 Backdoor</a>
           </Link>
           <Link href="/listItem">
-            <a>🎨 List Item</a>
+            <a className="mr-10">🎨 List Item</a>
           </Link>
           <Link href="/favourites">
-            <a>💙 Favourites</a>
+            <a className="mr-10">💙 Favourites</a>
           </Link>
       </nav>
       <Component {...pageProps} />
