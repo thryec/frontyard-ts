@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Link href="/">
             <a>🚪 Backdoor</a>
           </Link>
-          <Link href="/list">
+          <Link href="/listitem">
             <a>🎨 List Item</a>
           </Link>
           <Link href="/favourites">
