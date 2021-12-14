@@ -19,8 +19,8 @@ const Home: NextPage = () => {
 
   const renderItems = marketItems.map((item) => (
     <div className="shadow-md w-1/6" key={item.name}>
-      <img src={item.image} alt="" />
-      <div className="px-4">
+      <img src={item.image} alt="" className="min-w-full" />
+      <div className="px-4 align-baseline">
         <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2">{item.name}</h1>
         <p className="text-gray-700 mb-2">{item.description}</p>
         <div className="flex justify-between mt-4">
@@ -38,7 +38,7 @@ const Home: NextPage = () => {
   return (
     <div className="ml-10">
       <h1 className="text-3xl underline">Home Page</h1>
-      <div className="mt-5">{loaded ? renderItems : 'No Items'}</div>
+      <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div>
     </div>
   )
 }
