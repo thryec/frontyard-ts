@@ -22,7 +22,6 @@ const Home: NextPage = () => {
   return (
     <div>
       <h1 className="ml-10 text-3xl underline">Home Page</h1>
-      <p>{JSON.stringify(data)}</p>
     </div>
   )
 }
