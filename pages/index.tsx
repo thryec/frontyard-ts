@@ -2,26 +2,43 @@ import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 
 const Home: NextPage = () => {
-  const [data, setData] = useState<Response>()
+  const [marketItems, setMarketItems] = useState([])
+  const [loaded, setIsLoaded] = useState(false)
 
   const loadData = async () => {
     const res = await fetch('http://localhost:4000/items')
     if (res.status !== 200) {
-      console.error('failed to fetch holidays')
+      console.error('Failed to fetch items')
       return
     }
     const data = await res.json()
     console.log('fetched data: ', data)
-    setData(data)
+    setMarketItems(data)
+    setIsLoaded(true)
   }
+
+  const renderItems = marketItems.map((item) => (
+    <div className="shadow-md w-1/6" key={item.name}>
+      <img src={item.image} alt="" className="min-w-full" />
+      <div className="px-4 align-baseline">
+        <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2">{item.name}</h1>
+        <p className="text-gray-700 mb-2">{item.description}</p>
+        <div className="flex justify-between mt-4">
+          <span className="font-thin text-sm">May 20th 2022</span>
+          <span className="mb-2 text-gray-800 font-bold">{item.price} ETH</span>
+        </div>
+      </div>
+    </div>
+  ))
 
   useEffect(() => {
     loadData()
   }, [])
 
   return (
-    <div>
-      <h1 className="ml-10 text-3xl underline">Home Page</h1>
+    <div className="ml-10">
+      <h1 className="text-3xl underline">Home Page</h1>
+      <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div>
     </div>
   )
 }
