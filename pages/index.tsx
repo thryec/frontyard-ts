@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
-import Header from "../components/header"
-import Footer from '../components/footer'
 
 const Home: NextPage = () => {
   const [marketItems, setMarketItems] = useState([])
@@ -39,8 +37,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-        <Header></Header>
-        <Footer></Footer>
+
     </>
 
   //   <div className="ml-10">
