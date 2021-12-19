@@ -6,7 +6,7 @@ import Link from 'next/link'
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div>
-      <nav className="m-8 flex justify-center">
+      {/* <nav className="m-8 flex justify-center">
         <Link href="/">
           <a className="mr-10">🚪 Backdoor</a>
         </Link>
@@ -15,6 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         </Link>
         <Link href="/favourites">
           <a className="mr-10">💙 Favourites</a>
+        </Link>
+        <Link href="/payment">
+          <a className="mr-10">payment</a>
         </Link>
         <form
           action=""
@@ -41,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </svg>
           </button>
         </form>
-      </nav>
+      </nav> */}
       <Component {...pageProps} />
     </div>
   )

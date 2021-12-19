@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
+import Header from "../components/header"
+import Footer from '../components/footer'
 
 const Home: NextPage = () => {
   const [marketItems, setMarketItems] = useState([])
@@ -36,10 +38,15 @@ const Home: NextPage = () => {
   }, [])
 
   return (
-    <div className="ml-10">
-      <h1 className="text-3xl underline">Home Page</h1>
-      <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div>
-    </div>
+    <>
+        <Header></Header>
+        <Footer></Footer>
+    </>
+
+  //   <div className="ml-10">
+  //     <h1 className="text-3xl underline">Home Page</h1>
+  //     {/* <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div> */}
+  //   </div>
   )
 }
 
