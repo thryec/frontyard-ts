@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
+import Link from 'next/link'
 
 const Home: NextPage = () => {
   const [marketItems, setMarketItems] = useState([])
@@ -24,7 +25,9 @@ const Home: NextPage = () => {
         <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2">{item.name}</h1>
         <p className="text-gray-700 mb-2">{item.description}</p>
         <div className="flex justify-between mt-4">
-          <span className="font-thin text-sm">May 20th 2022</span>
+          <span className="font-thin text-sm">
+            <Link href="/checkout">Buy</Link>
+          </span>
           <span className="mb-2 text-gray-800 font-bold">{item.price} ETH</span>
         </div>
       </div>
