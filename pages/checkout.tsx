@@ -26,10 +26,10 @@ const testSellersAddress = '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF'
 const Checkout: NextPage<itemProps> = () => {
   const [walletAddress, setWalletAddress] = useState<String>()
   const [isConnected, setIsConnected] = useState<Boolean>()
+  const etherscanAPI = process.env.etherscanAPI
 
   const connectWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
-      console.log('api key: ', process.env.etherscanAPI)
       console.log('MetaMask is present')
       const web3Modal = new Web3Modal()
       const connection = await web3Modal.connect()
@@ -41,6 +41,14 @@ const Checkout: NextPage<itemProps> = () => {
     } else {
       alert('Please Install Metamask!')
     }
+  }
+
+  const fetchEtherBalance = async () => {
+    const res = await fetch(
+      `https://api-rinkeby.etherscan.io/api?address=${walletAddress}&apikey=${etherscanAPI}&module=account&action=balance`
+    )
+    const data = await res.json()
+    console.log('eth balance: ', data)
   }
 
   return (
@@ -210,7 +218,9 @@ const Checkout: NextPage<itemProps> = () => {
             </button>
             <div>
               {isConnected ? (
-                <span>Wallet {walletAddress} is connected</span>
+                <div>
+                  <span>Wallet {walletAddress} is connected</span>
+                </div>
               ) : (
                 <span>Wallet not connected</span>
               )}
