@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import { useState } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
+import { spawn } from 'child_process'
 
 interface itemProps {
   name: string
@@ -24,9 +25,11 @@ const testSellersAddress = '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF'
 
 const Checkout: NextPage<itemProps> = () => {
   const [walletAddress, setWalletAddress] = useState<String>()
+  const [isConnected, setIsConnected] = useState<Boolean>()
 
   const connectWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
+      console.log('api key: ', process.env.etherscanAPI)
       console.log('MetaMask is present')
       const web3Modal = new Web3Modal()
       const connection = await web3Modal.connect()
@@ -34,7 +37,7 @@ const Checkout: NextPage<itemProps> = () => {
       const signer = provider.getSigner()
       const myAddress = await signer.getAddress()
       setWalletAddress(myAddress)
-      console.log('my address: ', myAddress)
+      setIsConnected(true)
     } else {
       alert('Please Install Metamask!')
     }
@@ -205,6 +208,13 @@ const Checkout: NextPage<itemProps> = () => {
             <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
               Credit Card
             </button>
+            <div>
+              {isConnected ? (
+                <span>Wallet {walletAddress} is connected</span>
+              ) : (
+                <span>Wallet not connected</span>
+              )}
+            </div>
           </div>
         </div>
       </div>
