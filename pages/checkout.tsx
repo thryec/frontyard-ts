@@ -1,4 +1,7 @@
 import type { NextPage } from 'next'
+import { useState } from 'react'
+import { ethers } from 'ethers'
+import Web3Modal from 'web3modal'
 
 interface itemProps {
   name: string
@@ -17,7 +20,26 @@ const testItem = {
   price: 0.5,
 }
 
+const testSellersAddress = '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF'
+
 const Checkout: NextPage<itemProps> = () => {
+  const [walletAddress, setWalletAddress] = useState<String>()
+
+  const connectWallet = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      console.log('MetaMask is present')
+      const web3Modal = new Web3Modal()
+      const connection = await web3Modal.connect()
+      const provider = new ethers.providers.Web3Provider(connection)
+      const signer = provider.getSigner()
+      const myAddress = await signer.getAddress()
+      setWalletAddress(myAddress)
+      console.log('my address: ', myAddress)
+    } else {
+      alert('Please Install Metamask!')
+    }
+  }
+
   return (
     <div>
       <div className="ml-5 mr-5 flex justify-center">
@@ -90,7 +112,11 @@ const Checkout: NextPage<itemProps> = () => {
         <div className="p-5 w-1/2 bg-slate-200 border rounded-md">
           <h1 className="font-bold text-xl">Payment Methods</h1>
           <div>
-            <button className="bg-indigo-500 text-white border rounded-md p-2 m-2">Metamask</button>
+            <button
+              onClick={connectWallet}
+              className="bg-indigo-500 text-white border rounded-md p-2 m-2">
+              Metamask
+            </button>
             <button className="bg-indigo-500 text-white border rounded-md p-2 m-2">
               Credit Card
             </button>
