@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import Link from 'next/link'
-import internal from 'stream'
+import Image from 'next/image'
 
 const Home: NextPage = () => {
   const [marketItems, setMarketItems] = useState([])
@@ -32,23 +32,14 @@ const Home: NextPage = () => {
   const renderItems = marketItems.map((item: itemProps) => {
     console.log('item: ', item)
     return (
-      <div className="shadow-md w-1/6" key={item.name}>
-        <img src={item.image} alt="" className="min-w-full" />
+      <div className="shadow-md w-1/6" key={item._id}>
+        <Image src={item.image} alt={item.name} width="250px" height="250px" />
         <div className="px-4 align-baseline">
           <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2">{item.name}</h1>
           <p className="text-gray-700 mb-2">{item.description}</p>
           <div className="flex justify-between mt-4">
             <span className="font-thin text-sm">
-              <Link
-                href={{
-                  pathname: '/checkout',
-                  query: {
-                    id: item._id,
-                    name: item.name,
-                  },
-                }}>
-                Buy
-              </Link>
+              <Link href="/checkout">Buy</Link>
             </span>
             <span className="mb-2 text-gray-800 font-bold">{item.price} ETH</span>
           </div>

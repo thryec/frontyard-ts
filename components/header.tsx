@@ -2,14 +2,15 @@
 // import 'tailwindcss/tailwind.css'
 import Link from 'next/link'
 
-const  Header = () => {
-    return (<header>
+const Header = () => {
+  return (
+    <header>
       <div className="logo">
-      <Link href="/">
-        <a className="mr-10">
-          <img src="/backdoor.png"/>
-        </a>
-      </Link>
+        <Link href="/">
+          <a className="mr-10">
+            <img src="/backdoor.png" />
+          </a>
+        </Link>
       </div>
       <nav>
         <Link href="/signup">
@@ -22,7 +23,8 @@ const  Header = () => {
           <a className="mr-10">Sell</a>
         </Link>
       </nav>
-    </header>)
-};
+    </header>
+  )
+}
 
-export default Header;
+export default Header
