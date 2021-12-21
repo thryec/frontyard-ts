@@ -2,19 +2,20 @@ import type { NextPage } from 'next'
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
+import Item from './item'
 
 interface itemProps {
   name: string
   description: string
-  _id: string
-  image: string
   price: number
-  quantity: number
-  listingEndDate: Date
-  ListingStartDate: Date
+  _id?: string
+  image?: string
+  quantity?: number
+  listingEndDate?: Date
+  ListingStartDate?: Date
 }
 
-const testItem = {
+const testItem: itemProps = {
   name: 'Book of Spells',
   description: 'Lets you conquer the universe',
   price: 0.5,
@@ -25,7 +26,7 @@ const testSellersAddress = '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF'
 const Checkout: NextPage<itemProps> = () => {
   const [walletAddress, setWalletAddress] = useState<String>()
   const [isConnected, setIsConnected] = useState<String>('Connect Wallet')
-  const [ethBalance, setEthBalance] = useState<Number>()
+  const [ethBalance, setEthBalance] = useState<number>(0)
   const etherscanAPI = process.env.etherscanAPI
 
   const connectWallet = async () => {
@@ -51,11 +52,6 @@ const Checkout: NextPage<itemProps> = () => {
     const eth = Math.round((data.result / 1000000000000000000) * 10) / 10
     setEthBalance(eth)
     console.log('eth balance: ', eth)
-  }
-
-  const initialiseWallet = async () => {
-    await connectWallet()
-    await fetchEtherBalance()
   }
 
   useEffect(() => {
@@ -229,9 +225,16 @@ const Checkout: NextPage<itemProps> = () => {
                 <div>
                   <p>Wallet {walletAddress} is connected</p>
                   <p>Available ETH Balance: {ethBalance} ETH </p>
+                  {ethBalance > testItem.price ? (
+                    <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
+                      Confirm Payment
+                    </button>
+                  ) : (
+                    <p>Insufficient Funds</p>
+                  )}
                 </div>
               ) : (
-                <span>Wallet not connected</span>
+                <p>Wallet not connected</p>
               )}
             </div>
           </div>
