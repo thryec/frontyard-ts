@@ -17,20 +17,19 @@ interface itemProps {
 const testItem: itemProps = {
   name: 'Book of Spells',
   description: 'Lets you conquer the universe',
-  price: 0.5,
+  price: 0.1,
 }
 
 const testSellersAddress = '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF' // testing2
 
 const Checkout: NextPage<itemProps> = () => {
-  const [walletAddress, setWalletAddress] = useState<String>()
+  const [walletAddress, setWalletAddress] = useState<string | Promise<string>>()
   const [isConnected, setIsConnected] = useState<String>('Connect Wallet')
   const [ethBalance, setEthBalance] = useState<Number>(0)
   const [chainId, setChainId] = useState<String>()
   const [error, setError] = useState<any>()
-  const etherscanAPI = process.env.etherscanAPI
 
-  const connectWallet = async () => {
+  const initialiseWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
       console.log('MetaMask is present')
       setChainId(window.ethereum.chainId)
@@ -39,21 +38,16 @@ const Checkout: NextPage<itemProps> = () => {
       const provider = new ethers.providers.Web3Provider(connection)
       const signer = provider.getSigner()
       const myAddress = await signer.getAddress()
+      const balance = await provider.getBalance(myAddress)
+      const eth = parseFloat(ethers.utils.formatUnits(balance))
+      const rounded = Math.round(eth * 10) / 10
+      console.log('balance from ethers: ', rounded)
+      setEthBalance(rounded)
       setWalletAddress(myAddress)
       setIsConnected('Connected')
     } else {
       alert('Please Install Metamask!')
     }
-  }
-
-  const fetchEtherBalance = async () => {
-    const res = await fetch(
-      `https://api-rinkeby.etherscan.io/api?address=${walletAddress}&apikey=${etherscanAPI}&module=account&action=balance`
-    )
-    const data = await res.json()
-    const eth = Math.round((data.result / 1000000000000000000) * 10) / 10
-    setEthBalance(eth)
-    console.log('eth balance: ', eth)
   }
 
   const changeNetwork = async () => {
@@ -77,12 +71,8 @@ const Checkout: NextPage<itemProps> = () => {
       console.log('network changed')
       setChainId(window.ethereum.chainId)
     })
-    // console.log('ethereum object: ', window.ethereum.chainId)
+    console.log('ethereum object: ', window.ethereum)
   }, [])
-
-  useEffect(() => {
-    fetchEtherBalance()
-  }, [walletAddress])
 
   return (
     <div>
@@ -242,7 +232,7 @@ const Checkout: NextPage<itemProps> = () => {
           <h1 className="font-bold text-xl">Payment</h1>
           <div>
             <button
-              onClick={connectWallet}
+              onClick={initialiseWallet}
               className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
               {isConnected}
             </button>
