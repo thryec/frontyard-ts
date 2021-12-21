@@ -1,9 +1,9 @@
-import type { NextPage } from 'next'
+// import type { NextPage } from 'next'
 
-const Home: NextPage = () => {
+const Checkout = () => {
   return (
     <h1 className="ml-10">Favourites Here</h1>
   )
 }
 
-export default Home
+export default Checkout

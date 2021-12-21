@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
+// import Head from 'next/head'
 
 const Home: NextPage = () => {
   const [marketItems, setMarketItems] = useState([])
@@ -36,10 +37,14 @@ const Home: NextPage = () => {
   }, [])
 
   return (
-    <div className="ml-10">
-      <div>to add splash page here</div>
-      <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div>
-    </div>
+    <>
+
+        <div className="ml-10">
+          <div>to add splash page here</div>
+          <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div>
+      </div>
+    </>
+
   )
 }
 
