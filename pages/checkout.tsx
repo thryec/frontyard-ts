@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
-import Item from './item'
 
 interface itemProps {
   name: string
@@ -21,17 +20,20 @@ const testItem: itemProps = {
   price: 0.5,
 }
 
-const testSellersAddress = '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF'
+const testSellersAddress = '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF' // testing2
 
 const Checkout: NextPage<itemProps> = () => {
   const [walletAddress, setWalletAddress] = useState<String>()
   const [isConnected, setIsConnected] = useState<String>('Connect Wallet')
-  const [ethBalance, setEthBalance] = useState<number>(0)
+  const [ethBalance, setEthBalance] = useState<Number>(0)
+  const [chainId, setChainId] = useState<String>()
+  const [error, setError] = useState<any>()
   const etherscanAPI = process.env.etherscanAPI
 
   const connectWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
       console.log('MetaMask is present')
+      setChainId(window.ethereum.chainId)
       const web3Modal = new Web3Modal()
       const connection = await web3Modal.connect()
       const provider = new ethers.providers.Web3Provider(connection)
@@ -54,14 +56,28 @@ const Checkout: NextPage<itemProps> = () => {
     console.log('eth balance: ', eth)
   }
 
+  const changeNetwork = async () => {
+    try {
+      if (!window.ethereum) throw new Error('No crypto wallet found')
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x4' }],
+      })
+    } catch (err: any) {
+      setError(err.message)
+      console.log('error: ', err)
+    }
+  }
+
   useEffect(() => {
-    window.ethereum.on('accountsChanged', function () {
+    window.ethereum.on('accountsChanged', () => {
       setWalletAddress(window.ethereum.selectedAddress)
     })
     window.ethereum.on('chainChanged', function () {
-      alert('network changed')
+      console.log('network changed')
+      setChainId(window.ethereum.chainId)
     })
-    console.log('ethereum object: ', window.ethereum)
+    // console.log('ethereum object: ', window.ethereum.chainId)
   }, [])
 
   useEffect(() => {
@@ -235,6 +251,11 @@ const Checkout: NextPage<itemProps> = () => {
                 <div>
                   <p>Wallet {walletAddress} is connected</p>
                   <p>Available ETH Balance: {ethBalance} ETH </p>
+                  {chainId !== '0x4' ? (
+                    <button onClick={changeNetwork}>Switch To Rinkeby</button>
+                  ) : (
+                    <p>On chain {chainId}</p>
+                  )}
                   {ethBalance > testItem.price ? (
                     <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
                       Confirm Payment
