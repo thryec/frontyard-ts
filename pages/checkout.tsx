@@ -27,7 +27,7 @@ const Checkout: NextPage<itemProps> = () => {
   const [isConnected, setIsConnected] = useState<String>('Connect Wallet')
   const [ethBalance, setEthBalance] = useState<Number>(0)
   const [chainId, setChainId] = useState<String>()
-  const [error, setError] = useState<any>()
+  const [error, setError] = useState<any>(null)
   const [provider, setProvider] = useState<any>()
   const [signer, setSigner] = useState<any>()
 
@@ -62,7 +62,7 @@ const Checkout: NextPage<itemProps> = () => {
       })
     } catch (err: any) {
       setError(err.message)
-      alert(err.message)
+      console.log('error changing network: ', err.message)
     }
   }
 
@@ -74,13 +74,13 @@ const Checkout: NextPage<itemProps> = () => {
         value: ethers.utils.parseUnits(testItem.price.toString(), 'ether').toHexString(),
       },
     ]
-
     try {
       const txn = await provider.send('eth_sendTransaction', params)
       const receipt = await provider.waitForTransaction(txn)
       console.log('txn success: ', receipt)
-    } catch (err) {
-      console.log('error sending eth: ', err)
+    } catch (err: any) {
+      setError(err.message)
+      console.log('error sending eth: ', err.message)
     }
   }
 
@@ -286,6 +286,15 @@ const Checkout: NextPage<itemProps> = () => {
           </div>
         </div>
       </div>
+      {error !== null ? (
+        <div className="flex justify-center">
+          <div className="mt-10 p-3 w-1/2 bg-red-100 border border-red-400 text-red-700 rounded">
+            <span>{error}</span>
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   )
 }
