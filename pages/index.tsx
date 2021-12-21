@@ -30,7 +30,6 @@ const Home: NextPage = () => {
   }
 
   const renderItems = marketItems.map((item: itemProps) => {
-    // console.log('item: ', item)
     return (
       <div className="shadow-md w-1/6" key={item._id}>
         <Image src={item.image} alt={item.name} width="250px" height="250px" />

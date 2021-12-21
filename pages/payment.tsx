@@ -1,5 +1,7 @@
-const Payment = () => {
-    return <h1>payments</h1>
-};
+import type { NextPage } from 'next'
 
-export default Payment;
+const Payment: NextPage = () => {
+  return <div>Payment Result</div>
+}
+
+export default Payment

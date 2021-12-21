@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
@@ -29,7 +30,7 @@ const Checkout: NextPage<itemProps> = () => {
   const [chainId, setChainId] = useState<String>()
   const [error, setError] = useState<any>(null)
   const [provider, setProvider] = useState<any>()
-  const [signer, setSigner] = useState<any>()
+  const router = useRouter()
 
   const initialiseWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
@@ -40,7 +41,6 @@ const Checkout: NextPage<itemProps> = () => {
       const provider = new ethers.providers.Web3Provider(connection)
       const signer = provider.getSigner()
       setProvider(provider)
-      setSigner(signer)
       const myAddress = await signer.getAddress()
       const balance = await provider.getBalance(myAddress)
       const eth = parseFloat(ethers.utils.formatUnits(balance))
@@ -84,6 +84,10 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }
 
+  const handlePaymentSuccess = async () => {
+    router.push('/payment')
+  }
+
   useEffect(() => {
     window.ethereum.on('accountsChanged', () => {
       setWalletAddress(window.ethereum.selectedAddress)
@@ -92,7 +96,7 @@ const Checkout: NextPage<itemProps> = () => {
       console.log('network changed')
       setChainId(window.ethereum.chainId)
     })
-    // console.log('ethereum object: ', window.ethereum)
+    // add cleanup function here
   }, [])
 
   useEffect(() => {
@@ -261,7 +265,8 @@ const Checkout: NextPage<itemProps> = () => {
               className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
               {isConnected}
             </button>
-            <button>Disconnect</button>
+            {/* <button>Disconnect</button> */}
+            <button onClick={handlePaymentSuccess}>Go to Result Page</button>
             <div>
               {isConnected === 'Connected' ? (
                 <div>
