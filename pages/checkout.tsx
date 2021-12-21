@@ -7,6 +7,7 @@ interface itemProps {
   name: string
   description: string
   price: number
+  seller: string
   _id?: string
   image?: string
   quantity?: number
@@ -17,10 +18,9 @@ interface itemProps {
 const testItem: itemProps = {
   name: 'Book of Spells',
   description: 'Lets you conquer the universe',
-  price: 0.1,
+  price: 0.05,
+  seller: '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF', // testing2
 }
-
-const testSellersAddress = '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF' // testing2
 
 const Checkout: NextPage<itemProps> = () => {
   const [walletAddress, setWalletAddress] = useState<string | Promise<string>>()
@@ -28,6 +28,8 @@ const Checkout: NextPage<itemProps> = () => {
   const [ethBalance, setEthBalance] = useState<Number>(0)
   const [chainId, setChainId] = useState<String>()
   const [error, setError] = useState<any>()
+  const [provider, setProvider] = useState<any>()
+  const [signer, setSigner] = useState<any>()
 
   const initialiseWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
@@ -37,11 +39,12 @@ const Checkout: NextPage<itemProps> = () => {
       const connection = await web3Modal.connect()
       const provider = new ethers.providers.Web3Provider(connection)
       const signer = provider.getSigner()
+      setProvider(provider)
+      setSigner(signer)
       const myAddress = await signer.getAddress()
       const balance = await provider.getBalance(myAddress)
       const eth = parseFloat(ethers.utils.formatUnits(balance))
       const rounded = Math.round(eth * 10) / 10
-      console.log('balance from ethers: ', rounded)
       setEthBalance(rounded)
       setWalletAddress(myAddress)
       setIsConnected('Connected')
@@ -63,6 +66,24 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }
 
+  const executeTransaction = async () => {
+    const params = [
+      {
+        from: walletAddress,
+        to: testItem.seller,
+        value: ethers.utils.parseUnits(testItem.price.toString(), 'ether').toHexString(),
+      },
+    ]
+
+    try {
+      const txn = await provider.send('eth_sendTransaction', params)
+      const receipt = await provider.waitForTransaction(txn)
+      console.log('txn success: ', receipt)
+    } catch (err) {
+      console.log('error sending eth: ', err)
+    }
+  }
+
   useEffect(() => {
     window.ethereum.on('accountsChanged', () => {
       setWalletAddress(window.ethereum.selectedAddress)
@@ -71,8 +92,12 @@ const Checkout: NextPage<itemProps> = () => {
       console.log('network changed')
       setChainId(window.ethereum.chainId)
     })
-    console.log('ethereum object: ', window.ethereum)
+    // console.log('ethereum object: ', window.ethereum)
   }, [])
+
+  useEffect(() => {
+    initialiseWallet()
+  }, [walletAddress])
 
   return (
     <div>
@@ -236,6 +261,7 @@ const Checkout: NextPage<itemProps> = () => {
               className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
               {isConnected}
             </button>
+            <button>Disconnect</button>
             <div>
               {isConnected === 'Connected' ? (
                 <div>
@@ -243,11 +269,10 @@ const Checkout: NextPage<itemProps> = () => {
                   <p>Available ETH Balance: {ethBalance} ETH </p>
                   {chainId !== '0x4' ? (
                     <button onClick={changeNetwork}>Switch To Rinkeby</button>
-                  ) : (
-                    <p>on rinkeby</p>
-                  )}
-                  {chainId === '0x4' && ethBalance > testItem.price ? (
-                    <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
+                  ) : ethBalance > testItem.price ? (
+                    <button
+                      onClick={executeTransaction}
+                      className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
                       Confirm Payment
                     </button>
                   ) : (
