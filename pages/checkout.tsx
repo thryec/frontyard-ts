@@ -59,7 +59,7 @@ const Checkout: NextPage<itemProps> = () => {
       })
     } catch (err: any) {
       setError(err.message)
-      console.log('error: ', err)
+      alert(err.message)
     }
   }
 
@@ -244,9 +244,9 @@ const Checkout: NextPage<itemProps> = () => {
                   {chainId !== '0x4' ? (
                     <button onClick={changeNetwork}>Switch To Rinkeby</button>
                   ) : (
-                    <p>On chain {chainId}</p>
+                    <p>on rinkeby</p>
                   )}
-                  {ethBalance > testItem.price ? (
+                  {chainId === '0x4' && ethBalance > testItem.price ? (
                     <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
                       Confirm Payment
                     </button>
