@@ -55,6 +55,16 @@ const Checkout: NextPage<itemProps> = () => {
   }
 
   useEffect(() => {
+    window.ethereum.on('accountsChanged', function () {
+      setWalletAddress(window.ethereum.selectedAddress)
+    })
+    window.ethereum.on('chainChanged', function () {
+      alert('network changed')
+    })
+    console.log('ethereum object: ', window.ethereum)
+  }, [])
+
+  useEffect(() => {
     fetchEtherBalance()
   }, [walletAddress])
 
