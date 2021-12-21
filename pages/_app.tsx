@@ -6,7 +6,7 @@ import Head from 'next/head'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div>
+    <div className='bg-lightgrey'>
       <Head>
         <title>BACKDOOR | {Component.name}</title>
       </Head>
