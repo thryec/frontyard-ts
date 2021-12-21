@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import { useState } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
-import { spawn } from 'child_process'
 
 interface itemProps {
   name: string
@@ -25,7 +24,8 @@ const testSellersAddress = '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF'
 
 const Checkout: NextPage<itemProps> = () => {
   const [walletAddress, setWalletAddress] = useState<String>()
-  const [isConnected, setIsConnected] = useState<Boolean>()
+  const [isConnected, setIsConnected] = useState<String>('Connect Wallet')
+  const [ethBalance, setEthBalance] = useState<Number>()
   const etherscanAPI = process.env.etherscanAPI
 
   const connectWallet = async () => {
@@ -37,7 +37,7 @@ const Checkout: NextPage<itemProps> = () => {
       const signer = provider.getSigner()
       const myAddress = await signer.getAddress()
       setWalletAddress(myAddress)
-      setIsConnected(true)
+      setIsConnected('Connected')
     } else {
       alert('Please Install Metamask!')
     }
@@ -48,7 +48,14 @@ const Checkout: NextPage<itemProps> = () => {
       `https://api-rinkeby.etherscan.io/api?address=${walletAddress}&apikey=${etherscanAPI}&module=account&action=balance`
     )
     const data = await res.json()
-    console.log('eth balance: ', data)
+    const eth = data.result / 1000000000000000000
+    setEthBalance(eth)
+    console.log('eth balance: ', eth)
+  }
+
+  const initialiseWallet = async () => {
+    await connectWallet()
+    await fetchEtherBalance()
   }
 
   return (
@@ -206,20 +213,19 @@ const Checkout: NextPage<itemProps> = () => {
       </div>
       <div className="flex justify-center">
         <div className="p-5 w-1/2 bg-slate-200 border rounded-md">
-          <h1 className="font-bold text-xl">Payment Methods</h1>
+          <h1 className="font-bold text-xl">Payment</h1>
           <div>
             <button
-              onClick={connectWallet}
+              onClick={initialiseWallet}
               className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
-              Metamask
-            </button>
-            <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
-              Credit Card
+              {isConnected}
             </button>
             <div>
-              {isConnected ? (
+              {isConnected === 'Connected' ? (
                 <div>
-                  <span>Wallet {walletAddress} is connected</span>
+                  <p>Wallet {walletAddress} is connected</p>
+                  <p>Available ETH Balance: {ethBalance} ETH </p>
+                  <button onClick={fetchEtherBalance}>Fetch eth balance</button>
                 </div>
               ) : (
                 <span>Wallet not connected</span>
