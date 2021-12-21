@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 
@@ -48,7 +48,7 @@ const Checkout: NextPage<itemProps> = () => {
       `https://api-rinkeby.etherscan.io/api?address=${walletAddress}&apikey=${etherscanAPI}&module=account&action=balance`
     )
     const data = await res.json()
-    const eth = data.result / 1000000000000000000
+    const eth = Math.round((data.result / 1000000000000000000) * 10) / 10
     setEthBalance(eth)
     console.log('eth balance: ', eth)
   }
@@ -57,6 +57,10 @@ const Checkout: NextPage<itemProps> = () => {
     await connectWallet()
     await fetchEtherBalance()
   }
+
+  useEffect(() => {
+    fetchEtherBalance()
+  }, [walletAddress])
 
   return (
     <div>
@@ -216,7 +220,7 @@ const Checkout: NextPage<itemProps> = () => {
           <h1 className="font-bold text-xl">Payment</h1>
           <div>
             <button
-              onClick={initialiseWallet}
+              onClick={connectWallet}
               className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
               {isConnected}
             </button>
@@ -225,7 +229,6 @@ const Checkout: NextPage<itemProps> = () => {
                 <div>
                   <p>Wallet {walletAddress} is connected</p>
                   <p>Available ETH Balance: {ethBalance} ETH </p>
-                  <button onClick={fetchEtherBalance}>Fetch eth balance</button>
                 </div>
               ) : (
                 <span>Wallet not connected</span>
