@@ -13,6 +13,10 @@ module.exports = {
         lightgrey: '#F3F3F3',
         wine: '#73020C',
       },
+      fontFamily: {
+        Righteous: ['Righteous', 'cursive'],
+        Bebas: ['Bebas Neue', 'cursive'],
+      },
     },
   },
   plugins: [],
