@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 
-const LoginForm = () => {
+const LoginForm: React.FC = () => {
 
-    const [login, setLogin] = useState({ email: '', password: '' });
-    const [loginSuccessful, setLoginSuccessful] = useState(false);
-    const [errorCode, setErrorCode] = useState();
+    const router = useRouter();
+
+    interface LoginDetails {
+        email: string;
+        password: string;
+    }
+
+    const [login, setLogin] = useState<LoginDetails>({ email: "", password: "" });
 
     const handleEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
         setLogin({
@@ -21,6 +27,8 @@ const LoginForm = () => {
     }
 
     const handleSubmit = async () => {
+
+        //Login Post request
         const response = await fetch('http://localhost:3001/sessions', {
             method: 'POST',
             headers: {
@@ -29,9 +37,17 @@ const LoginForm = () => {
             body: JSON.stringify(login),
         });
 
-        console.log(response.status);
+        console.log(response);
+        console.log("Login Request Response Status: ", response.status);
+
+        //Assign JWT to local storage once login successful
         const decodedResponse = await response.json();
         localStorage.setItem('token', decodedResponse.token);
+
+
+        //redirect user to home page
+        router.push('/');
+
 
     }
 
@@ -41,8 +57,7 @@ const LoginForm = () => {
         <input value={login.email} onChange={handleEmailChange} />
         <label>Password:</label>
         <input value={login.password} type="password" onChange={handlePasswordChange} />
-        <input className="mt-1 relative rounded-md shadow-sm" type="submit" onClick={handleSubmit} />
-        {loginSuccessful ? "uwu" : ""}
+        <input type="submit" onClick={handleSubmit} />
     </>)
 };
 
