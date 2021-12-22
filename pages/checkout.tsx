@@ -115,6 +115,7 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }
 
+  let txnId: String
   const handleConfirmButton = async () => {
     const shippingData: shippingAddress = {
       firstName: firstName.current.value,
@@ -128,7 +129,7 @@ const Checkout: NextPage<itemProps> = () => {
     }
     console.log('shipping info: ', shippingData)
     setShippingAddress(shippingData)
-    const txn = {
+    const initialiseTxn = {
       seller: testItem.seller,
       buyer: walletAddress,
       itemId: testItem._id,
@@ -140,38 +141,44 @@ const Checkout: NextPage<itemProps> = () => {
     try {
       const res = await fetch(`http://localhost:4000/transactions`, {
         method: 'POST',
-        body: JSON.stringify(txn),
+        body: JSON.stringify(initialiseTxn),
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      console.log('sent txn: ', res)
+      txnId = await res.json()
+      console.log('sent txn: ', txnId)
     } catch (err) {
       console.log('error posting transaction: ', err)
     }
-  }
-
-  const createDatabaseTxn = async () => {
-    const txn = {
-      seller: testItem.seller,
-      buyer: walletAddress,
-      itemId: testItem._id,
-      salePrice: testItem.price,
-      purchaseDate: new Date(),
-      orderStatus: 'Pending',
-      shippingAddress: shippingAddress,
-    }
+    // Update transaction status
     try {
-      const res = await fetch(`http://localhost:4000/transactions`, {
-        method: 'POST',
-        body: JSON.stringify(txn),
+      console.log('data: ', txnId)
+      await executeTransaction()
+      const txnSuccess = {
+        orderStatus: 'Success',
+      }
+      const res = await fetch(`http://localhost:4000/transactions/${txnId}`, {
+        method: 'PUT',
+        body: JSON.stringify(txnSuccess),
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      console.log('sent txn: ', res)
+      console.log('txn success: ', res)
     } catch (err) {
-      console.log('error posting transaction: ', err)
+      console.log('error executing transaction: ', err)
+      const txnFailure = {
+        orderStatus: 'Failure',
+      }
+      const res = await fetch(`http://localhost:4000/transactions${txnId}`, {
+        method: 'PUT',
+        body: JSON.stringify(txnFailure),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      console.log('txn success: ', res)
     }
   }
 
