@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
+import { useForm } from 'react-hook-form'
 
 interface itemProps {
   name: string
@@ -16,10 +17,21 @@ interface itemProps {
   ListingStartDate?: Date
 }
 
+interface shippingAddress {
+  firstName: String
+  lastName: String
+  emailAddress: String
+  country: String
+  streetAddress: String
+  city: String
+  state: String
+  postalCode: Number | null
+}
+
 const testItem: itemProps = {
   name: 'Book of Spells',
   description: 'Lets you conquer the universe',
-  price: 0.05,
+  price: 0.1,
   seller: '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF', // testing2
 }
 
@@ -30,6 +42,7 @@ const Checkout: NextPage<itemProps> = () => {
   const [chainId, setChainId] = useState<String>()
   const [error, setError] = useState<any>(null)
   const [provider, setProvider] = useState<any>()
+  // const [shippingAddress, setShippingAddress] = useForm()
   const router = useRouter()
 
   const initialiseWallet = async () => {
@@ -82,6 +95,10 @@ const Checkout: NextPage<itemProps> = () => {
       setError(err.message)
       console.log('error sending eth: ', err.message)
     }
+  }
+
+  const initiateDatabaseTxn = async () => {
+    console.log('creating txn')
   }
 
   const handlePaymentSuccess = async () => {
@@ -142,7 +159,6 @@ const Checkout: NextPage<itemProps> = () => {
                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
-
                       <div className="col-span-6 sm:col-span-4">
                         <label
                           htmlFor="email-address"
@@ -157,7 +173,6 @@ const Checkout: NextPage<itemProps> = () => {
                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
-
                       <div className="col-span-6 sm:col-span-3">
                         <label
                           htmlFor="country"
@@ -174,7 +189,6 @@ const Checkout: NextPage<itemProps> = () => {
                           <option>Mexico</option>
                         </select>
                       </div>
-
                       <div className="col-span-6">
                         <label
                           htmlFor="street-address"
@@ -189,7 +203,6 @@ const Checkout: NextPage<itemProps> = () => {
                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
-
                       <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                         <label htmlFor="city" className="block text-md font-medium text-gray-700">
                           City
@@ -202,7 +215,6 @@ const Checkout: NextPage<itemProps> = () => {
                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
-
                       <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                         <label htmlFor="region" className="block text-md font-medium text-gray-700">
                           State / Province
@@ -215,7 +227,6 @@ const Checkout: NextPage<itemProps> = () => {
                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
-
                       <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                         <label
                           htmlFor="postal-code"
@@ -231,13 +242,6 @@ const Checkout: NextPage<itemProps> = () => {
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                    <button
-                      type="submit"
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                      Confirm
-                    </button>
                   </div>
                 </div>
               </form>
