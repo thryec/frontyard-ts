@@ -28,6 +28,7 @@ interface shippingAddress {
 }
 
 const testItem: itemProps = {
+  _id: '0xtest',
   name: 'Book of Spells',
   description: 'Lets you conquer the universe',
   price: 0.1,
@@ -127,6 +128,51 @@ const Checkout: NextPage<itemProps> = () => {
     }
     console.log('shipping info: ', shippingData)
     setShippingAddress(shippingData)
+    const txn = {
+      seller: testItem.seller,
+      buyer: walletAddress,
+      itemId: testItem._id,
+      salePrice: testItem.price,
+      purchaseDate: new Date(),
+      orderStatus: 'Pending',
+      shippingAddress: shippingData,
+    }
+    try {
+      const res = await fetch(`http://localhost:4000/transactions`, {
+        method: 'POST',
+        body: JSON.stringify(txn),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      console.log('sent txn: ', res)
+    } catch (err) {
+      console.log('error posting transaction: ', err)
+    }
+  }
+
+  const createDatabaseTxn = async () => {
+    const txn = {
+      seller: testItem.seller,
+      buyer: walletAddress,
+      itemId: testItem._id,
+      salePrice: testItem.price,
+      purchaseDate: new Date(),
+      orderStatus: 'Pending',
+      shippingAddress: shippingAddress,
+    }
+    try {
+      const res = await fetch(`http://localhost:4000/transactions`, {
+        method: 'POST',
+        body: JSON.stringify(txn),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      console.log('sent txn: ', res)
+    } catch (err) {
+      console.log('error posting transaction: ', err)
+    }
   }
 
   const handlePaymentSuccess = async () => {
