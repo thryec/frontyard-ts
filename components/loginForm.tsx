@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useRouter } from 'next/router'
+import UserContext from '../context/LoginState';
 
 const LoginForm: React.FC = () => {
 
     const router = useRouter();
+    const userLoginContext = useContext(UserContext);
 
     interface LoginDetails {
         email: string;
@@ -44,6 +46,8 @@ const LoginForm: React.FC = () => {
         const decodedResponse = await response.json();
         localStorage.setItem('token', decodedResponse.token);
 
+        //setState to login
+        userLoginContext.setLoginState(true);
 
         //redirect user to home page
         router.push('/');
