@@ -1,9 +1,8 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
-import { useForm } from 'react-hook-form'
 
 interface itemProps {
   name: string
@@ -42,7 +41,25 @@ const Checkout: NextPage<itemProps> = () => {
   const [chainId, setChainId] = useState<String>()
   const [error, setError] = useState<any>(null)
   const [provider, setProvider] = useState<any>()
-  // const [shippingAddress, setShippingAddress] = useForm()
+  const [shippingAddress, setShippingAddress] = useState<shippingAddress>({
+    firstName: '',
+    lastName: '',
+    emailAddress: '',
+    country: '',
+    streetAddress: '',
+    city: '',
+    state: '',
+    postalCode: 0,
+  })
+  const firstName = useRef<any>()
+  const lastName = useRef<any>()
+  const emailAddress = useRef<any>()
+  const country = useRef<any>()
+  const streetAddress = useRef<any>()
+  const city = useRef<any>()
+  const state = useRef<any>()
+  const postalCode = useRef<any>()
+
   const router = useRouter()
 
   const initialiseWallet = async () => {
@@ -97,8 +114,19 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }
 
-  const initiateDatabaseTxn = async () => {
-    console.log('creating txn')
+  const handleConfirmButton = async () => {
+    const shippingData: shippingAddress = {
+      firstName: firstName.current.value,
+      lastName: lastName.current.value,
+      emailAddress: emailAddress.current.value,
+      country: country.current.value,
+      streetAddress: streetAddress.current.value,
+      city: city.current.value,
+      state: state.current.value,
+      postalCode: postalCode.current.value,
+    }
+    console.log('shipping info: ', shippingData)
+    setShippingAddress(shippingData)
   }
 
   const handlePaymentSuccess = async () => {
@@ -138,6 +166,7 @@ const Checkout: NextPage<itemProps> = () => {
                           First name
                         </label>
                         <input
+                          ref={firstName}
                           type="text"
                           name="first-name"
                           id="first-name"
@@ -152,6 +181,7 @@ const Checkout: NextPage<itemProps> = () => {
                           Last name
                         </label>
                         <input
+                          ref={lastName}
                           type="text"
                           name="last-name"
                           id="last-name"
@@ -166,6 +196,7 @@ const Checkout: NextPage<itemProps> = () => {
                           Email address
                         </label>
                         <input
+                          ref={emailAddress}
                           type="text"
                           name="email-address"
                           id="email-address"
@@ -180,6 +211,7 @@ const Checkout: NextPage<itemProps> = () => {
                           Country
                         </label>
                         <select
+                          ref={country}
                           id="country"
                           name="country"
                           autoComplete="country-name"
@@ -196,6 +228,7 @@ const Checkout: NextPage<itemProps> = () => {
                           Street address
                         </label>
                         <input
+                          ref={streetAddress}
                           type="text"
                           name="street-address"
                           id="street-address"
@@ -208,6 +241,7 @@ const Checkout: NextPage<itemProps> = () => {
                           City
                         </label>
                         <input
+                          ref={city}
                           type="text"
                           name="city"
                           id="city"
@@ -220,6 +254,7 @@ const Checkout: NextPage<itemProps> = () => {
                           State / Province
                         </label>
                         <input
+                          ref={state}
                           type="text"
                           name="region"
                           id="region"
@@ -234,6 +269,7 @@ const Checkout: NextPage<itemProps> = () => {
                           ZIP / Postal code
                         </label>
                         <input
+                          ref={postalCode}
                           type="text"
                           name="postal-code"
                           id="postal-code"
@@ -280,7 +316,7 @@ const Checkout: NextPage<itemProps> = () => {
                     <button onClick={changeNetwork}>Switch To Rinkeby</button>
                   ) : ethBalance > testItem.price ? (
                     <button
-                      onClick={executeTransaction}
+                      onClick={handleConfirmButton}
                       className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
                       Confirm Payment
                     </button>
