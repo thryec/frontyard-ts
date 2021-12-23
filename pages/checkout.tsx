@@ -130,7 +130,7 @@ const Checkout: NextPage<itemProps> = () => {
         },
       })
       txnId = await res.json()
-      console.log('sent txn: ', txnId)
+      console.log('sent database txn: ', txnId)
       await executeTransaction()
     } catch (err) {
       console.log('error posting transaction: ', err)
@@ -165,6 +165,7 @@ const Checkout: NextPage<itemProps> = () => {
       const data = await res.json()
       console.log('database update success: ', data)
       setIsLoading(false)
+      router.push('/payment')
     } catch (err: any) {
       setError(err.message)
       console.log('error sending eth: ', err.message)
@@ -184,9 +185,9 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }
 
-  const handlePaymentSuccess = async () => {
-    router.push('/payment')
-  }
+  // const handlePaymentSuccess = async () => {
+  //   router.push('/payment')
+  // }
 
   useEffect(() => {
     window.ethereum.on('accountsChanged', () => {
@@ -357,7 +358,7 @@ const Checkout: NextPage<itemProps> = () => {
               {isConnected}
             </button>
             {/* <button>Disconnect</button> */}
-            <button onClick={handlePaymentSuccess}>Go to Result Page</button>
+            {/* <button onClick={handlePaymentSuccess}>Go to Result Page</button> */}
             <div>
               {isConnected === 'Connected' ? (
                 <div>
