@@ -53,6 +53,7 @@ const Checkout: NextPage<itemProps> = () => {
     state: '',
     postalCode: 0,
   })
+  const [ethTxnId, setEthTxnId] = useState<String>()
   let txnId: String
   const firstName = useRef<any>()
   const lastName = useRef<any>()
@@ -99,6 +100,43 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }
 
+  const handleConfirmButton = async () => {
+    const shippingData: shippingAddress = {
+      firstName: firstName.current.value,
+      lastName: lastName.current.value,
+      emailAddress: emailAddress.current.value,
+      country: country.current.value,
+      streetAddress: streetAddress.current.value,
+      city: city.current.value,
+      state: state.current.value,
+      postalCode: postalCode.current.value,
+    }
+    setShippingAddress(shippingData)
+    const initialiseTxn = {
+      seller: testItem.seller,
+      buyer: walletAddress,
+      itemId: testItem._id,
+      salePrice: testItem.price,
+      purchaseDate: new Date(),
+      orderStatus: 'Pending',
+      shippingAddress: shippingData,
+    }
+    try {
+      const res = await fetch(`http://localhost:4000/transactions`, {
+        method: 'POST',
+        body: JSON.stringify(initialiseTxn),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      txnId = await res.json()
+      console.log('sent txn: ', txnId)
+      await executeTransaction()
+    } catch (err) {
+      console.log('error posting transaction: ', err)
+    }
+  }
+
   const executeTransaction = async () => {
     const params = [
       {
@@ -109,8 +147,10 @@ const Checkout: NextPage<itemProps> = () => {
     ]
     try {
       const txn = await provider.send('eth_sendTransaction', params)
-      const receipt = await provider.waitForTransaction(txn)
+      setIsLoading(true)
+      setEthTxnId(txn)
       console.log('txn: ', txn)
+      const receipt = await provider.waitForTransaction(txn)
       console.log('txn success: ', receipt)
       const txnSuccess = {
         orderStatus: 'Success',
@@ -141,44 +181,6 @@ const Checkout: NextPage<itemProps> = () => {
       const data = await res.json()
       console.log('txn failure: ', data)
       setIsLoading(false)
-    }
-  }
-
-  const handleConfirmButton = async () => {
-    const shippingData: shippingAddress = {
-      firstName: firstName.current.value,
-      lastName: lastName.current.value,
-      emailAddress: emailAddress.current.value,
-      country: country.current.value,
-      streetAddress: streetAddress.current.value,
-      city: city.current.value,
-      state: state.current.value,
-      postalCode: postalCode.current.value,
-    }
-    setShippingAddress(shippingData)
-    const initialiseTxn = {
-      seller: testItem.seller,
-      buyer: walletAddress,
-      itemId: testItem._id,
-      salePrice: testItem.price,
-      purchaseDate: new Date(),
-      orderStatus: 'Pending',
-      shippingAddress: shippingData,
-    }
-    setIsLoading(true)
-    try {
-      const res = await fetch(`http://localhost:4000/transactions`, {
-        method: 'POST',
-        body: JSON.stringify(initialiseTxn),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      txnId = await res.json()
-      console.log('sent txn: ', txnId)
-      await executeTransaction()
-    } catch (err) {
-      console.log('error posting transaction: ', err)
     }
   }
 
@@ -380,7 +382,20 @@ const Checkout: NextPage<itemProps> = () => {
               )}
             </div>
             {isLoading ? (
-              <button className="bg-yellow-300 p-3 rounded-md">Loading.... </button>
+              <div>
+                <button className="bg-yellow-300 p-3 rounded-md">Loading.... </button>
+                <div>
+                  View your Transaction on Etherscan{' '}
+                  <a
+                    href={'https://rinkeby.etherscan.io/tx/' + ethTxnId}
+                    className="font-bold underline"
+                    target="_blank"
+                    rel="noreferrer">
+                    here
+                  </a>
+                  :
+                </div>
+              </div>
             ) : (
               <div />
             )}
