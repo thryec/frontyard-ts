@@ -42,6 +42,7 @@ const Checkout: NextPage<itemProps> = () => {
   const [chainId, setChainId] = useState<String>()
   const [error, setError] = useState<any>(null)
   const [provider, setProvider] = useState<any>()
+  const [isLoading, setIsLoading] = useState<Boolean>(false)
   const [shippingAddress, setShippingAddress] = useState<shippingAddress>({
     firstName: '',
     lastName: '',
@@ -52,6 +53,7 @@ const Checkout: NextPage<itemProps> = () => {
     state: '',
     postalCode: 0,
   })
+  let txnId: String
   const firstName = useRef<any>()
   const lastName = useRef<any>()
   const emailAddress = useRef<any>()
@@ -109,52 +111,6 @@ const Checkout: NextPage<itemProps> = () => {
       const txn = await provider.send('eth_sendTransaction', params)
       const receipt = await provider.waitForTransaction(txn)
       console.log('txn success: ', receipt)
-    } catch (err: any) {
-      setError(err.message)
-      console.log('error sending eth: ', err.message)
-    }
-  }
-
-  let txnId: String
-  const handleConfirmButton = async () => {
-    const shippingData: shippingAddress = {
-      firstName: firstName.current.value,
-      lastName: lastName.current.value,
-      emailAddress: emailAddress.current.value,
-      country: country.current.value,
-      streetAddress: streetAddress.current.value,
-      city: city.current.value,
-      state: state.current.value,
-      postalCode: postalCode.current.value,
-    }
-    // console.log('shipping info: ', shippingData)
-    setShippingAddress(shippingData)
-    const initialiseTxn = {
-      seller: testItem.seller,
-      buyer: walletAddress,
-      itemId: testItem._id,
-      salePrice: testItem.price,
-      purchaseDate: new Date(),
-      orderStatus: 'Pending',
-      shippingAddress: shippingData,
-    }
-    try {
-      const res = await fetch(`http://localhost:4000/transactions`, {
-        method: 'POST',
-        body: JSON.stringify(initialiseTxn),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      txnId = await res.json()
-      console.log('sent txn: ', txnId)
-    } catch (err) {
-      console.log('error posting transaction: ', err)
-    }
-    // Update transaction status
-    try {
-      console.log('data: ', txnId)
-      await executeTransaction()
       const txnSuccess = {
         orderStatus: 'Success',
       }
@@ -167,9 +123,10 @@ const Checkout: NextPage<itemProps> = () => {
       })
       const data = await res.json()
       console.log('txn success: ', data)
-    } catch (err) {
-      console.log('error executing transaction: ', err)
-      console.log('txnId in catch block: ', txnId)
+      setIsLoading(false)
+    } catch (err: any) {
+      setError(err.message)
+      console.log('error sending eth: ', err.message)
       const txnFailure = {
         orderStatus: 'Failure',
       }
@@ -182,6 +139,45 @@ const Checkout: NextPage<itemProps> = () => {
       })
       const data = await res.json()
       console.log('txn failure: ', data)
+      setIsLoading(false)
+    }
+  }
+
+  const handleConfirmButton = async () => {
+    const shippingData: shippingAddress = {
+      firstName: firstName.current.value,
+      lastName: lastName.current.value,
+      emailAddress: emailAddress.current.value,
+      country: country.current.value,
+      streetAddress: streetAddress.current.value,
+      city: city.current.value,
+      state: state.current.value,
+      postalCode: postalCode.current.value,
+    }
+    setShippingAddress(shippingData)
+    const initialiseTxn = {
+      seller: testItem.seller,
+      buyer: walletAddress,
+      itemId: testItem._id,
+      salePrice: testItem.price,
+      purchaseDate: new Date(),
+      orderStatus: 'Pending',
+      shippingAddress: shippingData,
+    }
+    setIsLoading(true)
+    try {
+      const res = await fetch(`http://localhost:4000/transactions`, {
+        method: 'POST',
+        body: JSON.stringify(initialiseTxn),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      txnId = await res.json()
+      console.log('sent txn: ', txnId)
+      await executeTransaction()
+    } catch (err) {
+      console.log('error posting transaction: ', err)
     }
   }
 
@@ -210,139 +206,135 @@ const Checkout: NextPage<itemProps> = () => {
         <div className="mt-10">
           <div className="mb-10">
             <div className="mt-5 md:mt-0 md:col-span-2">
-              <form action="/" method="POST">
-                <div className="shadow overflow-hidden sm:rounded-md">
-                  <div className="px-4 py-5 bg-slate-200 sm:p-6">
-                    <h1 className="font-bold text-xl">Shipping Information</h1>
-                    <div className="grid grid-cols-6 gap-6">
-                      <div className="col-span-6 sm:col-span-3">
-                        <label
-                          htmlFor="first-name"
-                          className="block text-md font-medium text-gray-700">
-                          First name
-                        </label>
-                        <input
-                          ref={firstName}
-                          type="text"
-                          name="first-name"
-                          id="first-name"
-                          autoComplete="given-name"
-                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                      </div>
-                      <div className="col-span-6 sm:col-span-3">
-                        <label
-                          htmlFor="last-name"
-                          className="block text-md font-medium text-gray-700">
-                          Last name
-                        </label>
-                        <input
-                          ref={lastName}
-                          type="text"
-                          name="last-name"
-                          id="last-name"
-                          autoComplete="family-name"
-                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                      </div>
-                      <div className="col-span-6 sm:col-span-4">
-                        <label
-                          htmlFor="email-address"
-                          className="block text-md font-medium text-gray-700">
-                          Email address
-                        </label>
-                        <input
-                          ref={emailAddress}
-                          type="text"
-                          name="email-address"
-                          id="email-address"
-                          autoComplete="email"
-                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                      </div>
-                      <div className="col-span-6 sm:col-span-3">
-                        <label
-                          htmlFor="country"
-                          className="block text-md font-medium text-gray-700">
-                          Country
-                        </label>
-                        <select
-                          ref={country}
-                          id="country"
-                          name="country"
-                          autoComplete="country-name"
-                          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                          <option>United States</option>
-                          <option>Canada</option>
-                          <option>Mexico</option>
-                        </select>
-                      </div>
-                      <div className="col-span-6">
-                        <label
-                          htmlFor="street-address"
-                          className="block text-md font-medium text-gray-700">
-                          Street address
-                        </label>
-                        <input
-                          ref={streetAddress}
-                          type="text"
-                          name="street-address"
-                          id="street-address"
-                          autoComplete="street-address"
-                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                      </div>
-                      <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                        <label htmlFor="city" className="block text-md font-medium text-gray-700">
-                          City
-                        </label>
-                        <input
-                          ref={city}
-                          type="text"
-                          name="city"
-                          id="city"
-                          autoComplete="address-level2"
-                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                      </div>
-                      <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                        <label htmlFor="region" className="block text-md font-medium text-gray-700">
-                          State / Province
-                        </label>
-                        <input
-                          ref={state}
-                          type="text"
-                          name="region"
-                          id="region"
-                          autoComplete="address-level1"
-                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                      </div>
-                      <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                        <label
-                          htmlFor="postal-code"
-                          className="block text-md font-medium text-gray-700">
-                          ZIP / Postal code
-                        </label>
-                        <input
-                          ref={postalCode}
-                          type="text"
-                          name="postal-code"
-                          id="postal-code"
-                          autoComplete="postal-code"
-                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                      </div>
+              <div className="shadow overflow-hidden sm:rounded-md">
+                <div className="px-4 py-5 bg-slate-200 sm:p-6">
+                  <h1 className="font-bold text-xl">Shipping Information</h1>
+                  <div className="grid grid-cols-6 gap-6">
+                    <div className="col-span-6 sm:col-span-3">
+                      <label
+                        htmlFor="first-name"
+                        className="block text-md font-medium text-gray-700">
+                        First name
+                      </label>
+                      <input
+                        ref={firstName}
+                        type="text"
+                        name="first-name"
+                        id="first-name"
+                        autoComplete="given-name"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <label
+                        htmlFor="last-name"
+                        className="block text-md font-medium text-gray-700">
+                        Last name
+                      </label>
+                      <input
+                        ref={lastName}
+                        type="text"
+                        name="last-name"
+                        id="last-name"
+                        autoComplete="family-name"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+                    <div className="col-span-6 sm:col-span-4">
+                      <label
+                        htmlFor="email-address"
+                        className="block text-md font-medium text-gray-700">
+                        Email address
+                      </label>
+                      <input
+                        ref={emailAddress}
+                        type="text"
+                        name="email-address"
+                        id="email-address"
+                        autoComplete="email"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <label htmlFor="country" className="block text-md font-medium text-gray-700">
+                        Country
+                      </label>
+                      <select
+                        ref={country}
+                        id="country"
+                        name="country"
+                        autoComplete="country-name"
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option>United States</option>
+                        <option>Canada</option>
+                        <option>Mexico</option>
+                      </select>
+                    </div>
+                    <div className="col-span-6">
+                      <label
+                        htmlFor="street-address"
+                        className="block text-md font-medium text-gray-700">
+                        Street address
+                      </label>
+                      <input
+                        ref={streetAddress}
+                        type="text"
+                        name="street-address"
+                        id="street-address"
+                        autoComplete="street-address"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                      <label htmlFor="city" className="block text-md font-medium text-gray-700">
+                        City
+                      </label>
+                      <input
+                        ref={city}
+                        type="text"
+                        name="city"
+                        id="city"
+                        autoComplete="address-level2"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                      <label htmlFor="region" className="block text-md font-medium text-gray-700">
+                        State / Province
+                      </label>
+                      <input
+                        ref={state}
+                        type="text"
+                        name="region"
+                        id="region"
+                        autoComplete="address-level1"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                      <label
+                        htmlFor="postal-code"
+                        className="block text-md font-medium text-gray-700">
+                        ZIP / Postal code
+                      </label>
+                      <input
+                        ref={postalCode}
+                        type="text"
+                        name="postal-code"
+                        id="postal-code"
+                        autoComplete="postal-code"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
                     </div>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
         <div className="p-5 m-10 w-2/5 bg-slate-200 border rounded-md relative">
           <h1 className="font-bold text-xl">Item Summary</h1>
-          <div className="flex justify-center">
+          <div className="flex-auto justify-center">
             <span className="m-5">{testItem.name}</span>
             <span className="m-5">{testItem.description}</span>
             <span className="m-5">{testItem.price} ETH</span>
@@ -353,7 +345,7 @@ const Checkout: NextPage<itemProps> = () => {
         </div>
       </div>
       <div className="flex justify-center">
-        <div className="p-5 w-1/2 bg-slate-200 border rounded-md">
+        <div className="p-5 bg-slate-200 border rounded-md">
           <h1 className="font-bold text-xl">Payment</h1>
           <div>
             <button
@@ -371,11 +363,13 @@ const Checkout: NextPage<itemProps> = () => {
                   {chainId !== '0x4' ? (
                     <button onClick={changeNetwork}>Switch To Rinkeby</button>
                   ) : ethBalance > testItem.price ? (
-                    <button
-                      onClick={handleConfirmButton}
-                      className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
-                      Confirm Payment
-                    </button>
+                    <div>
+                      <button
+                        onClick={handleConfirmButton}
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
+                        Confirm Payment
+                      </button>
+                    </div>
                   ) : (
                     <p>Insufficient Funds</p>
                   )}
@@ -387,6 +381,7 @@ const Checkout: NextPage<itemProps> = () => {
           </div>
         </div>
       </div>
+      {isLoading ? <div>Loading.... </div> : <div />}
       {error !== null ? (
         <div className="flex justify-center">
           <div className="mt-10 p-3 w-1/2 bg-red-100 border border-red-400 text-red-700 rounded">
