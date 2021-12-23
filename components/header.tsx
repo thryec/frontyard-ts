@@ -1,15 +1,16 @@
 import 'tailwindcss/tailwind.css'
 import Link from 'next/link'
-import Image from 'next/image';
+import Image from 'next/image'
 
 const Header = () => {
-    return (<header className='h-10 bg-lightgrey'>
+  return (
+    <header>
       <div className="logo">
-      <Link href="/">
-        <a className="mr-10">
-          <Image src="/backdoor.png" width={100} height={50}/>
-        </a>
-      </Link>
+        <Link href="/">
+          <a className="mr-10">
+            <img src="/backdoor.png" />
+          </a>
+        </Link>
       </div>
       <nav>
         <Link href="/items">
@@ -25,7 +26,8 @@ const Header = () => {
           <a className="mr-10">Sell</a>
         </Link>
       </nav>
-    </header>)
-};
+    </header>
+  )
+}
 
-export default Header;
+export default Header
