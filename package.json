@@ -8,9 +8,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "ethers": "^5.5.2",
+    "netlify": "^10.0.0",
     "next": "12.0.7",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "web3modal": "^1.9.4"
   },
   "devDependencies": {
     "@types/node": "16.11.12",
@@ -19,7 +22,7 @@
     "eslint": "8.4.1",
     "eslint-config-next": "12.0.7",
     "postcss": "^8.4.5",
-    "tailwindcss": "^3.0.1",
+    "tailwindcss": "^3.0.7",
     "typescript": "4.5.3"
   }
 }

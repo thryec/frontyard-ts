@@ -4,6 +4,8 @@ import type { AppProps } from 'next/app'
 import Layout from '../components/layout'
 import UserContext from "../context/LoginState"
 import { useState } from 'react'
+import Head from 'next/head'
+
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -14,8 +16,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   return (
-    <div>
+
+    <div className='bg-lightgrey'>
       <UserContext.Provider value={userLoginData}>
+        <Head>
+          <title>BACKDOOR | {Component.name}</title>
+        </Head>
         <Layout>
           <Component {...pageProps} />
         </Layout>
