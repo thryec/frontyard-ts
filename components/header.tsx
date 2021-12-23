@@ -1,6 +1,6 @@
-// import '../styles/globals.css'
-// import 'tailwindcss/tailwind.css'
+import 'tailwindcss/tailwind.css'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const Header = () => {
   return (
@@ -13,6 +13,9 @@ const Header = () => {
         </Link>
       </div>
       <nav>
+        <Link href="/items">
+          <a className="mr-10 text-dullred">All Items</a>
+        </Link>
         <Link href="/signup">
           <a className="mr-10">Sign Up</a>
         </Link>
