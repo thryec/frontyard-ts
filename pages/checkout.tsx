@@ -110,6 +110,7 @@ const Checkout: NextPage<itemProps> = () => {
     try {
       const txn = await provider.send('eth_sendTransaction', params)
       const receipt = await provider.waitForTransaction(txn)
+      console.log('txn: ', txn)
       console.log('txn success: ', receipt)
       const txnSuccess = {
         orderStatus: 'Success',
@@ -122,7 +123,7 @@ const Checkout: NextPage<itemProps> = () => {
         },
       })
       const data = await res.json()
-      console.log('txn success: ', data)
+      console.log('database update success: ', data)
       setIsLoading(false)
     } catch (err: any) {
       setError(err.message)
@@ -378,10 +379,14 @@ const Checkout: NextPage<itemProps> = () => {
                 <p>Wallet not connected</p>
               )}
             </div>
+            {isLoading ? (
+              <button className="bg-yellow-300 p-3 rounded-md">Loading.... </button>
+            ) : (
+              <div />
+            )}
           </div>
         </div>
       </div>
-      {isLoading ? <div>Loading.... </div> : <div />}
       {error !== null ? (
         <div className="flex justify-center">
           <div className="mt-10 p-3 w-1/2 bg-red-100 border border-red-400 text-red-700 rounded">
