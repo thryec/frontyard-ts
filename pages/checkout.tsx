@@ -127,7 +127,7 @@ const Checkout: NextPage<itemProps> = () => {
       state: state.current.value,
       postalCode: postalCode.current.value,
     }
-    console.log('shipping info: ', shippingData)
+    // console.log('shipping info: ', shippingData)
     setShippingAddress(shippingData)
     const initialiseTxn = {
       seller: testItem.seller,
@@ -165,20 +165,23 @@ const Checkout: NextPage<itemProps> = () => {
           'Content-Type': 'application/json',
         },
       })
-      console.log('txn success: ', res)
+      const data = await res.json()
+      console.log('txn success: ', data)
     } catch (err) {
       console.log('error executing transaction: ', err)
+      console.log('txnId in catch block: ', txnId)
       const txnFailure = {
         orderStatus: 'Failure',
       }
-      const res = await fetch(`http://localhost:4000/transactions${txnId}`, {
+      const res = await fetch(`http://localhost:4000/transactions/${txnId}`, {
         method: 'PUT',
         body: JSON.stringify(txnFailure),
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      console.log('txn success: ', res)
+      const data = await res.json()
+      console.log('txn failure: ', data)
     }
   }
 
