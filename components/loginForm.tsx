@@ -58,6 +58,7 @@ const LoginForm: React.FC = () => {
             localStorage.setItem('token', decodedResponse.token);
             //setState to login
             userLoginContext.setLoginState(true);
+            SetLoginError(null);
             //redirect user to home page
             router.push('/');
 
