@@ -12,7 +12,13 @@ const LoginForm: React.FC = () => {
         password: string;
     }
 
+    interface ErrorLog {
+        status: number;
+        message: string;
+    }
+
     const [login, setLogin] = useState<LoginDetails>({ email: "", password: "" });
+    const [loginError, SetLoginError] = useState<ErrorLog | null>(null);
 
     const handleEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
         setLogin({
@@ -29,28 +35,35 @@ const LoginForm: React.FC = () => {
     }
 
     const handleSubmit = async () => {
+        try {
+            //Login Post request
+            const response = await fetch('http://localhost:3001/sessions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(login),
+            });
 
-        //Login Post request
-        const response = await fetch('http://localhost:3001/sessions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(login),
-        });
+            const decodedResponse = await response.json();
 
-        console.log(response);
-        console.log("Login Request Response Status: ", response.status);
+            if (decodedResponse.status === 401) {
+                SetLoginError({
+                    status: decodedResponse.status,
+                    message: decodedResponse.message
+                });
+                throw new Error("Invalid Email / Password, please try again");
+            }
+            //Assign JWT to local storage once login successful
+            localStorage.setItem('token', decodedResponse.token);
+            //setState to login
+            userLoginContext.setLoginState(true);
+            //redirect user to home page
+            router.push('/');
 
-        //Assign JWT to local storage once login successful
-        const decodedResponse = await response.json();
-        localStorage.setItem('token', decodedResponse.token);
-
-        //setState to login
-        userLoginContext.setLoginState(true);
-
-        //redirect user to home page
-        router.push('/');
+        } catch (err: any) {
+            console.log(err.message);
+        }
 
 
     }
@@ -62,6 +75,7 @@ const LoginForm: React.FC = () => {
         <label>Password:</label>
         <input value={login.password} type="password" onChange={handlePasswordChange} />
         <input type="submit" onClick={handleSubmit} />
+        {loginError ? `Error: ${loginError.status} ${loginError.message}` : ""}
     </>)
 };
 
