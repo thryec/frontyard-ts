@@ -189,6 +189,10 @@ const Checkout: NextPage<itemProps> = () => {
   //   router.push('/payment')
   // }
 
+  const shortenAddress = (str: any) => {
+    return str.substring(0, 4) + '...' + str.substring(str.length - 2)
+  }
+
   useEffect(() => {
     window.ethereum.on('accountsChanged', () => {
       setWalletAddress(window.ethereum.selectedAddress)
@@ -362,7 +366,7 @@ const Checkout: NextPage<itemProps> = () => {
             <div>
               {isConnected === 'Connected' ? (
                 <div>
-                  <p>Wallet {walletAddress} is connected</p>
+                  <p>Wallet {shortenAddress(walletAddress)} is connected</p>
                   <p>Available ETH Balance: {ethBalance} ETH </p>
                   {chainId !== '0x4' ? (
                     <button onClick={changeNetwork}>Switch To Rinkeby</button>

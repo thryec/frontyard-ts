@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   const [loaded, setIsLoaded] = useState(false)
 
   const loadData = async () => {
-    const res = await fetch('http://localhost:3001/items')
+    const res = await fetch('http://localhost:4000/items')
     if (res.status !== 200) {
       console.error('Failed to fetch items')
       return
