@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { useRouter } from 'next/router';
 
+//To validate Email
+function validateEmail(email: any) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
 const Signup: React.FC = () => {
 
     const router = useRouter();
@@ -14,12 +20,18 @@ const Signup: React.FC = () => {
     }
 
     const [newAccount, setNewAccount] = useState<LoginDetails>({ email: "", password: "", username: "", walletAddress: "", type: "user" });
+    const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null);
 
     const handleEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
         setNewAccount({
             ...newAccount,
             email: event.currentTarget.value
         });
+    }
+
+    const onEmailBlur = (): void => {
+        const isValid = validateEmail(newAccount.email);
+        setIsEmailValid(isValid);
     }
 
     const handlePasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -68,7 +80,8 @@ const Signup: React.FC = () => {
                 <input id="username" className="customInput" value={newAccount.username} type="text" onChange={handleUserNameChange} />
             </div>
             <label htmlFor="email" className="customLabel">Please key in a email:</label>
-            <input id="email" className="customInput" value={newAccount.email} onChange={handleEmailChange} />
+            <input id="email" className="customInput" value={newAccount.email} onChange={handleEmailChange} onBlur={onEmailBlur} />
+            {isEmailValid == false ? <span>Invalid Email Format</span> : ""}
             <label className="customLabel" >Please key in a password:</label>
             <input className="customInput" value={newAccount.password} type="password" onChange={handlePasswordChange} />
             <label className="customLabel">Please key in your wallet address</label>
