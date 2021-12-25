@@ -81,10 +81,15 @@ const Checkout: NextPage<itemProps> = () => {
       const rounded = Math.round(eth * 10) / 10
       setEthBalance(rounded)
       setWalletAddress(myAddress)
-      setIsConnected('Connected')
+      setIsConnected('Disconnect')
     } else {
       alert('Please Install Metamask!')
     }
+  }
+
+  const disconnectWallet = async () => {
+    console.log('disconnect wallet pressed')
+    setIsConnected('Connect Wallet')
   }
 
   const changeNetwork = async () => {
@@ -353,7 +358,7 @@ const Checkout: NextPage<itemProps> = () => {
         </div>
       </div>
       <div className="flex justify-center">
-        <div className="p-5 bg-slate-200 border rounded-md">
+        <div className="p-5 bg-slate-200 border rounded-md w-1/3">
           <h1 className="font-bold text-xl">Payment</h1>
           <div>
             <button
@@ -361,10 +366,9 @@ const Checkout: NextPage<itemProps> = () => {
               className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
               {isConnected}
             </button>
-            {/* <button>Disconnect</button> */}
-            {/* <button onClick={handlePaymentSuccess}>Go to Result Page</button> */}
             <div>
-              {isConnected === 'Connected' ? (
+              <button onClick={disconnectWallet}>Discconnect Wallet</button>
+              {isConnected === 'Disconnect' ? (
                 <div>
                   <p>Wallet {shortenAddress(walletAddress)} is connected</p>
                   <p>Available ETH Balance: {ethBalance} ETH </p>
