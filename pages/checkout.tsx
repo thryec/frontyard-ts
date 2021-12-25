@@ -70,19 +70,6 @@ const Checkout: NextPage<itemProps> = () => {
 
   console.log('user login state: ', userLoginState)
 
-  if (userLoginState.isLoggedIn === false) {
-    return (
-      <div className="flex justify-center">
-        <div className="p-5 bg-slate-200 border rounded-md w-1/3">
-          <p>Please Log In to proceed</p>
-          <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
-            <Link href="/login">Go to Login </Link>
-          </button>
-        </div>
-      </div>
-    )
-  }
-
   const initialiseWallet = async () => {
     if (isConnected === 'Disconnect') {
       setIsConnected('Connect Wallet')
@@ -218,6 +205,19 @@ const Checkout: NextPage<itemProps> = () => {
     })
     // add cleanup function here
   }, [])
+
+  if (userLoginState.isLoggedIn === false) {
+    return (
+      <div className="flex justify-center">
+        <div className="p-5 bg-slate-200 border rounded-md w-1/3">
+          <p>Please Log In to proceed</p>
+          <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
+            <Link href="/login">Go to Login </Link>
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div>
