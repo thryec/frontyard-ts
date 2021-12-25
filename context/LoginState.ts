@@ -7,7 +7,7 @@ interface UserLoginStatus {
 
 const userDefaultValue = {
     isLoggedIn: false,
-    setLoginState: (state: boolean) => "uwu"
+    setLoginState: (state: boolean) => false
 }
 
 const UserContext = createContext<UserLoginStatus>(userDefaultValue);
