@@ -1,8 +1,10 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
+import UserContext from '../context/LoginState'
+import Link from 'next/link'
 
 interface itemProps {
   name: string
@@ -63,8 +65,23 @@ const Checkout: NextPage<itemProps> = () => {
   const city = useRef<any>()
   const state = useRef<any>()
   const postalCode = useRef<any>()
-
   const router = useRouter()
+  const userLoginState = useContext(UserContext)
+
+  console.log('user login state: ', userLoginState)
+
+  if (userLoginState.isLoggedIn === false) {
+    return (
+      <div className="flex justify-center">
+        <div className="p-5 bg-slate-200 border rounded-md w-1/3">
+          <p>Please Log In to proceed</p>
+          <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
+            <Link href="/login">Go to Login </Link>
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   const initialiseWallet = async () => {
     if (isConnected === 'Disconnect') {
@@ -187,10 +204,6 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }
 
-  // const handlePaymentSuccess = async () => {
-  //   router.push('/payment')
-  // }
-
   const shortenAddress = (str: any) => {
     return str.substring(0, 4) + '...' + str.substring(str.length - 2)
   }
@@ -205,10 +218,6 @@ const Checkout: NextPage<itemProps> = () => {
     })
     // add cleanup function here
   }, [])
-
-  useEffect(() => {
-    initialiseWallet()
-  }, [walletAddress])
 
   return (
     <div>
