@@ -67,7 +67,9 @@ const Checkout: NextPage<itemProps> = () => {
   const router = useRouter()
 
   const initialiseWallet = async () => {
-    if (typeof window.ethereum !== 'undefined') {
+    if (isConnected === 'Disconnect') {
+      setIsConnected('Connect Wallet')
+    } else if (typeof window.ethereum !== 'undefined') {
       console.log('MetaMask is present')
       setChainId(window.ethereum.chainId)
       const web3Modal = new Web3Modal()
@@ -85,11 +87,6 @@ const Checkout: NextPage<itemProps> = () => {
     } else {
       alert('Please Install Metamask!')
     }
-  }
-
-  const disconnectWallet = async () => {
-    console.log('disconnect wallet pressed')
-    setIsConnected('Connect Wallet')
   }
 
   const changeNetwork = async () => {
@@ -367,7 +364,6 @@ const Checkout: NextPage<itemProps> = () => {
               {isConnected}
             </button>
             <div>
-              <button onClick={disconnectWallet}>Discconnect Wallet</button>
               {isConnected === 'Disconnect' ? (
                 <div>
                   <p>Wallet {shortenAddress(walletAddress)} is connected</p>
