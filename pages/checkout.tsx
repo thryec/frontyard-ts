@@ -1,8 +1,10 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
+import UserContext from '../context/LoginState'
+import Link from 'next/link'
 
 interface itemProps {
   name: string
@@ -63,11 +65,15 @@ const Checkout: NextPage<itemProps> = () => {
   const city = useRef<any>()
   const state = useRef<any>()
   const postalCode = useRef<any>()
-
   const router = useRouter()
+  const userLoginState = useContext(UserContext)
+
+  console.log('user login state: ', userLoginState)
 
   const initialiseWallet = async () => {
-    if (typeof window.ethereum !== 'undefined') {
+    if (isConnected === 'Disconnect') {
+      setIsConnected('Connect Wallet')
+    } else if (typeof window.ethereum !== 'undefined') {
       console.log('MetaMask is present')
       setChainId(window.ethereum.chainId)
       const web3Modal = new Web3Modal()
@@ -81,7 +87,7 @@ const Checkout: NextPage<itemProps> = () => {
       const rounded = Math.round(eth * 10) / 10
       setEthBalance(rounded)
       setWalletAddress(myAddress)
-      setIsConnected('Connected')
+      setIsConnected('Disconnect')
     } else {
       alert('Please Install Metamask!')
     }
@@ -185,9 +191,9 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }
 
-  // const handlePaymentSuccess = async () => {
-  //   router.push('/payment')
-  // }
+  const shortenAddress = (str: any) => {
+    return str.substring(0, 4) + '...' + str.substring(str.length - 2)
+  }
 
   useEffect(() => {
     window.ethereum.on('accountsChanged', () => {
@@ -200,9 +206,18 @@ const Checkout: NextPage<itemProps> = () => {
     // add cleanup function here
   }, [])
 
-  useEffect(() => {
-    initialiseWallet()
-  }, [walletAddress])
+  if (userLoginState.isLoggedIn === false) {
+    return (
+      <div className="flex justify-center">
+        <div className="p-5 bg-slate-200 border rounded-md w-1/3">
+          <p>Please Log In to proceed</p>
+          <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
+            <Link href="/login">Go to Login </Link>
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -349,7 +364,7 @@ const Checkout: NextPage<itemProps> = () => {
         </div>
       </div>
       <div className="flex justify-center">
-        <div className="p-5 bg-slate-200 border rounded-md">
+        <div className="p-5 bg-slate-200 border rounded-md w-1/3">
           <h1 className="font-bold text-xl">Payment</h1>
           <div>
             <button
@@ -357,12 +372,10 @@ const Checkout: NextPage<itemProps> = () => {
               className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
               {isConnected}
             </button>
-            {/* <button>Disconnect</button> */}
-            {/* <button onClick={handlePaymentSuccess}>Go to Result Page</button> */}
             <div>
-              {isConnected === 'Connected' ? (
+              {isConnected === 'Disconnect' ? (
                 <div>
-                  <p>Wallet {walletAddress} is connected</p>
+                  <p>Wallet {shortenAddress(walletAddress)} is connected</p>
                   <p>Available ETH Balance: {ethBalance} ETH </p>
                   {chainId !== '0x4' ? (
                     <button onClick={changeNetwork}>Switch To Rinkeby</button>
