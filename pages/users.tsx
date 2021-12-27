@@ -23,6 +23,7 @@ const Users: React.FC = () => {
                 throw new Error(errorMessage);
             } else {
                 const users = await response.json();
+                console.log(users);
                 setUserList(users);
             }
 
@@ -47,16 +48,18 @@ const Users: React.FC = () => {
 
         fetchUsers();
     }, []);
+
+    const renderUsers = userList.map((user: any) => {
+        return (<p>{`${user.username}`}</p>);
+    })
+
     return (
         <div className="flex flex-col justify-center content-center">
             <h1>User Management</h1>
-            <span>
-                {
-                    userList.length !== 0 ? userList.map((user: any) => {
-                        <h1>{user}</h1>
-                    }) : errorMessage || "Error has occured while loading user list, please try again"
-                }
-            </span>
+            <p> Test </p>
+            {
+                userList.length !== 0 ? renderUsers : errorMessage || "Loading User List, please wait"
+            }
         </div>
     );
 }

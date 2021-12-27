@@ -3,7 +3,7 @@ import 'tailwindcss/tailwind.css'
 import type { AppProps } from 'next/app'
 import Layout from '../components/layout'
 import UserContext from "../context/LoginState"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
 
 
