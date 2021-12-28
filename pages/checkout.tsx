@@ -206,146 +206,139 @@ const Checkout: NextPage<itemProps> = () => {
     // add cleanup function here
   }, [])
 
-  if (userLoginState.isLoggedIn === false) {
-    return (
-      <div className="flex justify-center">
-        <div className="p-5 bg-slate-200 border rounded-md w-1/3">
-          <p>Please Log In to proceed</p>
-          <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
-            <Link href="/login">Go to Login </Link>
-          </button>
-        </div>
-      </div>
-    )
-  }
+  // if (userLoginState.isLoggedIn === false) {
+  //   return (
+  //     <div className="flex justify-center">
+  //       <div className="p-5 bg-slate-200 border rounded-md w-1/3">
+  //         <p>Please Log In to proceed</p>
+  //         <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
+  //           <Link href="/login">Go to Login </Link>
+  //         </button>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   return (
     <div>
-      <div className="ml-5 mr-5 flex justify-center">
-        <div className="mt-10">
-          <div className="mb-10">
-            <div className="mt-5 md:mt-0 md:col-span-2">
-              <div className="shadow overflow-hidden sm:rounded-md">
-                <div className="px-4 py-5 bg-slate-200 sm:p-6">
-                  <h1 className="font-bold text-xl">Shipping Information</h1>
-                  <div className="grid grid-cols-6 gap-6">
-                    <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="first-name"
-                        className="block text-md font-medium text-gray-700">
-                        First name
-                      </label>
-                      <input
-                        ref={firstName}
-                        type="text"
-                        name="first-name"
-                        id="first-name"
-                        autoComplete="given-name"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="last-name"
-                        className="block text-md font-medium text-gray-700">
-                        Last name
-                      </label>
-                      <input
-                        ref={lastName}
-                        type="text"
-                        name="last-name"
-                        id="last-name"
-                        autoComplete="family-name"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="col-span-6 sm:col-span-4">
-                      <label
-                        htmlFor="email-address"
-                        className="block text-md font-medium text-gray-700">
-                        Email address
-                      </label>
-                      <input
-                        ref={emailAddress}
-                        type="text"
-                        name="email-address"
-                        id="email-address"
-                        autoComplete="email"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="country" className="block text-md font-medium text-gray-700">
-                        Country
-                      </label>
-                      <select
-                        ref={country}
-                        id="country"
-                        name="country"
-                        autoComplete="country-name"
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option>United States</option>
-                        <option>Canada</option>
-                        <option>Mexico</option>
-                      </select>
-                    </div>
-                    <div className="col-span-6">
-                      <label
-                        htmlFor="street-address"
-                        className="block text-md font-medium text-gray-700">
-                        Street address
-                      </label>
-                      <input
-                        ref={streetAddress}
-                        type="text"
-                        name="street-address"
-                        id="street-address"
-                        autoComplete="street-address"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                      <label htmlFor="city" className="block text-md font-medium text-gray-700">
-                        City
-                      </label>
-                      <input
-                        ref={city}
-                        type="text"
-                        name="city"
-                        id="city"
-                        autoComplete="address-level2"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <label htmlFor="region" className="block text-md font-medium text-gray-700">
-                        State / Province
-                      </label>
-                      <input
-                        ref={state}
-                        type="text"
-                        name="region"
-                        id="region"
-                        autoComplete="address-level1"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <label
-                        htmlFor="postal-code"
-                        className="block text-md font-medium text-gray-700">
-                        ZIP / Postal code
-                      </label>
-                      <input
-                        ref={postalCode}
-                        type="text"
-                        name="postal-code"
-                        id="postal-code"
-                        autoComplete="postal-code"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
+      <div className="m-5 flex justify-center">
+        <h1 className="text-2xl underline underline-offset-8">Checkout</h1>
+      </div>
+      <div className="flex justify-center">
+        <div className="md:mt-0 md:col-span-2">
+          <div className="shadow overflow-hidden sm:rounded-md">
+            <div className="p-5 bg-slate-200 sm:p-6">
+              <h1 className="font-bold text-xl">Shipping Information</h1>
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-6 sm:col-span-3">
+                  <label htmlFor="first-name" className="block text-md font-medium text-gray-700">
+                    First name
+                  </label>
+                  <input
+                    ref={firstName}
+                    type="text"
+                    name="first-name"
+                    id="first-name"
+                    autoComplete="given-name"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label htmlFor="last-name" className="block text-md font-medium text-gray-700">
+                    Last name
+                  </label>
+                  <input
+                    ref={lastName}
+                    type="text"
+                    name="last-name"
+                    id="last-name"
+                    autoComplete="family-name"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-4">
+                  <label
+                    htmlFor="email-address"
+                    className="block text-md font-medium text-gray-700">
+                    Email address
+                  </label>
+                  <input
+                    ref={emailAddress}
+                    type="text"
+                    name="email-address"
+                    id="email-address"
+                    autoComplete="email"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label htmlFor="country" className="block text-md font-medium text-gray-700">
+                    Country
+                  </label>
+                  <select
+                    ref={country}
+                    id="country"
+                    name="country"
+                    autoComplete="country-name"
+                    className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option>United States</option>
+                    <option>Canada</option>
+                    <option>Mexico</option>
+                  </select>
+                </div>
+                <div className="col-span-6">
+                  <label
+                    htmlFor="street-address"
+                    className="block text-md font-medium text-gray-700">
+                    Street address
+                  </label>
+                  <input
+                    ref={streetAddress}
+                    type="text"
+                    name="street-address"
+                    id="street-address"
+                    autoComplete="street-address"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                  <label htmlFor="city" className="block text-md font-medium text-gray-700">
+                    City
+                  </label>
+                  <input
+                    ref={city}
+                    type="text"
+                    name="city"
+                    id="city"
+                    autoComplete="address-level2"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label htmlFor="region" className="block text-md font-medium text-gray-700">
+                    State / Province
+                  </label>
+                  <input
+                    ref={state}
+                    type="text"
+                    name="region"
+                    id="region"
+                    autoComplete="address-level1"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label htmlFor="postal-code" className="block text-md font-medium text-gray-700">
+                    ZIP / Postal code
+                  </label>
+                  <input
+                    ref={postalCode}
+                    type="text"
+                    name="postal-code"
+                    id="postal-code"
+                    autoComplete="postal-code"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
                 </div>
               </div>
             </div>
@@ -353,10 +346,21 @@ const Checkout: NextPage<itemProps> = () => {
         </div>
         <div className="p-5 m-10 w-2/5 bg-slate-200 border rounded-md relative">
           <h1 className="font-bold text-xl">Item Summary</h1>
-          <div className="flex-auto justify-center">
-            <span className="m-5">{testItem.name}</span>
-            <span className="m-5">{testItem.description}</span>
-            <span className="m-5">{testItem.price} ETH</span>
+          <div className="table w-full">
+            <div className="table-header-group">
+              <div className="table-row">
+                <div className="table-cell text-left underline underline-offset-4">Name</div>
+                <div className="table-cell text-left underline underline-offset-4">Description</div>
+                <div className="table-cell text-left underline underline-offset-4">Price</div>
+              </div>
+            </div>
+            <div className="table-row-group">
+              <div className="table-row m-5">
+                <div className="table-cell m-5">{testItem.name}</div>
+                <div className="table-cell m-5">{testItem.description}</div>
+                <div className="table-cell m-5">{testItem.price} ETH</div>
+              </div>
+            </div>
           </div>
           <div className="absolute bottom-5 font-bold text-xl">
             Total Payment: {testItem.price} ETH
