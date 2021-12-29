@@ -1,6 +1,8 @@
 import type { NextPage } from 'next'
+import { useState } from 'react'
 
 const userAddress = '0xe82d5C6B394D9C4dE32F0913e6cE82Dd8dc39226'
+const itemId = '61b94c4b264e50a1c4c0232a'
 
 const Transactions: NextPage = () => {
   const fetchPurchases = async () => {
@@ -23,6 +25,21 @@ const Transactions: NextPage = () => {
     console.log('sales button')
     try {
       const res = await fetch(`http://localhost:4000/transactions/sales?user=${userAddress}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await res.json()
+      console.log('sent database txn: ', data)
+    } catch (err) {
+      console.log('error fetching transactions: ', err)
+    }
+  }
+
+  const fetchItemDetails = async () => {
+    try {
+      const res = await fetch(`http://localhost:4000/items/${itemId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
