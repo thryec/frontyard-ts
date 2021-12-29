@@ -45,18 +45,19 @@ const Transactions: NextPage = () => {
 
   const itemCard = (
     <div>
-      <div className="flex">
+      <div className="flex border-b-2 p-5">
+        <span className="mr-5">1.</span>
         <Image
           src="https://m.media-amazon.com/images/I/71huqcOKa+L._AC_SL1500_.jpg"
           alt="wand"
           width="100px"
           height="100px"
         />
-        <div>
-          <p>Item Name</p>
-          <p>Item Description</p>
-          <p>Purchase Date</p>
-          <p>Purchase Price</p>
+        <div className="ml-5">
+          <p>Item Name: </p>
+          <p>Item Description: </p>
+          <p>Purchase Date: </p>
+          <p>Purchase Price: </p>
         </div>
       </div>
     </div>
@@ -102,6 +103,7 @@ const Transactions: NextPage = () => {
             className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
             Fetch Sales
           </button>
+          <div>{itemCard}</div>
         </div>
       </div>
     </div>
