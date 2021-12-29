@@ -26,7 +26,13 @@ const Header = () => {
           <a className="mr-10 text-dullred">All Items</a>
         </Link>
         {
-          userLoginState.isLoggedIn ? <Link href="/"><a onClick={handleLogoutClick} className="mr-10">Logout</a></Link>
+          userLoginState.isLoggedIn ?
+            <>
+              <Link href="/"><a onClick={handleLogoutClick} className="mr-10">Logout</a></Link>
+              <Link href="/users">
+                <a className="mr-10">users</a>
+              </Link>
+            </>
             :
             <> <Link href="/signup">
               <a className="mr-10">Sign Up</a>
@@ -36,7 +42,9 @@ const Header = () => {
               </Link>
               <Link href="/listItem">
                 <a className="mr-10">Sell</a>
-              </Link> </>
+              </Link>
+            </>
+
         }
       </nav>
     </header>
