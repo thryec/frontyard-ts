@@ -15,6 +15,7 @@
 .customLabel {
   @apply text-sm font-medium text-gray-900 block mb-2
 }
+
 /* html,
 body {
   padding: 0;

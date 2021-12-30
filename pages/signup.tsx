@@ -127,13 +127,11 @@ const Signup: React.FC = () => {
     }
 
     return (<>
-        <h1>Sign Up For New Account</h1>
-        <div className="flex flex-col text-center">
-            <div className="mb-6">
-                <label htmlFor="username" className="customLabel">Please key in a user name:</label>
-                <input id="username" className="customInput" ref={usernameInputRef} value={newAccount.username} type="text" onChange={handleUserNameChange} onBlur={onUserNameBlur} />
-                {isUserNameEmpty ? <span>Please Fill in UserName</span> : ""}
-            </div>
+        <h1 className="text-center font-bold m-5">Sign Up For New Account</h1>
+        <div className="flex flex-col text-center m-10">
+            <label htmlFor="username" className="customLabel">Please key in a user name:</label>
+            <input id="username" className="customInput" ref={usernameInputRef} value={newAccount.username} type="text" onChange={handleUserNameChange} onBlur={onUserNameBlur} />
+            {isUserNameEmpty ? <span>Please Fill in UserName</span> : ""}
             <label htmlFor="email" className="customLabel">Please key in a email:</label>
             <input id="email" className="customInput" ref={emailInputRef} value={newAccount.email} onChange={handleEmailChange} onBlur={onEmailBlur} />
             {isEmailValid == false ? <span>Invalid Email Format</span> : ""}
@@ -144,15 +142,16 @@ const Signup: React.FC = () => {
             <label className="customLabel">Please key in your wallet address</label>
             <input className="customInput" ref={walletAddressInputRef} value={newAccount.walletAddress} type="text" onChange={handleWalletAddressChange} onBlur={onWalletAddressBlur} />
             {isWalletAddressEmpty ? <span>Please Fill in Wallet Address</span> : ""}
+
+            <button
+                disabled={!isAllValid}
+                type="submit"
+                onClick={handleSubmit}
+                className="text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Confirm
+            </button>
+
         </div>
-        <button
-            disabled={!isAllValid}
-            type="submit"
-            onClick={handleSubmit}
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            Confirm
-        </button>
-        <input className="customBtn" type="submit" onClick={handleSubmit} />
     </>)
 };
 
