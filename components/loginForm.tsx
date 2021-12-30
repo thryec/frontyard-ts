@@ -66,7 +66,6 @@ const LoginForm: React.FC = () => {
       try {
         const showSuccessModal = await Swal.fire("Login Success");
         console.log(showSuccessModal);
-
         router.push('/');
       } catch (error: any) {
         console.log(error.message);

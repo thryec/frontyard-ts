@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useRouter } from 'next/router';
+import Swal from "sweetalert2";
 
 //To validate Email
 function validateEmail(email: any) {
@@ -41,8 +42,10 @@ const Signup: React.FC = () => {
     }
 
     const allValidCheck = (): void => {
-        if (emailInputRef && passwordInputRef && usernameInputRef && walletAddressInputRef) {
-            setAllValid(true);
+        if (emailInputRef.current.value && passwordInputRef.current.value && usernameInputRef.current.value && walletAddressInputRef.current.value) {
+            if (isEmailValid) {
+                setAllValid(true);
+            }
         } else {
             setAllValid(false);
         }
@@ -131,23 +134,23 @@ const Signup: React.FC = () => {
         <div className="flex flex-col text-center m-10">
             <label htmlFor="username" className="customLabel">Please key in a user name:</label>
             <input id="username" className="customInput" ref={usernameInputRef} value={newAccount.username} type="text" onChange={handleUserNameChange} onBlur={onUserNameBlur} />
-            {isUserNameEmpty ? <span>Please Fill in UserName</span> : ""}
+            {isUserNameEmpty ? <span className="font-bold text-red-600"> Please Fill in UserName</span> : ""}
             <label htmlFor="email" className="customLabel">Please key in a email:</label>
             <input id="email" className="customInput" ref={emailInputRef} value={newAccount.email} onChange={handleEmailChange} onBlur={onEmailBlur} />
-            {isEmailValid == false ? <span>Invalid Email Format</span> : ""}
-            {isEmailEmpty ? <span>Please Fill in Email</span> : ""}
+            {isEmailValid == false ? <span className="font-bold text-red-600" >Invalid Email Format</span> : ""}
+            {isEmailEmpty ? <span className="font-bold text-red-600" >Please Fill in Email</span> : ""}
             <label className="customLabel" >Please key in a password:</label>
             <input className="customInput" ref={passwordInputRef} value={newAccount.password} type="password" onChange={handlePasswordChange} onBlur={onPasswordBlur} />
-            {isPasswordEmpty ? <span>Please Fill in Password</span> : ""}
+            {isPasswordEmpty ? <span className="font-bold text-red-600" >Please Fill in Password</span> : ""}
             <label className="customLabel">Please key in your wallet address</label>
             <input className="customInput" ref={walletAddressInputRef} value={newAccount.walletAddress} type="text" onChange={handleWalletAddressChange} onBlur={onWalletAddressBlur} />
-            {isWalletAddressEmpty ? <span>Please Fill in Wallet Address</span> : ""}
+            {isWalletAddressEmpty ? <span className="font-bold text-red-600" >Please Fill in Wallet Address</span> : ""}
 
             <button
                 disabled={!isAllValid}
                 type="submit"
                 onClick={handleSubmit}
-                className="text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                className="text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-500">
                 Confirm
             </button>
 
