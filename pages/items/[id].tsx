@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router'
+
 // export const getStaticPaths = async () => {
 //     const res = await fetch('http://localhost:4000/items');
 //     const data = await res.json();
@@ -25,7 +27,10 @@
 // }
 
 const Details = () => {
-    return <h1>Details card</h1>
-};
+  const router = useRouter()
+  const { id } = router.query
 
-export default Details;
+  return <div>Details card</div>
+}
+
+export default Details
