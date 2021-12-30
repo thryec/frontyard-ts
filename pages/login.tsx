@@ -9,8 +9,11 @@ const Login: React.FC = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if (userContext.isLoggedIn) {
-            console.log("Inside Login tsx: checking for user login state");
+        console.log("UseEffect in Login.tsx is triggered, checking for local Storage token");
+        let token = localStorage.getItem('token');
+        if (token) {
+            console.log("Login.tsx: User is logged in, rerouting user away from login page")
+            userContext.setLoginState(true);
             router.push('/');
         }
     }, []);

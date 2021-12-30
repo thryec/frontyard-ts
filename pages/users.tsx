@@ -70,11 +70,23 @@ const Users: React.FC = () => {
     }
 
     useEffect(() => {
-        if (!userDetails.isLoggedIn) {
+        console.log("UseEffect in user admin page is triggered, checking for local Storage token");
+        let token = localStorage.getItem('token');
+        if (token) {
+            userDetails.setLoginState(true);
+        } else {
+            console.log("User has no token");
             console.log("User is Logged in: " + userDetails.isLoggedIn);
             console.log("rerouting user to login page");
             router.push('/login');
         }
+
+        //keeping this first, will delete in final build
+        // if (!userDetails.isLoggedIn) {
+        //     console.log("User is Logged in: " + userDetails.isLoggedIn);
+        //     console.log("rerouting user to login page");
+        //     router.push('/login');
+        // }
 
         fetchUsers();
 
