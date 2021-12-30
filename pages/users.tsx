@@ -85,12 +85,12 @@ const Users: React.FC = () => {
         return (
             <tbody>
                 <tr>
-                    <td ref={ref => { userRef.current[index] = user._id }} >{index + 1}</td>
-                    <td>{user.username}</td>
-                    <td>{user.email}</td>
-                    <td>{user.walletAddress}</td>
+                    <td className='text-center' ref={ref => { userRef.current[index] = user._id }} >{index + 1}</td>
+                    <td className='text-center'>{user.username}</td>
+                    <td className='text-center'>{user.email}</td>
+                    <td className='text-center'>{user.walletAddress}</td>
                     <td>
-                        <button onClick={handleDeleteButton.bind(null, index)}>
+                        <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2" onClick={handleDeleteButton.bind(null, index)}>
                             Delete
                         </button>
                     </td>
