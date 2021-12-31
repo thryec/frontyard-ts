@@ -37,6 +37,8 @@ const testItem: itemProps = {
 }
 
 const Checkout: NextPage<itemProps> = () => {
+  const [itemId, setItemId] = useState<String>()
+  const [currentItem, setCurrentItem] = useState<itemProps>()
   const [walletAddress, setWalletAddress] = useState<string | Promise<string>>()
   const [isConnected, setIsConnected] = useState<String>('Connect Wallet')
   const [ethBalance, setEthBalance] = useState<Number>(0)
@@ -70,6 +72,22 @@ const Checkout: NextPage<itemProps> = () => {
   const { id } = router.query
   console.log('item id: ', id)
   console.log('user login state: ', userLoginState)
+
+  const fetchItemDetails = async () => {
+    try {
+      const res = await fetch(`http://localhost:4000/items/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await res.json()
+      setCurrentItem(data)
+      console.log('sent database txn: ', data)
+    } catch (err) {
+      console.log('error fetching transactions: ', err)
+    }
+  }
 
   const initialiseWallet = async () => {
     if (isConnected === 'Disconnect') {
@@ -195,6 +213,12 @@ const Checkout: NextPage<itemProps> = () => {
   const shortenAddress = (str: any) => {
     return str.substring(0, 4) + '...' + str.substring(str.length - 2)
   }
+
+  useEffect(() => {
+    if (id !== undefined) {
+      fetchItemDetails()
+    }
+  }, [id])
 
   useEffect(() => {
     window.ethereum.on('accountsChanged', () => {

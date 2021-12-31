@@ -63,9 +63,10 @@ const Details = () => {
   }
 
   useEffect(() => {
-    console.log('loading useeffect')
-    // fetchItemDetails()
-  }, [currentItem])
+    if (id !== undefined) {
+      fetchItemDetails()
+    }
+  }, [id])
 
   return (
     <div>
@@ -76,10 +77,7 @@ const Details = () => {
           Details card
         </div>
       ) : (
-        <div>
-          yyy
-          <button onClick={fetchItemDetails}>Load Item</button>
-        </div>
+        <div>Loading....</div>
       )}
     </div>
   )
