@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { doesNotMatch } from 'assert'
 
 // export const getStaticPaths = async () => {
 //     const res = await fetch('http://localhost:4000/items');

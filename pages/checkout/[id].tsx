@@ -67,6 +67,8 @@ const Checkout: NextPage<itemProps> = () => {
   const router = useRouter()
   const userLoginState = useContext(UserContext)
 
+  const { id } = router.query
+  console.log('item id: ', id)
   console.log('user login state: ', userLoginState)
 
   const initialiseWallet = async () => {
