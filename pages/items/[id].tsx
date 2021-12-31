@@ -56,7 +56,7 @@ const Details = () => {
       const data = await res.json()
       setCurrentItem(data)
       setIsLoaded(true)
-      console.log('sent database txn: ', data)
+      console.log('item data: ', data)
     } catch (err) {
       console.log('error fetching transactions: ', err)
     }
@@ -72,9 +72,12 @@ const Details = () => {
     <div>
       {isLoaded ? (
         <div>
-          <Link href={'/checkout/' + currentItem._id}>Buy</Link>
-          {/* <Link href="/checkout">Buy</Link> */}
           Details card
+          <Link href={'/checkout/' + currentItem._id}>
+            <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
+              Buy
+            </button>
+          </Link>
         </div>
       ) : (
         <div>Loading....</div>
