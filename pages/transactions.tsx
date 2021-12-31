@@ -96,7 +96,10 @@ const Transactions: NextPage = () => {
 
   const renderPurchases = () => {
     if (testItem !== undefined && purchaseData !== undefined) {
-      console.log('purchase data: ', purchaseData[0].purchaseDate)
+      const date = purchaseData[0].purchaseDate
+      /* tslint:disable-next-line */
+      const dateFormatted: any = date.slice(0, 10)
+      console.log('purchase date: ', dateFormatted)
       return (
         <div>
           <div className="flex border-b-2 p-5">
@@ -111,7 +114,7 @@ const Transactions: NextPage = () => {
               <p>{testItem.name}</p>
               <p>{testItem.description} </p>
               <p>{testItem.price} ETH </p>
-              <p>Purchase Date: {purchaseData[0].purchaseDate} </p>
+              <p>Purchase Date: {dateFormatted} </p>
             </div>
           </div>
         </div>
