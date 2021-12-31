@@ -1,4 +1,7 @@
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
+import { doesNotMatch } from 'assert'
 
 // export const getStaticPaths = async () => {
 //     const res = await fetch('http://localhost:4000/items');
@@ -26,11 +29,61 @@ import { useRouter } from 'next/router'
 //     }
 // }
 
+interface itemProps {
+  name: string
+  description: string
+  _id: string
+  image: string
+  price: number
+  quantity: number
+  listingEndDate: Date
+  ListingStartDate: Date
+}
+
 const Details = () => {
+  const [currentItem, setCurrentItem] = useState<any>()
+  const [isLoaded, setIsLoaded] = useState<Boolean>(false)
   const router = useRouter()
   const { id } = router.query
 
-  return <div>Details card</div>
+  const fetchItemDetails = async () => {
+    try {
+      const res = await fetch(`http://localhost:4000/items/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await res.json()
+      setCurrentItem(data)
+      setIsLoaded(true)
+      console.log('sent database txn: ', data)
+    } catch (err) {
+      console.log('error fetching transactions: ', err)
+    }
+  }
+
+  useEffect(() => {
+    console.log('loading useeffect')
+    // fetchItemDetails()
+  }, [currentItem])
+
+  return (
+    <div>
+      {isLoaded ? (
+        <div>
+          <Link href={'/checkout/' + currentItem._id}>Buy</Link>
+          {/* <Link href="/checkout">Buy</Link> */}
+          Details card
+        </div>
+      ) : (
+        <div>
+          yyy
+          <button onClick={fetchItemDetails}>Load Item</button>
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default Details

@@ -3,8 +3,7 @@ import { useRouter } from 'next/router'
 import { useState, useEffect, useRef, useContext } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
-import UserContext from '../context/LoginState'
-import Link from 'next/link'
+import UserContext from '../../context/LoginState'
 
 interface itemProps {
   name: string
