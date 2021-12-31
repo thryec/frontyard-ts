@@ -162,15 +162,20 @@ const Checkout: NextPage<itemProps> = () => {
   }
 
   const executeTransaction = async () => {
-    const params = [
-      {
-        from: walletAddress,
-        to: testItem.seller,
-        value: ethers.utils.parseUnits(testItem.price.toString(), 'ether').toHexString(),
-      },
-    ]
     try {
-      const txn = await provider.send('eth_sendTransaction', params)
+      const txn = await window.ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [
+          {
+            from: walletAddress,
+            to: testItem.seller,
+            value: '0x0',
+            gasLimit: ethers.utils.parseUnits(testItem.price.toString(), 'ether').toHexString(),
+            maxFeePerGas: '0x2540be400',
+            maxPriorityFeePerGas: '0x3b9aca00',
+          },
+        ],
+      })
       setIsLoading(true)
       setEthTxnId(txn)
       console.log('txn: ', txn)
