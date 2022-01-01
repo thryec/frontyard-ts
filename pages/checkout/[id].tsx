@@ -201,7 +201,7 @@ const Checkout: NextPage<itemProps> = () => {
         const data = await res.json()
         console.log('updated transactions database: ', data)
         // update items database
-        const itemRes = await fetch(`${process.env.API_ENDPOINT}/transactions/${id}`, {
+        const itemRes = await fetch(`${process.env.API_ENDPOINT}/items/${id}`, {
           method: 'PUT',
           body: JSON.stringify({
             status: 'Sold',
@@ -211,7 +211,7 @@ const Checkout: NextPage<itemProps> = () => {
           },
         })
         const itemData = await itemRes.json()
-        console.log('updated transactions database: ', itemData)
+        console.log('updated items database: ', itemData)
         setIsLoading(false)
         router.push('/payment')
       } catch (err: any) {
@@ -465,12 +465,11 @@ const Checkout: NextPage<itemProps> = () => {
                     <div>
                       <a
                         href={'https://rinkeby.etherscan.io/tx/' + ethTxnId}
-                        className="font-bold underline"
+                        className="underline"
                         target="_blank"
                         rel="noreferrer">
-                        View your Transaction on Etherscan here
+                        View transaction on Etherscan
                       </a>
-                      :
                     </div>
                   </div>
                 ) : (
