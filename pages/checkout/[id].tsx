@@ -125,92 +125,100 @@ const Checkout: NextPage<itemProps> = () => {
   }
 
   const handleConfirmButton = async () => {
-    const shippingData: shippingAddress = {
-      firstName: firstName.current.value,
-      lastName: lastName.current.value,
-      emailAddress: emailAddress.current.value,
-      country: country.current.value,
-      streetAddress: streetAddress.current.value,
-      city: city.current.value,
-      state: state.current.value,
-      postalCode: postalCode.current.value,
-    }
-    setShippingAddress(shippingData)
-    const initialiseTxn = {
-      seller: testItem.seller,
-      buyer: walletAddress,
-      itemId: testItem._id,
-      salePrice: testItem.price,
-      purchaseDate: new Date(),
-      orderStatus: 'Pending',
-      shippingAddress: shippingData,
-    }
-    try {
-      const res = await fetch(`http://localhost:4000/transactions`, {
-        method: 'POST',
-        body: JSON.stringify(initialiseTxn),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      txnId = await res.json()
-      console.log('sent database txn: ', txnId)
-      await executeTransaction()
-    } catch (err) {
-      console.log('error posting transaction: ', err)
+    if (currentItem !== undefined) {
+      if (walletAddress === currentItem.seller) {
+        alert('You own this item')
+        return
+      }
+      const shippingData: shippingAddress = {
+        firstName: firstName.current.value,
+        lastName: lastName.current.value,
+        emailAddress: emailAddress.current.value,
+        country: country.current.value,
+        streetAddress: streetAddress.current.value,
+        city: city.current.value,
+        state: state.current.value,
+        postalCode: postalCode.current.value,
+      }
+      setShippingAddress(shippingData)
+      const initialiseTxn = {
+        seller: currentItem.seller,
+        buyer: walletAddress,
+        itemId: currentItem._id,
+        salePrice: currentItem.price,
+        purchaseDate: new Date(),
+        orderStatus: 'Pending',
+        shippingAddress: shippingData,
+      }
+      try {
+        const res = await fetch(`http://localhost:4000/transactions`, {
+          method: 'POST',
+          body: JSON.stringify(initialiseTxn),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        txnId = await res.json()
+        console.log('sent database txn: ', txnId)
+        await executeTransaction()
+      } catch (err) {
+        console.log('error posting transaction: ', err)
+      }
     }
   }
 
   const executeTransaction = async () => {
-    try {
-      const txn = await window.ethereum.request({
-        method: 'eth_sendTransaction',
-        params: [
-          {
-            from: walletAddress,
-            to: testItem.seller,
-            value: '0x0',
-            gasLimit: ethers.utils.parseUnits(testItem.price.toString(), 'ether').toHexString(),
-            maxFeePerGas: '0x2540be400',
-            maxPriorityFeePerGas: '0x3b9aca00',
+    if (currentItem !== undefined) {
+      try {
+        const txn = await window.ethereum.request({
+          method: 'eth_sendTransaction',
+          params: [
+            {
+              from: walletAddress,
+              to: currentItem.seller,
+              value: '0x0',
+              gasLimit: ethers.utils.parseUnits(testItem.price.toString(), 'ether').toHexString(),
+              maxFeePerGas: '0x2540be400',
+              maxPriorityFeePerGas: '0x3b9aca00',
+            },
+          ],
+        })
+        setIsLoading(true)
+        setEthTxnId(txn)
+        console.log('txn: ', txn)
+        const receipt = await provider.waitForTransaction(txn)
+        console.log('txn success: ', receipt)
+        const txnSuccess = {
+          orderStatus: 'Success',
+        }
+        const res = await fetch(`http://localhost:4000/transactions/${txnId}`, {
+          method: 'PUT',
+          body: JSON.stringify(txnSuccess),
+          headers: {
+            'Content-Type': 'application/json',
           },
-        ],
-      })
-      setIsLoading(true)
-      setEthTxnId(txn)
-      console.log('txn: ', txn)
-      const receipt = await provider.waitForTransaction(txn)
-      console.log('txn success: ', receipt)
-      const txnSuccess = {
-        orderStatus: 'Success',
+        })
+        const data = await res.json()
+        console.log('database update success: ', data)
+        setIsLoading(false)
+        router.push('/payment')
+      } catch (err: any) {
+        setError(err.message)
+        console.log('error sending eth: ', err.message)
+        const txnFailure = {
+          orderStatus: 'Failure',
+        }
+        const res = await fetch(`http://localhost:4000/transactions/${txnId}`, {
+          method: 'PUT',
+          body: JSON.stringify(txnFailure),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const data = await res.json()
+        console.log('txn failure: ', data)
+        setIsLoading(false)
       }
-      const res = await fetch(`http://localhost:4000/transactions/${txnId}`, {
-        method: 'PUT',
-        body: JSON.stringify(txnSuccess),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      const data = await res.json()
-      console.log('database update success: ', data)
-      setIsLoading(false)
-      router.push('/payment')
-    } catch (err: any) {
-      setError(err.message)
-      console.log('error sending eth: ', err.message)
-      const txnFailure = {
-        orderStatus: 'Failure',
-      }
-      const res = await fetch(`http://localhost:4000/transactions/${txnId}`, {
-        method: 'PUT',
-        body: JSON.stringify(txnFailure),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      const data = await res.json()
-      console.log('txn failure: ', data)
-      setIsLoading(false)
     }
   }
 
@@ -316,9 +324,10 @@ const Checkout: NextPage<itemProps> = () => {
                         name="country"
                         autoComplete="country-name"
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option>Singapore</option>
+                        <option>Australia</option>
                         <option>United States</option>
                         <option>Canada</option>
-                        <option>Mexico</option>
                       </select>
                     </div>
                     <div className="col-span-6">
@@ -442,13 +451,12 @@ const Checkout: NextPage<itemProps> = () => {
                   <div>
                     <button className="bg-yellow-300 p-3 rounded-md">Loading.... </button>
                     <div>
-                      View your Transaction on Etherscan{' '}
                       <a
                         href={'https://rinkeby.etherscan.io/tx/' + ethTxnId}
                         className="font-bold underline"
                         target="_blank"
                         rel="noreferrer">
-                        here
+                        View your Transaction on Etherscan here
                       </a>
                       :
                     </div>
