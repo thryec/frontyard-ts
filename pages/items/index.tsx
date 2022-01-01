@@ -6,7 +6,7 @@ const Items = () => {
   const [loaded, setIsLoaded] = useState(false)
 
   const loadData = async () => {
-    const res = await fetch('http://localhost:4000/items')
+    const res = await fetch('http://localhost:4000/items/listed')
     if (res.status !== 200) {
       console.error('Failed to fetch items')
       return

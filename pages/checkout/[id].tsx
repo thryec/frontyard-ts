@@ -188,18 +188,30 @@ const Checkout: NextPage<itemProps> = () => {
         console.log('txn: ', txn)
         const receipt = await provider.waitForTransaction(txn)
         console.log('txn success: ', receipt)
-        const txnSuccess = {
-          orderStatus: 'Success',
-        }
+        // update transactions database
         const res = await fetch(`http://localhost:4000/transactions/${txnId}`, {
           method: 'PUT',
-          body: JSON.stringify(txnSuccess),
+          body: JSON.stringify({
+            orderStatus: 'Success',
+          }),
           headers: {
             'Content-Type': 'application/json',
           },
         })
         const data = await res.json()
-        console.log('database update success: ', data)
+        console.log('updated transactions database: ', data)
+        // update items database
+        const itemRes = await fetch(`http://localhost:4000/transactions/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            status: 'Sold',
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const itemData = await itemRes.json()
+        console.log('updated transactions database: ', itemData)
         setIsLoading(false)
         router.push('/payment')
       } catch (err: any) {

@@ -72,7 +72,7 @@ const Transactions: NextPage = () => {
       })
       const data = await res.json()
       setSalesData(data)
-      //   console.log('historical sales: ', data)
+      console.log('historical sales: ', data)
     } catch (err) {
       console.log('error fetching transactions: ', err)
     }
@@ -80,6 +80,7 @@ const Transactions: NextPage = () => {
 
   const fetchItemDetails = async () => {
     try {
+      console.log('itemid: ', itemId)
       const res = await fetch(`http://localhost:4000/items/${itemId}`, {
         method: 'GET',
         headers: {
