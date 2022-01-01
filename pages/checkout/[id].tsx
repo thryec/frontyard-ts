@@ -74,7 +74,7 @@ const Checkout: NextPage<itemProps> = () => {
 
   const fetchItemDetails = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/items/${id}`, {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ const Checkout: NextPage<itemProps> = () => {
         shippingAddress: shippingData,
       }
       try {
-        const res = await fetch(`http://localhost:4000/transactions`, {
+        const res = await fetch(`${process.env.API_ENDPOINT}/transactions`, {
           method: 'POST',
           body: JSON.stringify(initialiseTxn),
           headers: {
@@ -189,7 +189,7 @@ const Checkout: NextPage<itemProps> = () => {
         const receipt = await provider.waitForTransaction(txn)
         console.log('txn success: ', receipt)
         // update transactions database
-        const res = await fetch(`http://localhost:4000/transactions/${txnId}`, {
+        const res = await fetch(`${process.env.API_ENDPOINT}/transactions/${txnId}`, {
           method: 'PUT',
           body: JSON.stringify({
             orderStatus: 'Success',
@@ -201,7 +201,7 @@ const Checkout: NextPage<itemProps> = () => {
         const data = await res.json()
         console.log('updated transactions database: ', data)
         // update items database
-        const itemRes = await fetch(`http://localhost:4000/transactions/${id}`, {
+        const itemRes = await fetch(`${process.env.API_ENDPOINT}/transactions/${id}`, {
           method: 'PUT',
           body: JSON.stringify({
             status: 'Sold',
@@ -220,7 +220,7 @@ const Checkout: NextPage<itemProps> = () => {
         const txnFailure = {
           orderStatus: 'Failure',
         }
-        const res = await fetch(`http://localhost:4000/transactions/${txnId}`, {
+        const res = await fetch(`${process.env.API_ENDPOINT}/transactions/${txnId}`, {
           method: 'PUT',
           body: JSON.stringify(txnFailure),
           headers: {

@@ -48,12 +48,15 @@ const Transactions: NextPage = () => {
 
   const fetchPurchases = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/transactions/purchases?user=${userAddress}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      const res = await fetch(
+        `${process.env.API_ENDPOINT}/transactions/purchases?user=${userAddress}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
       const data = await res.json()
       setPurchaseData(data)
       console.log('historical purchases: ', data)
@@ -64,12 +67,15 @@ const Transactions: NextPage = () => {
 
   const fetchSales = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/transactions/sales?user=${userAddress}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      const res = await fetch(
+        `${process.env.API_ENDPOINT}/transactions/sales?user=${userAddress}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
       const data = await res.json()
       setSalesData(data)
       console.log('historical sales: ', data)
@@ -81,7 +87,7 @@ const Transactions: NextPage = () => {
   const fetchItemDetails = async () => {
     try {
       console.log('itemid: ', itemId)
-      const res = await fetch(`http://localhost:4000/items/${itemId}`, {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/${itemId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

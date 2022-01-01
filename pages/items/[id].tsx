@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
 // export const getStaticPaths = async () => {
-//     const res = await fetch('http://localhost:4000/items');
+//     const res = await fetch(`${process.env.API_ENDPOINT}/items`);
 //     const data = await res.json();
 
 //     const paths = data.map(item => {
@@ -20,7 +20,7 @@ import { useState, useEffect } from 'react'
 
 // export const getStaticProps = async (context) => {
 //     const id = context.params.id;
-//     const res = fetch('http://localhost:4000/items/' + id);
+//     const res = fetch(`${process.env.API_ENDPOINT}/items/` + id);
 //     const data = await res.json();
 
 //     return {
@@ -47,7 +47,7 @@ const Details = () => {
 
   const fetchItemDetails = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/items/${id}`, {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
