@@ -167,7 +167,6 @@ const Transactions: NextPage = () => {
       }
     }
     fetchTxns()
-    // fetchItemDetails()
   }, [userAddress])
 
   if (userLoginState.isLoggedIn === false) {
