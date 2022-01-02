@@ -1,6 +1,7 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import UserContext from '../context/LoginState'
+import Swal from 'sweetalert2';
 
 const LoginForm: React.FC = () => {
 
@@ -54,29 +55,45 @@ const LoginForm: React.FC = () => {
         });
         throw new Error("Invalid Email / Password, please try again");
       }
+
       //Assign JWT to local storage once login successful
       localStorage.setItem('token', decodedResponse.token);
       //setState to login
       userLoginContext.setLoginState(true);
       SetLoginError(null);
       //redirect user to home page
-      router.push('/');
+
+      try {
+        const showSuccessModal = await Swal.fire("Login Success");
+        console.log(showSuccessModal);
+        router.push('/');
+      } catch (error: any) {
+        console.log(error.message);
+      }
 
     } catch (err: any) {
-      console.log(err.message);
+      try {
+        const showErrorModel = await Swal.fire(`Error Code: ${loginError?.status} ${err.message}`);
+      } catch (modalWindowError: any) {
+        console.log("ErrorModalWindow Window Error: " + modalWindowError.message);
+      }
     }
-
-
   }
 
   return (<>
-    <h1>Login Page</h1>
-    <label>Email:</label>
-    <input value={login.email} onChange={handleEmailChange} />
-    <label>Password:</label>
-    <input value={login.password} type="password" onChange={handlePasswordChange} />
-    <input type="submit" onClick={handleSubmit} />
-    {loginError ? `Error: ${loginError.status} ${loginError.message}` : ""}
+    <h1 className="text-center font-bold m-5">Login Page</h1>
+    <div className="flex flex-col text-center m-10">
+      <label>Email:</label>
+      <input value={login.email} onChange={handleEmailChange} />
+      <label>Password:</label>
+      <input value={login.password} type="password" onChange={handlePasswordChange} />
+      <button
+        type="submit"
+        onClick={handleSubmit}
+        className="text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Submit
+      </button>
+    </div>
   </>)
 };
 

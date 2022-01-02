@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import UserContext from '../context/LoginState';
 import Router, { useRouter } from 'next/router'
+import jwtDecode from 'jwt-decode';
+import Swal from 'sweetalert2';
 
 const Users: React.FC = () => {
 
@@ -15,6 +17,16 @@ const Users: React.FC = () => {
     // let token: any = "";
     let requestHeaders: any = {}
 
+    async function checkAdmin(token: any) {
+        if (token.role !== "admin") {
+            console.log(token.role);
+            await Swal.fire("User has no authorization to view this page, redirecting back to home");
+            router.push("/");
+        } else {
+            fetchUsers();
+        }
+
+    }
     async function fetchUsers() {
         try {
 
@@ -42,6 +54,12 @@ const Users: React.FC = () => {
         } catch (error: any) {
             setErrorMessage(`Users Fetch Error: ${error.message}`);
             console.log(errorMessage);
+            try {
+                const showErrorMessageModal = await Swal.fire(errorMessage);
+                router.push('/');
+            } catch (swalErrorMessage: any) {
+                console.log(swalErrorMessage.message);
+            }
         }
     }
 
@@ -70,13 +88,29 @@ const Users: React.FC = () => {
     }
 
     useEffect(() => {
-        if (!userDetails.isLoggedIn) {
+        console.log("UseEffect in user admin page is triggered, checking for local Storage token");
+
+        let token = localStorage.getItem('token');
+        if (token) {
+            userDetails.setLoginState(true);
+        } else {
+            console.log("User has no token");
             console.log("User is Logged in: " + userDetails.isLoggedIn);
             console.log("rerouting user to login page");
             router.push('/login');
         }
 
-        fetchUsers();
+        let tempToken: any = token;
+        let decodedToken: any = jwtDecode(tempToken);
+        checkAdmin(decodedToken);
+        //keeping this first, will delete in final build
+        // if (!userDetails.isLoggedIn) {
+        //     console.log("User is Logged in: " + userDetails.isLoggedIn);
+        //     console.log("rerouting user to login page");
+        //     router.push('/login');
+        // }
+
+        //fetchUsers();
 
 
     }, [triggerReRender]);
@@ -85,12 +119,12 @@ const Users: React.FC = () => {
         return (
             <tbody>
                 <tr>
-                    <td ref={ref => { userRef.current[index] = user._id }} >{index + 1}</td>
-                    <td>{user.username}</td>
-                    <td>{user.email}</td>
-                    <td>{user.walletAddress}</td>
+                    <td className='text-center' ref={ref => { userRef.current[index] = user._id }} >{index + 1}</td>
+                    <td className='text-center'>{user.username}</td>
+                    <td className='text-center'>{user.email}</td>
+                    <td className='text-center'>{user.walletAddress}</td>
                     <td>
-                        <button onClick={handleDeleteButton.bind(null, index)}>
+                        <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2" onClick={handleDeleteButton.bind(null, index)}>
                             Delete
                         </button>
                     </td>
