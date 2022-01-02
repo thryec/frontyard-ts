@@ -1,18 +1,49 @@
 import 'tailwindcss/tailwind.css'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import UserContext from '../context/LoginState'
+import jwtDecode from 'jwt-decode'
 
 const Header = () => {
   const userLoginState = useContext(UserContext)
+  const [userRole, setUserRole] = useState<String>();
 
   const handleLogoutClick = () => {
     localStorage.clear()
     userLoginState.setLoginState(false)
+    setUserRole("");
   }
 
-  const connectWallet = () => {}
+  const decodeToken = () => {
+    console.log("Inside Header.tsx: decoding local storage token")
+    let token = localStorage.getItem('token');
+    console.log("Current Token: ", token);
+
+    if (token) {
+      let decodedToken: any = jwtDecode(token);
+      console.log("Current decoded Token", token);
+      if (decodedToken) {
+        setUserRole(decodedToken.role);
+      }
+    }
+  }
+
+  const checkLoginStatus = () => {
+    let token = localStorage.getItem('token');
+    if (token) {
+      userLoginState.setLoginState(true);
+    }
+  }
+
+  const connectWallet = () => { }
+
+  useEffect(() => {
+
+    checkLoginStatus();
+    decodeToken();
+
+  }, []);
 
   return (
     <header className="flex justify-center mt-10">
@@ -34,12 +65,12 @@ const Header = () => {
                 Logout
               </a>
             </Link>
-            <Link href="/users">
-              <a className="mr-10">users</a>
-            </Link>
             <Link href="/listItem">
               <a className="mr-10">Sell</a>
             </Link>
+            {userRole == "admin" ? <Link href="/users">
+              <a className="mr-10">users</a>
+            </Link> : ""}
           </>
         ) : (
           <>
