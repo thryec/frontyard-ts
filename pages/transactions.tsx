@@ -177,7 +177,7 @@ const Transactions: NextPage = () => {
           <h1 className="text-xl underline underline-offset-8 decoration-dotted">
             Items Purchased
           </h1>
-          <div>{dataLoaded ? renderPurchases() : <div>Loading...</div>}</div>
+          {/* <div>{dataLoaded ? renderPurchases() : <div>Loading...</div>}</div> */}
           {/* <div>{renderPurchases()}</div> */}
         </div>
         <div className="border-double border-l-4 border-slate-500"></div>
