@@ -120,7 +120,7 @@ const Signup: React.FC = () => {
         setNewAccount({
             ...newAccount,
             walletAddress: event.currentTarget.value,
-        })
+        });
     }
 
     const handleSubmit = async () => {
