@@ -1,5 +1,9 @@
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
+
 // export const getStaticPaths = async () => {
-//     const res = await fetch('http://localhost:4000/items');
+//     const res = await fetch(`${process.env.API_ENDPOINT}/items`);
 //     const data = await res.json();
 
 //     const paths = data.map(item => {
@@ -16,7 +20,7 @@
 
 // export const getStaticProps = async (context) => {
 //     const id = context.params.id;
-//     const res = fetch('http://localhost:4000/items/' + id);
+//     const res = fetch(`${process.env.API_ENDPOINT}/items/` + id);
 //     const data = await res.json();
 
 //     return {
@@ -24,8 +28,62 @@
 //     }
 // }
 
-const Details = () => {
-    return <h1>Details card</h1>
-};
+interface itemProps {
+  name: string
+  description: string
+  _id: string
+  image: string
+  price: number
+  quantity: number
+  listingEndDate: Date
+  ListingStartDate: Date
+}
 
-export default Details;
+const Details = () => {
+  const [currentItem, setCurrentItem] = useState<any>()
+  const [isLoaded, setIsLoaded] = useState<Boolean>(false)
+  const router = useRouter()
+  const { id } = router.query
+
+  const fetchItemDetails = async () => {
+    try {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await res.json()
+      setCurrentItem(data)
+      setIsLoaded(true)
+      console.log('item data: ', data)
+    } catch (err) {
+      console.log('error fetching transactions: ', err)
+    }
+  }
+
+  useEffect(() => {
+    if (id !== undefined) {
+      fetchItemDetails()
+    }
+  }, [id])
+
+  return (
+    <div>
+      {isLoaded ? (
+        <div>
+          Details card
+          <Link href={'/checkout/' + currentItem._id}>
+            <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
+              Buy
+            </button>
+          </Link>
+        </div>
+      ) : (
+        <div>Loading....</div>
+      )}
+    </div>
+  )
+}
+
+export default Details

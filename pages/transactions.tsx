@@ -1,82 +1,171 @@
 import type { NextPage } from 'next'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 const userAddress = '0xe82d5C6B394D9C4dE32F0913e6cE82Dd8dc39226'
-const itemId = '61b94c4b264e50a1c4c0232a'
+const itemId = '61cfb6b18308bd18ab4b1a2e'
+
+interface itemProps {
+  name: string
+  description: string
+  price: number
+  _id: string
+  seller?: string
+  image?: string
+  quantity?: number
+  listingEndDate?: Date
+  ListingStartDate?: Date
+}
+
+interface shippingAddress {
+  firstName: String
+  lastName: String
+  emailAddress: String
+  country: String
+  streetAddress: String
+  city: String
+  state: String
+  postalCode: Number | null
+}
+
+interface transactions {
+  _id: string
+  buyer: string
+  itemId: string
+  orderStatus: string
+  purchaseDate: Date
+  salePrice: number
+  seller: string
+  shippindAddress: shippingAddress
+}
 
 const Transactions: NextPage = () => {
-  const [purchaseData, setPurchaseData] = useState([])
-  const [salesData, setSalesData] = useState([])
+  const [purchaseData, setPurchaseData] = useState<transactions[]>([])
+  const [salesData, setSalesData] = useState<transactions[]>([])
+  const [testItem, setTestItem] = useState<itemProps>()
+  const [dataLoaded, setDataLoaded] = useState<Boolean>(false)
 
   const fetchPurchases = async () => {
-    console.log('purchases button')
     try {
-      const res = await fetch(`http://localhost:4000/transactions/purchases?user=${userAddress}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      const res = await fetch(
+        `${process.env.API_ENDPOINT}/transactions/purchases?user=${userAddress}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
       const data = await res.json()
       setPurchaseData(data)
-      console.log('sent database txn: ', data)
+      console.log('historical purchases: ', data)
     } catch (err) {
       console.log('error fetching transactions: ', err)
     }
   }
 
   const fetchSales = async () => {
-    console.log('sales button')
     try {
-      const res = await fetch(`http://localhost:4000/transactions/sales?user=${userAddress}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      const res = await fetch(
+        `${process.env.API_ENDPOINT}/transactions/sales?user=${userAddress}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
       const data = await res.json()
       setSalesData(data)
-      console.log('sent database txn: ', data)
+      console.log('historical sales: ', data)
     } catch (err) {
       console.log('error fetching transactions: ', err)
     }
   }
 
-  const itemCard = (
-    <div>
-      <div className="flex border-b-2 p-5">
-        <span className="mr-5">1.</span>
-        <Image
-          src="https://m.media-amazon.com/images/I/71huqcOKa+L._AC_SL1500_.jpg"
-          alt="wand"
-          width="100px"
-          height="100px"
-        />
-        <div className="ml-5">
-          <p>Item Name: </p>
-          <p>Item Description: </p>
-          <p>Purchase Date: </p>
-          <p>Purchase Price: </p>
-        </div>
-      </div>
-    </div>
-  )
-
-  const fetchItemDetails = async () => {
+  const fetchItemDetails = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:4000/items/${itemId}`, {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       })
       const data = await res.json()
-      console.log('sent database txn: ', data)
+      setTestItem(data)
+      return data
     } catch (err) {
       console.log('error fetching transactions: ', err)
     }
   }
+
+  const renderPurchases = () => {
+    if (purchaseData.length !== 0) {
+      return purchaseData.map(async (txn) => {
+        console.log('purchase txn: ', txn)
+        const date = txn.purchaseDate
+        /* tslint:disable-next-line */
+        const dateFormatted = date.slice(0, 10)
+        const item = await fetchItemDetails(txn.itemId)
+        console.log('item details: ', item)
+        return (
+          <div key={txn._id}>
+            <div className="flex border-b-2 p-5">
+              <span className="mr-5">1.</span>
+              <Image src={item.image} alt={item.name} width="100px" height="100px" />
+              <div className="ml-5">
+                <p>{item.name}</p>
+                <p>{item.description} </p>
+                <p>{item.price} ETH </p>
+                <p>Date Purchased: {dateFormatted} </p>
+              </div>
+            </div>
+          </div>
+        )
+      })
+    }
+  }
+
+  const renderSales = () => {
+    if (testItem !== undefined && salesData.length !== 0) {
+      const date = salesData[0].purchaseDate
+      /* tslint:disable-next-line */
+      const dateFormatted: any = date.slice(0, 10)
+      console.log('purchase date: ', dateFormatted)
+      return (
+        <div>
+          <div className="flex border-b-2 p-5">
+            <span className="mr-5">1.</span>
+            <Image
+              src="https://m.media-amazon.com/images/I/71huqcOKa+L._AC_SL1500_.jpg"
+              alt="wand"
+              width="100px"
+              height="100px"
+            />
+            <div className="ml-5">
+              <p>{testItem.name}</p>
+              <p>{testItem.description} </p>
+              <p>{testItem.price} ETH </p>
+              <p>Date Sold: {dateFormatted} </p>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
+
+  useEffect(() => {
+    const fetchTxns = async () => {
+      if (userAddress !== undefined) {
+        await fetchPurchases()
+        await fetchSales()
+        setDataLoaded(true)
+        return
+      }
+    }
+    fetchTxns()
+    // fetchItemDetails()
+  }, [userAddress])
 
   return (
     <div>
@@ -88,22 +177,13 @@ const Transactions: NextPage = () => {
           <h1 className="text-xl underline underline-offset-8 decoration-dotted">
             Items Purchased
           </h1>
-          <button
-            onClick={fetchPurchases}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
-            Fetch Purchases
-          </button>
-          <div>{itemCard}</div>
+          {/* <div>{dataLoaded ? renderPurchases() : <div>Loading...</div>}</div> */}
+          {/* <div>{renderPurchases()}</div> */}
         </div>
         <div className="border-double border-l-4 border-slate-500"></div>
         <div className="m-5 w-1/3">
           <h1 className="text-xl underline underline-offset-8 decoration-dotted">Items Sold</h1>
-          <button
-            onClick={fetchSales}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
-            Fetch Sales
-          </button>
-          <div>{itemCard}</div>
+          <div>{renderSales()}</div>
         </div>
       </div>
     </div>
