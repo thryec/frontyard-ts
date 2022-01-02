@@ -217,12 +217,11 @@ const Checkout: NextPage<itemProps> = () => {
       } catch (err: any) {
         setError(err.message)
         console.log('error sending eth: ', err.message)
-        const txnFailure = {
-          orderStatus: 'Failure',
-        }
         const res = await fetch(`${process.env.API_ENDPOINT}/transactions/${txnId}`, {
           method: 'PUT',
-          body: JSON.stringify(txnFailure),
+          body: JSON.stringify({
+            orderStatus: 'Failure',
+          }),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -245,13 +244,15 @@ const Checkout: NextPage<itemProps> = () => {
   }, [id])
 
   useEffect(() => {
-    window.ethereum.on('accountsChanged', () => {
-      setWalletAddress(window.ethereum.selectedAddress)
-    })
-    window.ethereum.on('chainChanged', function () {
-      console.log('network changed')
-      setChainId(window.ethereum.chainId)
-    })
+    if (typeof window.ethereum !== 'undefined') {
+      window.ethereum.on('accountsChanged', () => {
+        setWalletAddress(window.ethereum.selectedAddress)
+      })
+      window.ethereum.on('chainChanged', function () {
+        console.log('network changed')
+        setChainId(window.ethereum.chainId)
+      })
+    }
     // add cleanup function here
   }, [])
 

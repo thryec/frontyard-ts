@@ -38,7 +38,6 @@ interface transactions {
   seller: string
   shippindAddress: shippingAddress
 }
-;[]
 
 const Transactions: NextPage = () => {
   const [purchaseData, setPurchaseData] = useState<transactions[]>([])

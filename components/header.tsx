@@ -11,8 +11,11 @@ const Header = () => {
     localStorage.clear()
     userLoginState.setLoginState(false)
   }
+
+  const connectWallet = () => {}
+
   return (
-    <header>
+    <header className="flex justify-center mt-10">
       <div className="logo">
         <Link href="/">
           <a className="mr-10">
@@ -37,7 +40,6 @@ const Header = () => {
           </>
         ) : (
           <>
-            {' '}
             <Link href="/signup">
               <a className="mr-10">Sign Up</a>
             </Link>
@@ -50,6 +52,13 @@ const Header = () => {
           </>
         )}
       </nav>
+      <div>
+        <button
+          onClick={connectWallet}
+          className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
+          Connect Wallet
+        </button>
+      </div>
     </header>
   )
 }
