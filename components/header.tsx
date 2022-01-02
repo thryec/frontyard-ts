@@ -1,5 +1,5 @@
 import 'tailwindcss/tailwind.css'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import UserContext from '../context/LoginState'
