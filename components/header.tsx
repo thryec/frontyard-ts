@@ -37,6 +37,9 @@ const Header = () => {
             <Link href="/users">
               <a className="mr-10">users</a>
             </Link>
+            <Link href="/listItem">
+              <a className="mr-10">Sell</a>
+            </Link>
           </>
         ) : (
           <>
@@ -45,9 +48,6 @@ const Header = () => {
             </Link>
             <Link href="/login">
               <a className="mr-10">Login</a>
-            </Link>
-            <Link href="/listItem">
-              <a className="mr-10">Sell</a>
             </Link>
           </>
         )}
