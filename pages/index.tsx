@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+import jwtDecode from 'jwt-decode'
 
 const Home: NextPage = () => {
   const [marketItems, setMarketItems] = useState([])
@@ -49,6 +50,10 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     loadData()
+    let token = localStorage.getItem('token')
+    let tempToken: any = token
+    let decodedToken: any = jwtDecode(tempToken)
+    console.log('decoded token: ', decodedToken)
   }, [])
 
   return (
