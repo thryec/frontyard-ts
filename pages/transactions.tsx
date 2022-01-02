@@ -104,24 +104,21 @@ const Transactions: NextPage = () => {
 
   const renderPurchases = () => {
     if (purchaseData.length !== 0) {
-      return purchaseData.map(async (txn) => {
+      return purchaseData.map((txn) => {
         console.log('purchase txn: ', txn)
         const date = txn.purchaseDate
-        /* tslint:disable-next-line */
         const dateFormatted = date.slice(0, 10)
-        const item = await fetchItemDetails(txn.itemId)
-        console.log('item details: ', item)
         return (
           <div key={txn._id}>
             <div className="flex border-b-2 p-5">
               <span className="mr-5">1.</span>
-              <Image src={item.image} alt={item.name} width="100px" height="100px" />
+              {/* <Image src={item.image} alt={item.name} width="100px" height="100px" />
               <div className="ml-5">
                 <p>{item.name}</p>
                 <p>{item.description} </p>
                 <p>{item.price} ETH </p>
                 <p>Date Purchased: {dateFormatted} </p>
-              </div>
+              </div> */}
             </div>
           </div>
         )
@@ -130,30 +127,26 @@ const Transactions: NextPage = () => {
   }
 
   const renderSales = () => {
-    if (testItem !== undefined && salesData.length !== 0) {
-      const date = salesData[0].purchaseDate
-      /* tslint:disable-next-line */
-      const dateFormatted: any = date.slice(0, 10)
-      console.log('purchase date: ', dateFormatted)
-      return (
-        <div>
-          <div className="flex border-b-2 p-5">
-            <span className="mr-5">1.</span>
-            <Image
-              src="https://m.media-amazon.com/images/I/71huqcOKa+L._AC_SL1500_.jpg"
-              alt="wand"
-              width="100px"
-              height="100px"
-            />
-            <div className="ml-5">
-              <p>{testItem.name}</p>
-              <p>{testItem.description} </p>
-              <p>{testItem.price} ETH </p>
-              <p>Date Sold: {dateFormatted} </p>
+    if (salesData.length !== 0) {
+      return salesData.map((txn) => {
+        console.log('purchase txn: ', txn)
+        const date = txn.purchaseDate
+        const dateFormatted = date.slice(0, 10)
+        return (
+          <div key={txn._id}>
+            <div className="flex border-b-2 p-5">
+              <span className="mr-5">1.</span>
+              {/* <Image src={item.image} alt={item.name} width="100px" height="100px" />
+              <div className="ml-5">
+                <p>{item.name}</p>
+                <p>{item.description} </p>
+                <p>{item.price} ETH </p>
+                <p>Date Sold: {dateFormatted} </p>
+              </div> */}
             </div>
           </div>
-        </div>
-      )
+        )
+      })
     }
   }
 
@@ -169,20 +162,20 @@ const Transactions: NextPage = () => {
     fetchTxns()
   }, [userAddress])
 
-  if (userLoginState.isLoggedIn === false) {
-    return (
-      <div className="flex justify-center">
-        <div className="p-5 bg-slate-200 border rounded-md w-1/3">
-          <div className="flex justify-center mb-5">Please Log In to proceed</div>
-          <div className="flex justify-center">
-            <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
-              <Link href="/login">Go to Login </Link>
-            </button>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  // if (userLoginState.isLoggedIn === false) {
+  //   return (
+  //     <div className="flex justify-center">
+  //       <div className="p-5 bg-slate-200 border rounded-md w-1/3">
+  //         <div className="flex justify-center mb-5">Please Log In to proceed</div>
+  //         <div className="flex justify-center">
+  //           <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
+  //             <Link href="/login">Go to Login </Link>
+  //           </button>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   return (
     <div>
@@ -194,13 +187,13 @@ const Transactions: NextPage = () => {
           <h1 className="text-xl underline underline-offset-8 decoration-dotted">
             Items Purchased
           </h1>
-          {/* <div>{dataLoaded ? renderPurchases() : <div>Loading...</div>}</div> */}
+          <div>{dataLoaded ? renderPurchases() : <div>Loading...</div>}</div>
           {/* <div>{renderPurchases()}</div> */}
         </div>
         <div className="border-double border-l-4 border-slate-500"></div>
         <div className="m-5 w-1/3">
           <h1 className="text-xl underline underline-offset-8 decoration-dotted">Items Sold</h1>
-          <div>{renderSales()}</div>
+          <div>{dataLoaded ? renderSales() : <div>Loading...</div>}</div>
         </div>
       </div>
     </div>
