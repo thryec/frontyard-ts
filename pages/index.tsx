@@ -52,8 +52,10 @@ const Home: NextPage = () => {
     loadData()
     let token = localStorage.getItem('token')
     let tempToken: any = token
-    let decodedToken: any = jwtDecode(tempToken)
-    console.log('decoded token: ', decodedToken)
+    if (tempToken) {
+      let decodedToken: any = jwtDecode(tempToken)
+      console.log('decoded token: ', decodedToken)
+    }
   }, [])
 
   return (
