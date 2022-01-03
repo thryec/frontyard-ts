@@ -1,13 +1,12 @@
 import React, {useState, useRef} from 'react';
 //uncontrolled
 const List = () => {
-  const [listSuccess, setListSuccess] = useState<Boolean>(true);
+  // const [listSuccess, setListSuccess] = useState<Boolean>(true);
   const refName = useRef<any>();
   const refDescription = useRef<any>();
   const refImage = useRef<any>();
   const refPrice = useRef<any>();
   const refSeller = useRef<any>();
-  const refStatus = useRef<any>();
 
   const handleSubmit = async () => {
     const newItem = {
@@ -16,7 +15,6 @@ const List = () => {
       image : refImage.current.value,
       price : refPrice.current.value,
       seller : refSeller.current.value,
-      status : refStatus.current.value
     }
     try {
       const res = await fetch(`${process.env.API_ENDPOINT}/items`, {
@@ -26,10 +24,10 @@ const List = () => {
           'Content-Type': 'application/json',
         }
       })
-      setListSuccess(true);
+      // setListSuccess(true);
     } catch (err) {
       console.log(err);
-      setListSuccess(false);
+      // setListSuccess(false);
     }
   }
   console.log("name"+refName)
@@ -42,7 +40,6 @@ const List = () => {
         Image URL: <input type="text" name="description" ref={refImage}></input><br/>
         Price: <input type="text" name="price" ref={refPrice}></input><br/>
         Seller: <input type="text" name="seller" ref={refSeller}></input><br/>
-        Status:<input type="text" name="status" ref={refStatus}></input><br/>
         {/* <input type="file" name="image" id="image" accept=".png, .jpg, .jpeg, image/*" ref={refImage}/> */}
         <input type="submit" value="List Item"/>
       </form>
