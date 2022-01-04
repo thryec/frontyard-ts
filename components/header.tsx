@@ -39,7 +39,8 @@ const Header = () => {
   useEffect(() => {
     checkLoginStatus()
     decodeToken()
-  }, [])
+    console.log('current user role', userRole)
+  }, [userRole, userLoginState])
 
   return (
     <header className="flex justify-center mt-10">
