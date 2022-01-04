@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import UserContext from '../context/LoginState'
 import jwtDecode from 'jwt-decode'
+import SearchBar from './searchbar'
 
 const Header = () => {
   const userLoginState = useContext(UserContext)
@@ -83,6 +84,7 @@ const Header = () => {
             </Link>
           </>
         )}
+        <SearchBar />
       </nav>
     </header>
   )
