@@ -5,6 +5,7 @@ import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import UserContext from '../../context/LoginState'
 import Link from 'next/link'
+import jwtDecode from 'jwt-decode'
 
 interface itemProps {
   name: string
@@ -125,10 +126,27 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }
 
+  const decodeToken = () => {
+    console.log('Inside checkout page: decoding local storage token')
+    let token = localStorage.getItem('token')
+    console.log('Current Token: ', token)
+
+    if (token) {
+      let decodedToken: any = jwtDecode(token)
+      console.log('Current decoded Token', decodedToken)
+      return decodedToken
+    }
+  }
+
   const handleConfirmButton = async () => {
     if (currentItem !== undefined) {
       if (walletAddress === currentItem.seller) {
         alert('You own this item')
+        return
+      }
+      const jwt = decodeToken()
+      if (jwt.walletAddres !== walletAddress) {
+        alert('Please use the wallet address you have logged in with to purchase this item.')
         return
       }
       const shippingData: shippingAddress = {
@@ -243,6 +261,10 @@ const Checkout: NextPage<itemProps> = () => {
       fetchItemDetails()
     }
   }, [id])
+
+  // useEffect(() => {
+  //   decodeToken()
+  // })
 
   useEffect(() => {
     if (typeof window.ethereum !== 'undefined') {
