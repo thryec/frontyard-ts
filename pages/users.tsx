@@ -66,7 +66,7 @@ const Users: React.FC = () => {
     }
   }
 
-  const handleDeleteButton: any = async (index: any) => {
+  const commitDelete: any = async (index: any) => {
     try {
       console.log('User ID: ' + userRef.current[index]);
       console.log("Request Headers inside delete method: ", tempRequestHeaders);
@@ -78,17 +78,51 @@ const Users: React.FC = () => {
 
       if (response.status === 401) {
         const errorMessage = await response.text()
-        throw new Error(errorMessage)
+        throw new Error(errorMessage);
       }
 
       if (response.status === 200) {
         //set it opposite to toggle rerender
         setTriggerReRender(!triggerReRender)
-        console.log('successful uwu')
+        console.log('successful uwu');
+        return true
       }
+
+
+
     } catch (error: any) {
       console.log('Delete request: ' + error.message)
+      const showErrorMessageModal = await Swal.fire(errorMessage);
+      return false;
     }
+  }
+  const handleDeleteButton: any = async (index: any) => {
+
+    await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const deleteResult = await commitDelete(index);
+        console.log("delete result: ", deleteResult);
+        if (deleteResult) {
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        } else {
+          Swal.fire(
+            'Delete Unsuccessful please try again',
+          )
+        }
+      }
+    });
   }
 
   useEffect(() => {
