@@ -70,8 +70,8 @@ const Checkout: NextPage<itemProps> = () => {
   const userLoginState = useContext(UserContext)
 
   const { id } = router.query
-  console.log('item id: ', id)
-  console.log('user login state: ', userLoginState)
+  // console.log('item id: ', id)
+  // console.log('user login state: ', userLoginState)
 
   const fetchItemDetails = async () => {
     try {
@@ -170,6 +170,7 @@ const Checkout: NextPage<itemProps> = () => {
 
   const executeTransaction = async () => {
     if (currentItem !== undefined) {
+      console.log('price: ', currentItem.price)
       try {
         const txn = await window.ethereum.request({
           method: 'eth_sendTransaction',
@@ -177,10 +178,7 @@ const Checkout: NextPage<itemProps> = () => {
             {
               from: walletAddress,
               to: currentItem.seller,
-              value: '0x0',
-              gasLimit: ethers.utils
-                .parseUnits(currentItem.price.toString(), 'ether')
-                .toHexString(),
+              value: ethers.utils.parseUnits(currentItem.price.toString(), 'ether').toHexString(),
               maxFeePerGas: '0x2540be400',
               maxPriorityFeePerGas: '0x3b9aca00',
             },
