@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import Image from 'next/image';
 
 // export const getStaticPaths = async () => {
 //     const res = await fetch(`${process.env.API_ENDPOINT}/items`);
@@ -72,10 +73,18 @@ const Details = () => {
     <div>
       {isLoaded ? (
         <div>
-          Details card
+          <Image src={currentItem.image} width="200px" height="200px"/>
+          <h1>Listing Title: {currentItem.name}</h1>
+          <h1>Description: {currentItem.description}</h1>
+          <h1>Price: {currentItem.price} ETH</h1>
           <Link href={'/checkout/' + currentItem._id}>
             <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
               Buy
+            </button>
+          </Link>
+          <Link href={'/items'}>
+            <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
+              Back to Item Listing
             </button>
           </Link>
         </div>
