@@ -7,43 +7,39 @@ import jwtDecode from 'jwt-decode'
 
 const Header = () => {
   const userLoginState = useContext(UserContext)
-  const [userRole, setUserRole] = useState<String>();
+  const [userRole, setUserRole] = useState<String>()
 
   const handleLogoutClick = () => {
     localStorage.clear()
     userLoginState.setLoginState(false)
-    setUserRole("");
+    setUserRole('')
   }
 
   const decodeToken = () => {
-    console.log("Inside Header.tsx: decoding local storage token")
-    let token = localStorage.getItem('token');
-    console.log("Current Token: ", token);
+    console.log('Inside Header.tsx: decoding local storage token')
+    let token = localStorage.getItem('token')
+    console.log('Current Token: ', token)
 
     if (token) {
-      let decodedToken: any = jwtDecode(token);
-      console.log("Current decoded Token", token);
+      let decodedToken: any = jwtDecode(token)
+      console.log('Current decoded Token', token)
       if (decodedToken) {
-        setUserRole(decodedToken.role);
+        setUserRole(decodedToken.role)
       }
     }
   }
 
   const checkLoginStatus = () => {
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem('token')
     if (token) {
-      userLoginState.setLoginState(true);
+      userLoginState.setLoginState(true)
     }
   }
 
-  const connectWallet = () => { }
-
   useEffect(() => {
-
-    checkLoginStatus();
-    decodeToken();
-
-  }, []);
+    checkLoginStatus()
+    decodeToken()
+  }, [])
 
   return (
     <header className="flex justify-center mt-10">
@@ -68,9 +64,13 @@ const Header = () => {
             <Link href="/listItem">
               <a className="mr-10">Sell</a>
             </Link>
-            {userRole == "admin" ? <Link href="/users">
-              <a className="mr-10">users</a>
-            </Link> : ""}
+            {userRole == 'admin' ? (
+              <Link href="/users">
+                <a className="mr-10">users</a>
+              </Link>
+            ) : (
+              ''
+            )}
           </>
         ) : (
           <>
@@ -83,13 +83,6 @@ const Header = () => {
           </>
         )}
       </nav>
-      <div>
-        <button
-          onClick={connectWallet}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
-          Connect Wallet
-        </button>
-      </div>
     </header>
   )
 }
