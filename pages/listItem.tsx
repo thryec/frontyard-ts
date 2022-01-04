@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 
 //uncontrolled
 const List = () => {
+  const router = useRouter()
+
   const refName = useRef<any>();
   const refDescription = useRef<any>();
   const refImage = useRef<any>();
@@ -16,7 +18,6 @@ const List = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const router = useRouter()
     const newItem = {
       name : refName.current.value,
       description : refDescription.current.value,
