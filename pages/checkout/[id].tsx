@@ -178,7 +178,9 @@ const Checkout: NextPage<itemProps> = () => {
               from: walletAddress,
               to: currentItem.seller,
               value: '0x0',
-              gasLimit: ethers.utils.parseUnits(testItem.price.toString(), 'ether').toHexString(),
+              gasLimit: ethers.utils
+                .parseUnits(currentItem.price.toString(), 'ether')
+                .toHexString(),
               maxFeePerGas: '0x2540be400',
               maxPriorityFeePerGas: '0x3b9aca00',
             },
