@@ -114,7 +114,6 @@ const Transactions: NextPage = () => {
         return (
           <div key={txn._id}>
             <div className="flex border-b-2 p-5">
-              <span className="mr-5">1.</span>
               <Image src={txn.item.image} alt={txn.item.name} width="100px" height="100px" />
               <div className="ml-5">
                 <p>{txn.item.name}</p>
@@ -132,13 +131,12 @@ const Transactions: NextPage = () => {
   const renderSales = () => {
     if (salesData.length !== 0) {
       return salesData.map((txn: transactions) => {
-        console.log('purchase txn: ', txn)
+        console.log('sales txn: ', txn)
         const date = txn.purchaseDate
         const dateFormatted = date.slice(0, 10)
         return (
           <div key={txn._id}>
             <div className="flex border-b-2 p-5">
-              <span className="mr-5">1.</span>
               <Image src={txn.item.image} alt={txn.item.name} width="100px" height="100px" />
               <div className="ml-5">
                 <p>{txn.item.name}</p>
@@ -190,8 +188,7 @@ const Transactions: NextPage = () => {
           <h1 className="text-xl underline underline-offset-8 decoration-dotted">
             Items Purchased
           </h1>
-          {/* <div>{dataLoaded ? renderPurchases() : <div>Loading...</div>}</div> */}
-          <div>{renderPurchases()}</div>
+          <div>{dataLoaded ? renderPurchases() : <div>Loading...</div>}</div>
         </div>
         <div className="border-double border-l-4 border-slate-500"></div>
         <div className="m-5 w-1/3">
