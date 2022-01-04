@@ -10,31 +10,38 @@ const Users: React.FC = () => {
   const userDetails = useContext(UserContext)
   const [userList, setUserList] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
-  const [token, setToken] = useState<String | null>('')
+  const [token, setToken] = useState<String | null>('');
+  const [tempRequestHeaders, setTempRequestHeaders] = useState({});
   const router = useRouter()
+
 
   // let token: any = "";
   let requestHeaders: any = {}
 
   async function checkAdmin(token: any) {
     if (token.role !== 'admin') {
-      console.log(token.role)
-      await Swal.fire('User has no authorization to view this page, redirecting back to home')
-      router.push('/')
+      console.log(token.role);
+      try {
+        await Swal.fire('User has no authorization to view this page, redirecting back to home')
+        router.push('/')
+      } catch (error: any) {
+        console.log(error.message);
+      }
     } else {
       fetchUsers()
     }
   }
   async function fetchUsers() {
+    const retrieveToken = localStorage.getItem('token')
+    setToken(retrieveToken)
+    console.log('Current Token is: ', retrieveToken);
+    requestHeaders = {
+      'Content-Type': 'application/json',
+      token: retrieveToken,
+    }
+
+    setTempRequestHeaders(requestHeaders);
     try {
-      const retrieveToken = localStorage.getItem('token')
-      setToken(retrieveToken)
-      console.log('Current Token is: ')
-      console.log(retrieveToken)
-      requestHeaders = {
-        'Content-Type': 'application/json',
-        token: retrieveToken,
-      }
       const response = await fetch(`${process.env.API_ENDPOINT}/users`, {
         method: 'GET',
         headers: requestHeaders,
@@ -61,10 +68,12 @@ const Users: React.FC = () => {
 
   const handleDeleteButton: any = async (index: any) => {
     try {
-      console.log('User ID: ' + userRef.current[index])
+      console.log('User ID: ' + userRef.current[index]);
+      console.log("Request Headers inside delete method: ", tempRequestHeaders);
+      let tempToken: any = tempRequestHeaders
       const response = await fetch(`${process.env.API_ENDPOINT}/users/${userRef.current[index]}`, {
         method: 'DELETE',
-        headers: requestHeaders,
+        headers: tempToken,
       }) //delete
 
       if (response.status === 401) {
@@ -85,7 +94,7 @@ const Users: React.FC = () => {
   useEffect(() => {
     console.log('UseEffect in user admin page is triggered, checking for local Storage token')
 
-    let token = localStorage.getItem('token')
+    let token = localStorage.getItem('token');
     if (token) {
       userDetails.setLoginState(true)
     } else {
@@ -96,8 +105,10 @@ const Users: React.FC = () => {
     }
 
     let tempToken: any = token
-    let decodedToken: any = jwtDecode(tempToken)
+    let decodedToken: any = jwtDecode(tempToken);
+    console.log("-----------Before Checkadmin");
     checkAdmin(decodedToken)
+    console.log("-----------After Checkadmin");
     //keeping this first, will delete in final build
     // if (!userDetails.isLoggedIn) {
     //     console.log("User is Logged in: " + userDetails.isLoggedIn);
@@ -110,7 +121,7 @@ const Users: React.FC = () => {
 
   const renderUsers = userList.map((user: any, index) => {
     return (
-      <tbody>
+      <tbody key={user._id}>
         <tr>
           <td
             className="text-center"
