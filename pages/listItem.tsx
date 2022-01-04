@@ -1,4 +1,5 @@
 import React, {useState, useRef} from 'react';
+import { useRouter } from 'next/router'
 
 //uncontrolled
 const List = () => {
@@ -13,9 +14,9 @@ const List = () => {
   const [] = useState<any>();
   const [] = useState<any>();
 
-  const handleSubmit = async () => {
-    // e.preventDefault();
-
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const router = useRouter()
     const newItem = {
       name : refName.current.value,
       description : refDescription.current.value,
@@ -31,6 +32,8 @@ const List = () => {
           'Content-Type': 'application/json',
         }
       })
+      const x : any = await res.json();
+      router.push(`/items/${x._id}`);
     } catch (err) {
       console.log(err);
     }
