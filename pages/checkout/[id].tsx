@@ -6,6 +6,7 @@ import Web3Modal from 'web3modal'
 import UserContext from '../../context/LoginState'
 import Link from 'next/link'
 import jwtDecode from 'jwt-decode'
+import Swal from 'sweetalert2'
 
 interface itemProps {
   name: string
@@ -109,7 +110,11 @@ const Checkout: NextPage<itemProps> = () => {
       setWalletAddress(myAddress)
       setIsConnected('Disconnect')
     } else {
-      alert('Please Install Metamask!')
+      Swal.fire({
+        icon: 'error',
+        title: 'Oh no!',
+        text: 'Please install Metamask',
+      })
     }
   }
 
@@ -141,12 +146,20 @@ const Checkout: NextPage<itemProps> = () => {
   const handleConfirmButton = async () => {
     if (currentItem !== undefined) {
       if (walletAddress === currentItem.seller) {
-        alert('You own this item')
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'You own this item',
+        })
         return
       }
       const jwt = decodeToken()
       if (jwt.walletAddres !== walletAddress) {
-        alert('Please use the wallet address you have logged in with to purchase this item.')
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please use the wallet address you have logged in with to purchase this item.',
+        })
         return
       }
       const shippingData: shippingAddress = {
@@ -203,6 +216,11 @@ const Checkout: NextPage<itemProps> = () => {
           ],
         })
         setIsLoading(true)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'You own this item',
+        })
         setEthTxnId(txn)
         console.log('txn: ', txn)
         const receipt = await provider.waitForTransaction(txn)
