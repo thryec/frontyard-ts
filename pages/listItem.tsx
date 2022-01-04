@@ -1,14 +1,21 @@
 import React, {useState, useRef} from 'react';
+
 //uncontrolled
 const List = () => {
-  // const [listSuccess, setListSuccess] = useState<Boolean>(true);
   const refName = useRef<any>();
   const refDescription = useRef<any>();
   const refImage = useRef<any>();
   const refPrice = useRef<any>();
   const refSeller = useRef<any>();
 
+  const [] = useState<any>();
+  const [] = useState<any>();
+  const [] = useState<any>();
+  const [] = useState<any>();
+
   const handleSubmit = async () => {
+    // e.preventDefault();
+
     const newItem = {
       name : refName.current.value,
       description : refDescription.current.value,
@@ -24,23 +31,24 @@ const List = () => {
           'Content-Type': 'application/json',
         }
       })
-      // setListSuccess(true);
     } catch (err) {
       console.log(err);
-      // setListSuccess(false);
     }
   }
-  console.log("name"+refName)
   return (
     <>
       <h1 className="ml-10">List Item Here</h1>
       <form onSubmit={handleSubmit}>
-        Listing Title: <input type="text" name="name" ref={refName}></input><br/>
-        Description: <input type="text" name="description" ref={refDescription}></input><br/>
-        Image URL: <input type="text" name="description" ref={refImage}></input><br/>
-        Price: <input type="text" name="price" ref={refPrice}></input><br/>
-        Seller: <input type="text" name="seller" ref={refSeller}></input><br/>
-        {/* <input type="file" name="image" id="image" accept=".png, .jpg, .jpeg, image/*" ref={refImage}/> */}
+        <label htmlFor='name'>Listing Title: </label>
+        <input type="text" name="name" ref={refName}></input><br/>
+        <label htmlFor='description'>Description: </label>
+        <input type="text" name="description" ref={refDescription}></input><br/>
+        <label htmlFor='image'>Image URL: </label>
+        <input type="text" name="image" ref={refImage}></input><br/>
+        <label htmlFor='price'>Price (ETH): </label>
+        <input type="text" name="price" ref={refPrice}></input><br/>
+        <label htmlFor='seller'>Seller: </label>
+        <input type="text" name="seller" ref={refSeller}></input><br/>
         <input type="submit" value="List Item"/>
       </form>
     </>
