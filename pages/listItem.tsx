@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 //uncontrolled
 const List = () => {
   const router = useRouter()
-  const { id } = router.query
+  // const { id } = router.query
 
   const [listSuccess, setListSuccess] = useState<Boolean | null>();
   const refName = useRef<any>();
@@ -47,10 +47,11 @@ const List = () => {
           'Content-Type': 'application/json',
         }
       })
+      const x : any = await res.json();
       setListSuccess(true);
       // redirectPage();
-      console.log("id " + id);
-      // router.push('/items'+{id});
+      // console.log("id " + id);
+      router.push(`/items/${x._id}`);
     } catch (err) {
       setListSuccess(false);
       console.log(listSuccess)
