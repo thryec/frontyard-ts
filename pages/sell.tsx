@@ -4,7 +4,7 @@ import UserContext from '../context/LoginState';
 import jwtDecode from 'jwt-decode';
 
 //uncontrolled
-const List = () => {
+const Sell = () => {
   const router = useRouter()
   const userLoginState = useContext(UserContext);
 
@@ -91,4 +91,4 @@ const List = () => {
   )
 }
 
-export default List
+export default Sell
