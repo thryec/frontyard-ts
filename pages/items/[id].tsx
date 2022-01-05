@@ -77,6 +77,21 @@ const Details = () => {
     checkBuy();
   }, [isLoaded]);
 
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      console.log("success")
+      router.push("/items");
+    } catch (err) {
+      console.log('delete failed: ', err)
+    }
+  }
+
   return (
     <div>
       {isLoaded ? (
@@ -99,7 +114,11 @@ const Details = () => {
             </button>
             </Link>
           )
-           : ""}
+           : (
+            <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2" onClick={handleDelete}>
+            Delete
+            </button>
+           )}
           <Link href={'/items'}>
             <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
               Back to Item Listing
