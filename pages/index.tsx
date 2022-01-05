@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
 import jwtDecode from 'jwt-decode'
 
 const Home: NextPage = () => {
@@ -30,23 +29,21 @@ const Home: NextPage = () => {
     ListingStartDate: Date
   }
 
-  const renderItems = marketItems.map((item: itemProps) => {
-    return (
-      <div className="shadow-md w-1/6" key={item._id}>
-        <Image src={item.image} alt={item.name} width="250px" height="250px" />
+  const renderItems = marketItems.map((item: itemProps) => (
+    <Link href={'/items/' + item._id} key={item._id}>
+      <div className="shadow-md w-1/6">
+        <img src={item.image} alt="" className="min-w-full" />
         <div className="px-4 align-baseline">
           <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2">{item.name}</h1>
           <p className="text-gray-700 mb-2">{item.description}</p>
           <div className="flex justify-between mt-4">
-            <span className="font-thin text-sm">
-              <Link href="/checkout">Buy</Link>
-            </span>
+            <span className="font-thin text-sm">May 20th 2022</span>
             <span className="mb-2 text-gray-800 font-bold">{item.price} ETH</span>
           </div>
         </div>
       </div>
-    )
-  })
+    </Link>
+  ))
 
   useEffect(() => {
     loadData()

@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <div className='bg-lightgrey'>
       <UserContext.Provider value={userLoginData}>
         <Head>
-          <title>BACKDOOR | {Component.name}</title>
+          <title>backyard | {Component.name}</title>
         </Head>
         <Layout>
           <Component {...pageProps} />

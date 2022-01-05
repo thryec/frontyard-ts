@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import UserContext from '../context/LoginState'
 import Swal from 'sweetalert2'
 
@@ -93,6 +94,10 @@ const LoginForm: React.FC = () => {
           Submit
         </button>
       </div>
+      <h1>No account? Sign up here:</h1>
+      <Link href="/signup">
+        <a className="text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Sign Up</a>
+      </Link>
     </>
   )
 }

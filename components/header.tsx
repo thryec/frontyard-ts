@@ -22,7 +22,7 @@ const Header = () => {
 
     if (token) {
       let decodedToken: any = jwtDecode(token);
-      console.log("Current decoded Token", token);
+      console.log("Current decoded Token", decodedToken);
       if (decodedToken) {
         setUserRole(decodedToken.role);
       }

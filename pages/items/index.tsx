@@ -29,8 +29,8 @@ const Items = () => {
   }
 
   const renderItems = marketItems.map((item: itemProps) => (
-    <Link href={'/items/' + item._id} key={Date.now() + Math.random()}>
-      <div className="shadow-md w-1/6" key={item.name}>
+    <Link href={'/items/' + item._id} key={item._id}>
+      <div className="shadow-md w-1/6">
         <img src={item.image} alt="" className="min-w-full" />
         <div className="px-4 align-baseline">
           <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2">{item.name}</h1>
