@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
+import { useRouter } from 'next/router'
 import Link from 'next/link';
 import jwtDecode from 'jwt-decode';
 import UserContext from '../context/LoginState';
@@ -9,6 +10,7 @@ const Listed = () => {
   const [loaded, setIsLoaded] = useState(false)
   const [user, setUser] = useState()
   const userLoginState = useContext(UserContext)
+  const router = useRouter();
 
   //to check for current user wallet address
   const decodeToken = () => {
@@ -49,6 +51,21 @@ const Listed = () => {
     ListingStartDate: Date
   }
 
+  const handleDelete = async (item: any) => {
+    try {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/${item}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      console.log("success")
+      router.push("/listeditems");
+    } catch (err) {
+      console.log('delete failed: ', err)
+    }
+  }
+
   const renderItems = marketItems.map((item: itemProps) => (
     <Link href={'/items/' + item._id} key={item._id}>
       <div className="shadow-md w-1/6">
@@ -59,6 +76,7 @@ const Listed = () => {
           <div className="flex justify-between mt-4">
             <span className="font-thin text-sm">May 20th 2022</span>
             <span className="mb-2 text-gray-800 font-bold">{item.price} ETH</span>
+            <button onClick={() => handleDelete(item._id)}>delete</button>
           </div>
         </div>
       </div>
@@ -69,7 +87,7 @@ const Listed = () => {
     <>
       {userLoginState.isLoggedIn ? (
       <div className="ml-10">
-        <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div>
+        <div className="mt-6 flex space-x-6">{loaded ? renderItems : <h1>no items</h1>}</div>
       </div>
     ) : <NotLoggedIn/>}
     </>
