@@ -13,8 +13,8 @@ const NotFound = () => {
 
     return (
         <div>
-            <h1>Wrong door!</h1>
-            <h2>Go back to <Link href='/'><a>backdoor</a></Link></h2>
+            <h1>Wrong yard!</h1>
+            <h2>Go back to <Link href='/'><a>backyard</a></Link></h2>
         </div>
     )
 }

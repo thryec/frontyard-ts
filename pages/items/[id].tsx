@@ -22,6 +22,7 @@ const Details = () => {
   const [user, setUser] = useState<any>()
   const [seller, setSeller] = useState<any>()
   const [canBuy, setCanBuy] = useState<Boolean>(false)
+  const [canDelete, setCanDelete] = useState<Boolean>(false)
   const router = useRouter()
   const { id } = router.query
   const userLoginState = useContext(UserContext);
@@ -72,9 +73,18 @@ const Details = () => {
       }
     }
   }
+
+  const checkDelete = () => {
+    if (isLoaded && userLoginState.isLoggedIn) {
+      if (user===seller) {
+        setCanDelete(true)
+      }
+    }
+  }
   
   useEffect(() => {
     checkBuy();
+    checkDelete();
   }, [isLoaded]);
 
   const handleDelete = async () => {
@@ -114,11 +124,13 @@ const Details = () => {
             </button>
             </Link>
           )
-           : (
+           : ""}
+          {canDelete ? (
             <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2" onClick={handleDelete}>
             Delete
             </button>
-           )}
+          )
+           : ""}
           <Link href={'/items'}>
             <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
               Back to Item Listing

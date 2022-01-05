@@ -60,13 +60,18 @@ const Header = () => {
         </Link>
         {userLoginState.isLoggedIn ? (
           <>
-            <Link href="/">
-              <a onClick={handleLogoutClick} className="mr-10">
-                Logout
+              <Link href="/listeditems">
+              <a className="mr-10">
+                Listed Items
               </a>
             </Link>
             <Link href="/sell">
               <a className="mr-10">Sell</a>
+            </Link>
+            <Link href="/">
+              <a onClick={handleLogoutClick} className="mr-10">
+                Logout
+              </a>
             </Link>
             {userRole == "admin" ? <Link href="/users">
               <a className="mr-10">users</a>

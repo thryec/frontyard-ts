@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import { useEffect, useState, useContext } from 'react';
+import Link from 'next/link';
 import jwtDecode from 'jwt-decode';
+import UserContext from '../context/LoginState';
+import NotLoggedIn from "../components/userNotLoggedin";
 
 const Listed = () => {
   const [marketItems, setMarketItems] = useState([])
   const [loaded, setIsLoaded] = useState(false)
   const [user, setUser] = useState()
-
+  const userLoginState = useContext(UserContext)
 
   //to check for current user wallet address
   const decodeToken = () => {
@@ -20,12 +22,8 @@ const Listed = () => {
     }
   }
 
-  useEffect(() => {
-    decodeToken();
-  }, []);
-
   const loadData = async () => {
-    const res = await fetch(`${process.env.API_ENDPOINT}/items/listed?seller=${user}`)
+    const res = await fetch(`${process.env.API_ENDPOINT}/items/listed/${user}`)
     if (res.status !== 200) {
       console.error('Failed to fetch items')
       return
@@ -35,6 +33,10 @@ const Listed = () => {
     setMarketItems(data)
     setIsLoaded(true)
   }
+  useEffect(() => {
+    decodeToken()
+    loadData()
+  }, [loaded])
 
   interface itemProps {
     name: string
@@ -63,14 +65,14 @@ const Listed = () => {
     </Link>
   ))
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
   return (
-    <div className="ml-10">
-      <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div>
-    </div>
+    <>
+      {userLoginState.isLoggedIn ? (
+      <div className="ml-10">
+        <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div>
+      </div>
+    ) : <NotLoggedIn/>}
+    </>
   )
 }
 
