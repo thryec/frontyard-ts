@@ -70,9 +70,6 @@ const Header = () => {
                 Logout
               </a>
             </Link>
-            <Link href="/listItem">
-              <a className="mr-10">Sell</a>
-            </Link>
             {userRole == 'admin' ? (
               <Link href="/users">
                 <a className="mr-10">users</a>
