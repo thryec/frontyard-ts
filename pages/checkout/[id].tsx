@@ -5,6 +5,8 @@ import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import UserContext from '../../context/LoginState'
 import Link from 'next/link'
+import jwtDecode from 'jwt-decode'
+import Swal from 'sweetalert2'
 
 interface itemProps {
   name: string
@@ -70,8 +72,8 @@ const Checkout: NextPage<itemProps> = () => {
   const userLoginState = useContext(UserContext)
 
   const { id } = router.query
-  console.log('item id: ', id)
-  console.log('user login state: ', userLoginState)
+  // console.log('item id: ', id)
+  // console.log('user login state: ', userLoginState)
 
   const fetchItemDetails = async () => {
     try {
@@ -108,7 +110,11 @@ const Checkout: NextPage<itemProps> = () => {
       setWalletAddress(myAddress)
       setIsConnected('Disconnect')
     } else {
-      alert('Please Install Metamask!')
+      Swal.fire({
+        icon: 'error',
+        title: 'Oh no!',
+        text: 'Please install Metamask',
+      })
     }
   }
 
@@ -125,10 +131,35 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }
 
+  const decodeToken = () => {
+    console.log('Inside checkout page: decoding local storage token')
+    let token = localStorage.getItem('token')
+    console.log('Current Token: ', token)
+
+    if (token) {
+      let decodedToken: any = jwtDecode(token)
+      console.log('Current decoded Token', decodedToken)
+      return decodedToken
+    }
+  }
+
   const handleConfirmButton = async () => {
     if (currentItem !== undefined) {
       if (walletAddress === currentItem.seller) {
-        alert('You own this item')
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'You own this item',
+        })
+        return
+      }
+      const jwt = decodeToken()
+      if (jwt.walletAddres !== walletAddress) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please use the wallet address you have logged in with to purchase this item.',
+        })
         return
       }
       const shippingData: shippingAddress = {
@@ -170,6 +201,7 @@ const Checkout: NextPage<itemProps> = () => {
 
   const executeTransaction = async () => {
     if (currentItem !== undefined) {
+      console.log('price: ', currentItem.price)
       try {
         const txn = await window.ethereum.request({
           method: 'eth_sendTransaction',
@@ -177,14 +209,18 @@ const Checkout: NextPage<itemProps> = () => {
             {
               from: walletAddress,
               to: currentItem.seller,
-              value: '0x0',
-              gasLimit: ethers.utils.parseUnits(testItem.price.toString(), 'ether').toHexString(),
+              value: ethers.utils.parseUnits(currentItem.price.toString(), 'ether').toHexString(),
               maxFeePerGas: '0x2540be400',
               maxPriorityFeePerGas: '0x3b9aca00',
             },
           ],
         })
         setIsLoading(true)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'You own this item',
+        })
         setEthTxnId(txn)
         console.log('txn: ', txn)
         const receipt = await provider.waitForTransaction(txn)
@@ -243,6 +279,10 @@ const Checkout: NextPage<itemProps> = () => {
       fetchItemDetails()
     }
   }, [id])
+
+  // useEffect(() => {
+  //   decodeToken()
+  // })
 
   useEffect(() => {
     if (typeof window.ethereum !== 'undefined') {
