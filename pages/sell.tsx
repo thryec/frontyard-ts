@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect, useRef} from 'react';
+import React, {useState, useContext, useRef} from 'react';
 import { useRouter } from 'next/router';
 import UserContext from '../context/LoginState';
 import NotLoggedIn from "../components/userNotLoggedin";
@@ -7,17 +7,6 @@ import jwtDecode from 'jwt-decode';
 const Sell = () => {
   const router = useRouter();
   const userLoginState = useContext(UserContext);
-
-  const checkLoginStatus = () => {
-    let token = localStorage.getItem('token');
-    if (token) {
-      userLoginState.setLoginState(true);
-    }
-  }
-
-  useEffect(() => {
-    checkLoginStatus();
-  }, []);
 
   const refName = useRef<any>();
   const refDescription = useRef<any>();
@@ -38,12 +27,13 @@ const Sell = () => {
   const handleChange = (event: any) => {
     const label = event.target.name;
     const value = event.target.value;
-    // console.log("this is the input: ", input)
     setInput({...input, [label]:value})
+    // console.log("this is the input: ", input)
   }
 
+  ////check if price input is a number within 123456.1234 format
   const verifyPrice = () => {
-    const re = /^\d{0,6}(\.\d{1,2})?$|^\d{0,2}(\.\d{1,4})?$/;
+    const re = /^\d{0,6}(\.\d{1,4})?$/;
     const isNumber = re.test(input.price);
     return isNumber
   }
