@@ -3,19 +3,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        midnavy: '#0F1640',
-        darknavy: '#090D26',
-        darkyellow: '#F2DC6D',
-        lightyellow: '#F2E5A2',
-        brightred: '#F20F22',
-        dullred: '#D91828',
         lightblack: '#0D0D0D',
         lightgrey: '#F3F3F3',
-        wine: '#73020C',
+        forestgreen: '#0B1C03',
+        lightorange: '#F5AA5B',
+        sand: '#F4F2EC',
       },
       fontFamily: {
-        Righteous: ['Righteous', 'cursive'],
-        Bebas: ['Bebas Neue', 'cursive'],
+        Lato: ['Lato', 'sans-serif'],
+        Lora: ['Lora', 'serif'],
+        Montserrat: ['Montserrat', 'sans-serif'],
+        OpenSans: ['Open Sans', 'sans-serif'],
       },
     },
   },
