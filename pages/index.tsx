@@ -94,8 +94,14 @@ const Home: NextPage = () => {
             </div>
         </div>
     </div>
-</div>    <h1>New Listings</h1>
-      <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div>
+</div>
+    <div className="flex flex-wrap w-full mb-8">
+        <div className="w-full mb-6 lg:mb-0">
+            <h1 className="sm:text-3xl text-3xl font-medium title-font mb-2 text-gray-900 font-Lora">New Listings</h1>
+            <div className="h-1 w-20 bg-forestgreen rounded"></div>
+        </div>
+    </div>
+            <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div>
     </div>
   )
 }

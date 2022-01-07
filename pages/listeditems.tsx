@@ -68,15 +68,14 @@ const Listed = () => {
 
   const renderItems = marketItems.map((item: itemProps) => (
     <Link href={'/items/' + item._id} key={item._id}>
-      <div className="shadow-md w-1/6">
+      <div className="shadow-md w-1/6 cursor-pointer">
         <img src={item.image} alt="" className="min-w-full" />
         <div className="px-4 align-baseline">
-          <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2">{item.name}</h1>
-          <p className="text-gray-700 mb-2">{item.description}</p>
+          <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2 font-Montserrat">{item.name}</h1>
+          <p className="text-gray-700 mb-2 font-Montserrat">{item.description}</p>
           <div className="flex justify-between mt-4">
-            <span className="font-thin text-sm">May 20th 2022</span>
-            <span className="mb-2 text-gray-800 font-bold">{item.price} ETH</span>
-            <button onClick={() => handleDelete(item._id)}>delete</button>
+            <span className="mb-2 text-gray-800 font-bold font-Montserrat">{item.price} ETH</span>
+            <button className="font-Montserrat" onClick={() => handleDelete(item._id)}>delete</button>
           </div>
         </div>
       </div>
@@ -86,7 +85,13 @@ const Listed = () => {
   return (
     <>
       {userLoginState.isLoggedIn ? (
-      <div className="ml-10">
+      <div className="ml-10  max-w-full">
+        <div className="flex flex-wrap w-full mb-8">
+        <div className="w-full mb-6 lg:mb-0">
+          <h1 className="sm:text-3xl text-3xl font-medium title-font mb-2 text-gray-900 font-Lora">Your Listed Items</h1>
+          <div className="h-1 w-20 bg-forestgreen rounded"></div>
+        </div>
+      </div>
         <div className="mt-6 flex space-x-6">{loaded ? renderItems : <h1>no items</h1>}</div>
       </div>
     ) : <NotLoggedIn/>}

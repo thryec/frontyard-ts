@@ -6,9 +6,9 @@ const NotFound = () => {
     const router = useRouter();
 
     useEffect(() => {
-        // setTimeout(() => {
-            // router.push('/');
-        // }, 3000)
+        setTimeout(() => {
+            router.push('/');
+        }, 5000)
     }, [])
 
     return (
@@ -45,7 +45,7 @@ const NotFound = () => {
               </p>
               <p className="text-base font-normal text-gray-600 dark:text-gray-300 font-OpenSans">
                 You may return to
-                <a href="http://localhost:3000" className="text-orange-600"> <span className="hover:underline">home page</span></a>.
+                <a href="http://localhost:3000" className="text-orange-600"> <span className="hover:underline">home page</span></a> or you will be redirected.
               </p>
             </div>
           </div>

@@ -84,7 +84,12 @@ const Sell = () => {
     <>
       {userLoginState.isLoggedIn ? (
         <>
-          <h1 className="ml-10">List Item Here</h1>
+          <div className="flex flex-wrap w-full mb-8">
+        <div className="w-full mb-6 lg:mb-0">
+          <h1 className="sm:text-3xl text-3xl font-medium title-font mb-2 text-gray-900 font-Lora">List Your Items</h1>
+          <div className="h-1 w-20 bg-forestgreen rounded"></div>
+        </div>
+      </div>
           <form onSubmit={handleSubmit}>
             <label htmlFor='name'>Listing Title: </label>
             <input type="text" name="name" ref={refName} onChange={handleChange} onBlur={handleNameBlur}></input><br/>

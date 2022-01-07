@@ -81,24 +81,31 @@ const LoginForm: React.FC = () => {
 
   return (
     <>
-      <h1 className="text-center font-bold m-5">Login Page</h1>
-      <div className="flex flex-col text-center m-10">
-        <label>Email:</label>
-        <input value={login.email} onChange={handleEmailChange} />
-        <label>Password:</label>
-        <input value={login.password} type="password" onChange={handlePasswordChange} />
+<div className="w-full h-screen-10 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+  <div className="w-full sm:max-w-md p-5 mx-auto">
+      <h2 className="mb-12 text-center text-3xl font-semibold font-Lora">Welcome Back.</h2>
+      <div className="mb-4">
+        <label className="block mb-1 text-Montserrat">Email</label>
+        <input value={login.email} onChange={handleEmailChange} className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full text-Montserrat"/>
+        <label className="block mb-1">Password</label>
+        <input value={login.password} type="password" onChange={handlePasswordChange} className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full text-Montserrat"/>
+        <div className="mb-4">
+          <br/>
         <button
           type="submit"
           onClick={handleSubmit}
-          className="text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          className="w-full inline-flex items-center justify-center px-4 py-2 bg-lightorange border border-transparent rounded-md font-semibold capitalize text-white hover:bg-white-700 active:bg-white-700 focus:outline-none focus:border-orange-700 focus:ring focus:ring-orange-200 disabled:opacity-25 transition text-Montserrat">
           Submit
         </button>
+        </div>
       </div>
-      <h1>No account? Sign up here:</h1>
+      <div className="text-Montserrat text-center mt-6">
+      You don't have an account?
       <Link href="/signup">
-        <a className="text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Sign Up</a>
+        <a> <span className="underline">Sign up now.</span></a>
       </Link>
-    </>
+      </div>
+      </div></div></>
   )
 }
 
