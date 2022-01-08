@@ -81,31 +81,46 @@ const LoginForm: React.FC = () => {
 
   return (
     <>
-<div className="w-full h-screen-10 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
-  <div className="w-full sm:max-w-md p-5 mx-auto">
-      <h2 className="mb-12 text-center text-3xl font-semibold font-Lora">Welcome Back.</h2>
-      <div className="mb-4 font-Montserrat">
-        <label className="block mb-1 font-Montserrat">Email</label>
-        <input value={login.email} onChange={handleEmailChange} className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"/>
-        <label className="block mb-1 font-Montserrat">Password</label>
-        <input value={login.password} type="password" onChange={handlePasswordChange} className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"/>
-        <div className="mb-4">
-          <br/>
-        <button
-          type="submit"
-          onClick={handleSubmit}
-          className="w-full inline-flex items-center justify-center px-4 py-2 bg-lightorange border border-transparent rounded-md font-semibold capitalize text-white hover:bg-white-700 active:bg-white-700 focus:outline-none focus:border-orange-700 focus:ring focus:ring-orange-200 disabled:opacity-25 transition font-Montserrat">
-          Submit
-        </button>
+      <div className="w-full h-screen-10 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+        <div className="w-full sm:max-w-md p-5 mx-auto">
+          <h2 className="mb-12 text-center text-3xl font-semibold font-Lora">Welcome Back.</h2>
+          <div className="mb-4 font-Montserrat">
+            <label className="block mb-1 font-Montserrat">Email</label>
+            <input
+              value={login.email}
+              onChange={handleEmailChange}
+              className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"
+            />
+            <label className="block mb-1 font-Montserrat">Password</label>
+            <input
+              value={login.password}
+              type="password"
+              onChange={handlePasswordChange}
+              className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"
+            />
+            <div className="mb-4">
+              <br />
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                className="w-full inline-flex items-center justify-center px-4 py-2 bg-lightorange border border-transparent rounded-md font-semibold capitalize text-white hover:bg-white-700 active:bg-white-700 focus:outline-none focus:border-orange-700 focus:ring focus:ring-orange-200 disabled:opacity-25 transition font-Montserrat">
+                Submit
+              </button>
+            </div>
+          </div>
+          <div className="font-Montserrat text-center mt-6">
+            You don&apos;t have an account?
+            <Link href="/signup">
+              <a>
+                {' '}
+                <span className="underline">Sign up now.</span>
+              </a>
+            </Link>
+          </div>
         </div>
       </div>
-      <div className="font-Montserrat text-center mt-6">
-      You don't have an account?
-      <Link href="/signup">
-        <a> <span className="underline underline-offset-4">Sign up now.</span></a>
-      </Link>
-      </div>
-      </div></div></>
+
+    </>
   )
 }
 

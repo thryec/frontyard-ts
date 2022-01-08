@@ -1,48 +1,46 @@
-
 import 'tailwindcss/tailwind.css'
 import { Autocomplete, TextField } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 const SearchBar = () => {
-    const [itemList, setItemList] = useState<Array<any>>([]);
-    const [value, setValue] = useState("Enter Item name");
-    const [inputValue, setInputValue] = useState('');
+  const [itemList, setItemList] = useState<Array<any>>([])
+  const [value, setValue] = useState<any>('Enter Item name')
+  const [inputValue, setInputValue] = useState('')
 
-    const router = useRouter();
+  const router = useRouter()
 
-    const getItemList = async () => {
-        try {
-            const res = await fetch(`${process.env.API_ENDPOINT}/items/listed`);
-            if (!res) {
-                throw new Error("Fetching of Item list failed");
-            }
-            const data = await res.json();
-            if (!data) {
-                throw new Error("Converting of Data failed");
-            }
-            console.log("data: ", data);
-            let tempArray: any = [];
-            data.map((item: any) => {
-                tempArray.push({ label: item.name, id: item._id });
-            })
+  const getItemList = async () => {
+    try {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/listed`)
+      if (!res) {
+        throw new Error('Fetching of Item list failed')
+      }
+      const data = await res.json()
+      if (!data) {
+        throw new Error('Converting of Data failed')
+      }
+      console.log('data: ', data)
+      let tempArray: any = []
+      data.map((item: any) => {
+        tempArray.push({ label: item.name, id: item._id })
+      })
 
-            setItemList(tempArray);
-            console.log("Item List: ", itemList);
-        } catch (error: any) {
-            console.log(error.message);
-        }
-
+      setItemList(tempArray)
+      console.log('Item List: ', itemList)
+    } catch (error: any) {
+      console.log(error.message)
     }
+  }
 
-    const handleSearch = () => {
-        console.log(value);
-        router.push(`/items/${value.id}`);
-    }
+  const handleSearch = () => {
+    console.log(value)
+    router.push(`/items/${value.id}`)
+  }
 
-    useEffect(() => {
-        getItemList();
-    }, []);
+  useEffect(() => {
+    getItemList()
+  }, [])
 
     return (<>
         <div className='flex'>
@@ -76,6 +74,7 @@ const SearchBar = () => {
             </button> */}
         </div>
     </>)
+
 }
 
-export default SearchBar;
+export default SearchBar
