@@ -8,6 +8,18 @@ import Link from 'next/link'
 import jwtDecode from 'jwt-decode'
 import Swal from 'sweetalert2'
 
+interface itemProps {
+  name: string
+  description: string
+  price: number
+  _id: string
+  seller?: string
+  image?: string
+  quantity?: number
+  listingEndDate?: Date
+  ListingStartDate?: Date
+}
+
 const Checkout: NextPage<itemProps> = () => {
   const userLoginState = useContext(UserContext)
   const router = useRouter()
@@ -32,37 +44,37 @@ const Checkout: NextPage<itemProps> = () => {
   const refState = useRef<any>()
   const refPostalCode = useRef<any>()
   const [input, setInput] = useState<any>({
-    firstName : "",
-    lastName : "",
-    emailAddress : "",
-    country : "",
-    streetAddress: "",
-    city: "",
-    state: "",
+    firstName: '',
+    lastName: '',
+    emailAddress: '',
+    country: '',
+    streetAddress: '',
+    city: '',
+    state: '',
     postalCode: 0,
-  });
-  const [firstNameEmpty, setFirstNameEmpty] = useState<boolean | null>(null);
-  const [lastNameEmpty, setLastNameEmpty] = useState<boolean | null>(null);
-  const [emailAddressEmpty, setEmailAddressEmpty] = useState<boolean | null>(null);
-  const [countryEmpty, setCountryEmpty] = useState<boolean | null>(null);
-  const [streetAddressEmpty, setStreetAddressEmpty] = useState<boolean | null>(null);
-  const [cityEmpty, setCityEmpty] = useState<boolean | null>(null);
-  const [stateEmpty, setStateEmpty] = useState<boolean | null>(null);
-  const [postalCodeEmpty, setPostalCodeEmpty] = useState<boolean | null>(null);
+  })
+  const [firstNameEmpty, setFirstNameEmpty] = useState<boolean | null>(null)
+  const [lastNameEmpty, setLastNameEmpty] = useState<boolean | null>(null)
+  const [emailAddressEmpty, setEmailAddressEmpty] = useState<boolean | null>(null)
+  const [countryEmpty, setCountryEmpty] = useState<boolean | null>(null)
+  const [streetAddressEmpty, setStreetAddressEmpty] = useState<boolean | null>(null)
+  const [cityEmpty, setCityEmpty] = useState<boolean | null>(null)
+  const [stateEmpty, setStateEmpty] = useState<boolean | null>(null)
+  const [postalCodeEmpty, setPostalCodeEmpty] = useState<boolean | null>(null)
 
   const handleChange = (event: any) => {
-    const label = event.target.name;
-    const value = event.target.value;
-    setInput({...input, [label]:value})
-    console.log("this is the input: ", input)
+    const label = event.target.name
+    const value = event.target.value
+    setInput({ ...input, [label]: value })
+    console.log('this is the input: ', input)
   }
 
   //To validate Email
   function validateEmail() {
-  const re =
+    const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(String(input.emailAddress).toLowerCase())
-}
+    return re.test(String(input.emailAddress).toLowerCase())
+  }
 
   ////to check if fields are empty
   const handleFirstNameBlur = (): void => {
@@ -77,20 +89,20 @@ const Checkout: NextPage<itemProps> = () => {
     !refEmailAddress.current.value ? setEmailAddressEmpty(true) : setEmailAddressEmpty(false)
     // console.log("this is EmailAddressblur: ", EmailAddressEmpty)
   }
-//   const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null)
-//   const handleEmailAddressBlur = () => {
-//     if (!refEmailAddress.current.value) {
-//       setEmailAddressEmpty(true)
-//     } else {
-//         const isValid = validateEmail(input.emailAddress)
-//         console.log("this is input email address",input.emailAddress)
-//         console.log("this is isvalid",isValid)
-        
-//         setIsEmailValid(isValid)
-//         console.log("this is isemailvalid ", isEmailValid)
-//         setEmailAddressEmpty(false)
-//     }
-// }
+  //   const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null)
+  //   const handleEmailAddressBlur = () => {
+  //     if (!refEmailAddress.current.value) {
+  //       setEmailAddressEmpty(true)
+  //     } else {
+  //         const isValid = validateEmail(input.emailAddress)
+  //         console.log("this is input email address",input.emailAddress)
+  //         console.log("this is isvalid",isValid)
+
+  //         setIsEmailValid(isValid)
+  //         console.log("this is isemailvalid ", isEmailValid)
+  //         setEmailAddressEmpty(false)
+  //     }
+  // }
 
   const handleCountryBlur = (): void => {
     !refCountry.current.value ? setCountryEmpty(true) : setCountryEmpty(false)
@@ -183,7 +195,18 @@ const Checkout: NextPage<itemProps> = () => {
   }
 
   const handleConfirmButton = async () => {
-    if (currentItem !== undefined && validateEmail() && input.firstName && input.lastName && input.emailAddress && input.country && input.streetAddress && input.city && input.state && input.postalCode) {
+    if (
+      currentItem !== undefined &&
+      validateEmail() &&
+      input.firstName &&
+      input.lastName &&
+      input.emailAddress &&
+      input.country &&
+      input.streetAddress &&
+      input.city &&
+      input.state &&
+      input.postalCode
+    ) {
       if (walletAddress === currentItem.seller) {
         Swal.fire({
           icon: 'error',
@@ -201,7 +224,7 @@ const Checkout: NextPage<itemProps> = () => {
         })
         return
       }
-      let shippingData = {...input}
+      let shippingData = { ...input }
 
       const initialiseTxn = {
         seller: currentItem.seller,
@@ -371,7 +394,7 @@ const Checkout: NextPage<itemProps> = () => {
                         autoComplete="given-name"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {firstNameEmpty ? <h1>Please enter first name</h1> : ""}
+                      {firstNameEmpty ? <h1>Please enter first name</h1> : ''}
                     </div>
 
                     <div className="col-span-6 sm:col-span-3">
@@ -390,7 +413,7 @@ const Checkout: NextPage<itemProps> = () => {
                         autoComplete="family-name"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                        {lastNameEmpty ? <h1>Please enter last name</h1> : ""}
+                      {lastNameEmpty ? <h1>Please enter last name</h1> : ''}
                     </div>
                     <div className="col-span-6 sm:col-span-4">
                       <label
@@ -408,8 +431,8 @@ const Checkout: NextPage<itemProps> = () => {
                         autoComplete="email"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {emailAddressEmpty ? <h1>Please enter email address</h1> : ""}
-                      {validateEmail() ? "" : <h1>Please enter email in proper format</h1>}
+                      {emailAddressEmpty ? <h1>Please enter email address</h1> : ''}
+                      {validateEmail() ? '' : <h1>Please enter email in proper format</h1>}
                     </div>
                     <div className="col-span-6 sm:col-span-3">
                       <label htmlFor="country" className="block text-md font-medium text-gray-700">
@@ -429,7 +452,7 @@ const Checkout: NextPage<itemProps> = () => {
                         <option>United States</option>
                         <option>Canada</option>
                       </select>
-                      {countryEmpty ? <h1>Please choose country</h1> : ""}
+                      {countryEmpty ? <h1>Please choose country</h1> : ''}
                     </div>
                     <div className="col-span-6">
                       <label
@@ -447,7 +470,7 @@ const Checkout: NextPage<itemProps> = () => {
                         autoComplete="street-address"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {streetAddressEmpty ? <h1>Please enter street address</h1> : ""}
+                      {streetAddressEmpty ? <h1>Please enter street address</h1> : ''}
                     </div>
                     <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                       <label htmlFor="city" className="block text-md font-medium text-gray-700">
@@ -463,7 +486,7 @@ const Checkout: NextPage<itemProps> = () => {
                         autoComplete="address-level2"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {cityEmpty ? <h1>Please enter city</h1> : ""}
+                      {cityEmpty ? <h1>Please enter city</h1> : ''}
                     </div>
                     <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                       <label htmlFor="region" className="block text-md font-medium text-gray-700">
@@ -479,7 +502,7 @@ const Checkout: NextPage<itemProps> = () => {
                         autoComplete="address-level1"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {stateEmpty ? <h1>Please enter state</h1> : ""}
+                      {stateEmpty ? <h1>Please enter state</h1> : ''}
                     </div>
                     <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                       <label
@@ -497,7 +520,7 @@ const Checkout: NextPage<itemProps> = () => {
                         autoComplete="postal-code"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {postalCodeEmpty ? <h1>Please enter postal code</h1> : ""}
+                      {postalCodeEmpty ? <h1>Please enter postal code</h1> : ''}
                     </div>
                   </div>
                 </div>
