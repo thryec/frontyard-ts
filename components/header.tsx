@@ -48,7 +48,7 @@ const Header = () => {
       <div className="logo">
         <Link href="/">
           <a>
-          <h1 className='font-Lora text-4xl float-left text-forestgreen'>backyard.</h1>
+            <h1 className='font-Lora text-4xl float-left text-forestgreen'>backyard.</h1>
           </a>
         </Link>
         {/* <Link href="/">
@@ -63,7 +63,7 @@ const Header = () => {
         </Link>
         {userLoginState.isLoggedIn ? (
           <>
-              <Link href="/listeditems">
+            <Link href="/listeditems">
               <a className="mr-10 font-Montserrat">
                 Listed Items
               </a>
@@ -94,8 +94,8 @@ const Header = () => {
             </Link>
           </>
         )}
-        <SearchBar />
       </nav>
+      <SearchBar />
     </header>
   )
 }
