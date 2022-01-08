@@ -45,10 +45,10 @@ const Header = () => {
 
   return (
     <header className="flex justify-center mt-10">
-      <div className=" float-left">
+      <div className=" float-left mr-10">
         <Link href="/">
           <a>
-            <h1 className='font-Lora text-4xl text-forestgreen'>backyard.</h1>
+            <h1 className='font-Lora text-4xl text-forestgreen mr-96'>backyard.</h1>
           </a>
         </Link>
         {/* <Link href="/">
