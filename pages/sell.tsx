@@ -7,7 +7,6 @@ import jwtDecode from 'jwt-decode'
 const Sell = () => {
   const router = useRouter()
   const userLoginState = useContext(UserContext)
-
   const refName = useRef<any>()
   const refDescription = useRef<any>()
   const refImage = useRef<any>()
@@ -31,7 +30,7 @@ const Sell = () => {
     // console.log("this is the input: ", input)
   }
 
-  ////check if price input is a number within 123456.1234 format
+  //check if price input is a number within 123456.1234 format
   const verifyPrice = () => {
     const re = /^\d{0,6}(\.\d{1,4})?$/
     const isNumber = re.test(input.price)
