@@ -142,7 +142,8 @@ const Signup: React.FC = () => {
             timerProgressBar: true,
             didOpen: () => {
                 Swal.showLoading()
-                const b: any = Swal.getHtmlContainer().querySelector('b')
+                const b1: any = Swal.getHtmlContainer();
+                const b: any = b1.querySelector('b');
                 timerInterval = setInterval(() => {
                     b.textContent = Swal.getTimerLeft()
                 }, 100)
