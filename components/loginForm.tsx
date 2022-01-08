@@ -102,7 +102,7 @@ const LoginForm: React.FC = () => {
       <div className="font-Montserrat text-center mt-6">
       You don't have an account?
       <Link href="/signup">
-        <a> <span className="underline">Sign up now.</span></a>
+        <a> <span className="underline underline-offset-4">Sign up now.</span></a>
       </Link>
       </div>
       </div></div></>

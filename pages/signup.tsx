@@ -13,7 +13,7 @@ const Signup: React.FC = () => {
     const router = useRouter()
 
     interface LoginDetails {
-        username: string
+        username: strings
         email: string
         password: string
         walletAddress: string
@@ -161,81 +161,156 @@ const Signup: React.FC = () => {
     }
 
     return (
-        <>
-            <h1 className="text-center font-bold m-5">Sign Up For New Account</h1>
-            <div className="flex flex-col text-center m-10">
-                <label htmlFor="username" className="customLabel">
-                    Please key in a user name:
-                </label>
-                <input
-                    id="username"
-                    className="customInput"
-                    ref={usernameInputRef}
-                    value={newAccount.username}
-                    type="text"
-                    onChange={handleUserNameChange}
-                    onBlur={onUserNameBlur}
-                />
-                {isUserNameEmpty ? (
-                    <span className="font-bold text-red-600"> Please Fill in UserName</span>
-                ) : (
-                    ''
-                )}
-                <label htmlFor="email" className="customLabel">
-                    Please key in a email:
-                </label>
-                <input
-                    id="email"
-                    className="customInput"
-                    ref={emailInputRef}
-                    value={newAccount.email}
-                    onChange={handleEmailChange}
-                    onBlur={onEmailBlur}
-                />
-                {isEmailValid == false ? (
-                    <span className="font-bold text-red-600">Invalid Email Format</span>
-                ) : (
-                    ''
-                )}
-                {isEmailEmpty ? <span className="font-bold text-red-600">Please Fill in Email</span> : ''}
-                <label className="customLabel">Please key in a password:</label>
-                <input
-                    className="customInput"
-                    ref={passwordInputRef}
-                    value={newAccount.password}
-                    type="password"
-                    onChange={handlePasswordChange}
-                    onBlur={onPasswordBlur}
-                />
-                {isPasswordEmpty ? (
-                    <span className="font-bold text-red-600">Please Fill in Password</span>
-                ) : (
-                    ''
-                )}
-                <label className="customLabel">Please key in your wallet address</label>
-                <input
-                    className="customInput"
-                    ref={walletAddressInputRef}
-                    value={newAccount.walletAddress}
-                    type="text"
-                    onChange={handleWalletAddressChange}
-                    onBlur={onWalletAddressBlur}
-                />
-                {isWalletAddressEmpty ? (
-                    <span className="font-bold text-red-600">Please Fill in Wallet Address</span>
-                ) : (
-                    ''
-                )}
+        // <>
+        //     <h1 className="text-center font-bold m-5">Sign Up For New Account</h1>
+        //     <div className="flex flex-col text-center m-10">
+        //         <label htmlFor="username" className="customLabel">
+        //             Please key in a user name:
+        //         </label>
+        //         <input
+        //             id="username"
+        //             className="customInput"
+        //             ref={usernameInputRef}
+        //             value={newAccount.username}
+        //             type="text"
+        //             onChange={handleUserNameChange}
+        //             onBlur={onUserNameBlur}
+        //         />
+        //         {isUserNameEmpty ? (
+        //             <span className="font-bold text-red-600"> Please Fill in UserName</span>
+        //         ) : (
+        //             ''
+        //         )}
+        //         <label htmlFor="email" className="customLabel">
+        //             Please key in a email:
+        //         </label>
+        //         <input
+        //             id="email"
+        //             className="customInput"
+        //             ref={emailInputRef}
+        //             value={newAccount.email}
+        //             onChange={handleEmailChange}
+        //             onBlur={onEmailBlur}
+        //         />
+        //         {isEmailValid == false ? (
+        //             <span className="font-bold text-red-600">Invalid Email Format</span>
+        //         ) : (
+        //             ''
+        //         )}
+        //         {isEmailEmpty ? <span className="font-bold text-red-600">Please Fill in Email</span> : ''}
+        //         <label className="customLabel">Please key in a password:</label>
+        //         <input
+        //             className="customInput"
+        //             ref={passwordInputRef}
+        //             value={newAccount.password}
+        //             type="password"
+        //             onChange={handlePasswordChange}
+        //             onBlur={onPasswordBlur}
+        //         />
+        //         {isPasswordEmpty ? (
+        //             <span className="font-bold text-red-600">Please Fill in Password</span>
+        //         ) : (
+        //             ''
+        //         )}
+        //         <label className="customLabel">Please key in your wallet address</label>
+        //         <input
+        //             className="customInput"
+        //             ref={walletAddressInputRef}
+        //             value={newAccount.walletAddress}
+        //             type="text"
+        //             onChange={handleWalletAddressChange}
+        //             onBlur={onWalletAddressBlur}
+        //         />
+        //         {isWalletAddressEmpty ? (
+        //             <span className="font-bold text-red-600">Please Fill in Wallet Address</span>
+        //         ) : (
+        //             ''
+        //         )}
 
-                <button
-                    disabled={!isAllValid}
-                    type="submit"
-                    onClick={handleSubmit}
-                    className="text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-500">
-                    Confirm
-                </button>
-            </div>
-        </>
+        //         <button
+        //             disabled={!isAllValid}
+        //             type="submit"
+        //             onClick={handleSubmit}
+        //             className="text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-500">
+        //             Confirm
+        //         </button>
+        //     </div>
+        // </>
+        <>
+        <div className="w-full h-screen-10 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+          <div className="w-full sm:max-w-md p-5 mx-auto">
+              <h2 className="mb-12 text-center text-3xl font-semibold font-Lora">Sign Up.</h2>
+              <div className="mb-4 font-Montserrat">
+        
+                        <label htmlFor="username" className="block mb-1 font-Montserrat">
+                            Username
+                        </label>
+                        <input
+                            id="username"
+        className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"                    ref={usernameInputRef}
+                            value={newAccount.username}
+                            type="text"
+                            onChange={handleUserNameChange}
+                            onBlur={onUserNameBlur}
+                        />
+                        {isUserNameEmpty ? (
+                            <span className="font-bold text-red-600"> Please fill in Username</span>
+                        ) : (
+                            ''
+                        )}
+                        <label htmlFor="email" className="block mb-1 font-Montserrat">
+                            Email
+                        </label>
+                        <input
+                            id="email"
+        className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"                    ref={emailInputRef}
+                            value={newAccount.email}
+                            onChange={handleEmailChange}
+                            onBlur={onEmailBlur}
+                        />
+                        {isEmailValid == false ? (
+                            <span className="font-bold text-red-600">Invalid Email format</span>
+                        ) : (
+                            ''
+                        )}
+                        {isEmailEmpty ? <span className="font-bold text-red-600">Please fill in Email</span> : ''}
+                        <label className="block mb-1 font-Montserrat">Password</label>
+                        <input
+        className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"                    ref={passwordInputRef}
+                            value={newAccount.password}
+                            type="password"
+                            onChange={handlePasswordChange}
+                            onBlur={onPasswordBlur}
+                        />
+                        {isPasswordEmpty ? (
+                            <span className="font-bold text-red-600">Please fill in Password</span>
+                        ) : (
+                            ''
+                        )}
+                        <label className="block mb-1 font-Montserrat">Metamask Wallet Address</label>
+                        <input
+        className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"                    ref={walletAddressInputRef}
+                            value={newAccount.walletAddress}
+                            type="text"
+                            onChange={handleWalletAddressChange}
+                            onBlur={onWalletAddressBlur}
+                        />
+                        {isWalletAddressEmpty ? (
+                            <span className="font-bold text-red-600">Please fill in Metamask Wallet Address</span>
+                        ) : (
+                            ''
+                        )}
+                        <br/><br/>
+                        <button
+                            disabled={!isAllValid}
+                            type="submit"
+                            onClick={handleSubmit}
+                  className="w-full inline-flex items-center justify-center px-4 py-2 bg-lightorange border border-transparent rounded-md font-semibold capitalize text-white hover:bg-white-700 active:bg-white-700 focus:outline-none focus:border-orange-700 focus:ring focus:ring-orange-200 disabled:opacity-25 transition font-Montserrat">
+                            Create Account
+                        </button>
+                    </div></div></div>
+                </>
+        
     )
 }
 
