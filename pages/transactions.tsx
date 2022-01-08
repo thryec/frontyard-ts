@@ -106,9 +106,10 @@ const Transactions: NextPage = () => {
 
   const renderPurchases = () => {
     if (purchaseData.length !== 0) {
-      return purchaseData.map((txn: transactions) => {
+      return purchaseData.map((txn: transactions | any) => {
         console.log('purchase txn: ', txn)
         const date = txn.purchaseDate
+        console.log('date: ', date)
         const dateFormatted = date.slice(0, 10)
         console.log('rendering')
         return (
@@ -130,7 +131,7 @@ const Transactions: NextPage = () => {
 
   const renderSales = () => {
     if (salesData.length !== 0) {
-      return salesData.map((txn: transactions) => {
+      return salesData.map((txn: transactions | any) => {
         console.log('sales txn: ', txn)
         const date = txn.purchaseDate
         const dateFormatted = date.slice(0, 10)
