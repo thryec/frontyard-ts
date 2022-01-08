@@ -48,7 +48,7 @@ const Header = () => {
       <div className="logo">
         <Link href="/">
           <a>
-            <h1 className='font-Lora text-4xl float-left text-forestgreen'>backyard.</h1>
+            <h1 className="font-Lora text-4xl float-left text-forestgreen">backyard.</h1>
           </a>
         </Link>
         {/* <Link href="/">
@@ -59,14 +59,14 @@ const Header = () => {
       </div>
       <nav>
         <Link href="/items">
-          <a className="mr-10 text-white text-lg font-Montserrat text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-lightorange hover:bg-brightorange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brightorange-500">Buy</a>
+          <a className="mr-10 text-white text-lg font-Montserrat text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-lightorange hover:bg-brightorange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brightorange-500">
+            Buy
+          </a>
         </Link>
         {userLoginState.isLoggedIn ? (
           <>
             <Link href="/listeditems">
-              <a className="mr-10 font-Montserrat">
-                Listed Items
-              </a>
+              <a className="mr-10 font-Montserrat">Listed Items</a>
             </Link>
             <Link href="/sell">
               <a className="mr-10 font-Montserrat">Sell</a>
@@ -75,6 +75,9 @@ const Header = () => {
               <a onClick={handleLogoutClick} className="mr-10 font-Montserrat">
                 Logout
               </a>
+            </Link>
+            <Link href="/transactions">
+              <a className="mr-10 font-Montserrat">History</a>
             </Link>
             {userRole == 'admin' ? (
               <Link href="/users">

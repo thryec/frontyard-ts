@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react'
 import Image from 'next/image'
 import UserContext from '../context/LoginState'
 import Link from 'next/link'
+import jwtDecode from 'jwt-decode'
 
 const userAddress = '0xe82d5C6B394D9C4dE32F0913e6cE82Dd8dc39226'
 const itemId = '61cfb6b18308bd18ab4b1a2e'
@@ -47,13 +48,14 @@ const Transactions: NextPage = () => {
   const [testItem, setTestItem] = useState<itemProps>()
   const [dataLoaded, setDataLoaded] = useState<Boolean>(false)
   const userLoginState = useContext(UserContext)
+  const [walletAddress, setWalletAddress] = useState<String>()
 
   // console.log('user login state, ', userLoginState)
 
   const fetchPurchases = async () => {
     try {
       const res = await fetch(
-        `${process.env.API_ENDPOINT}/transactions/purchases?user=${userAddress}`,
+        `${process.env.API_ENDPOINT}/transactions/purchases?user=${walletAddress}`,
         {
           method: 'GET',
           headers: {
@@ -72,7 +74,7 @@ const Transactions: NextPage = () => {
   const fetchSales = async () => {
     try {
       const res = await fetch(
-        `${process.env.API_ENDPOINT}/transactions/sales?user=${userAddress}`,
+        `${process.env.API_ENDPOINT}/transactions/sales?user=${walletAddress}`,
         {
           method: 'GET',
           headers: {
@@ -88,27 +90,22 @@ const Transactions: NextPage = () => {
     }
   }
 
-  const fetchItemDetails = async (id: string) => {
-    try {
-      const res = await fetch(`${process.env.API_ENDPOINT}/items/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      const data = await res.json()
-      setTestItem(data)
-      return data
-    } catch (err) {
-      console.log('error fetching transactions: ', err)
+  const decodeToken = () => {
+    console.log('Inside Header.tsx: decoding local storage token')
+    let token = localStorage.getItem('token')
+    if (token) {
+      let decodedToken: any = jwtDecode(token)
+      console.log('Current decoded Token', decodedToken)
+      setWalletAddress(decodedToken.walletAddress)
     }
   }
 
   const renderPurchases = () => {
     if (purchaseData.length !== 0) {
-      return purchaseData.map((txn: transactions) => {
-        console.log('purchase txn: ', txn)
+      return purchaseData.map((txn: transactions | any) => {
+        // console.log('purchase txn: ', txn)
         const date = txn.purchaseDate
+        // console.log('date: ', date)
         const dateFormatted = date.slice(0, 10)
         console.log('rendering')
         return (
@@ -125,13 +122,15 @@ const Transactions: NextPage = () => {
           </div>
         )
       })
+    } else {
+      return <div className="mt-5">No transactions</div>
     }
   }
 
   const renderSales = () => {
     if (salesData.length !== 0) {
-      return salesData.map((txn: transactions) => {
-        console.log('sales txn: ', txn)
+      return salesData.map((txn: transactions | any) => {
+        // console.log('sales txn: ', txn)
         const date = txn.purchaseDate
         const dateFormatted = date.slice(0, 10)
         return (
@@ -148,6 +147,8 @@ const Transactions: NextPage = () => {
           </div>
         )
       })
+    } else {
+      return <div className="mt-5">No transactions</div>
     }
   }
 
@@ -160,28 +161,34 @@ const Transactions: NextPage = () => {
         return
       }
     }
+    decodeToken()
     fetchTxns()
   }, [userAddress])
 
-  // if (userLoginState.isLoggedIn === false) {
-  //   return (
-  //     <div className="flex justify-center">
-  //       <div className="p-5 bg-slate-200 border rounded-md w-1/3">
-  //         <div className="flex justify-center mb-5">Please Log In to proceed</div>
-  //         <div className="flex justify-center">
-  //           <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
-  //             <Link href="/login">Go to Login </Link>
-  //           </button>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   )
-  // }
+  if (userLoginState.isLoggedIn === false) {
+    return (
+      <div className="flex justify-center">
+        <div className="p-5 bg-slate-200 border rounded-md w-1/3">
+          <div className="flex justify-center mb-5">Please Log In to proceed</div>
+          <div className="flex justify-center">
+            <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
+              <Link href="/login">Go to Login </Link>
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div>
-      <div className="flex justify-center m-5">
-        <h1 className="text-2xl underline underline-offset-8">Transaction History</h1>
+      <div className="flex flex-wrap w-full mb-8 ml-10">
+        <div className="w-full mb-6 lg:mb-0">
+          <h1 className="sm:text-3xl text-3xl font-medium title-font mb-2 text-gray-900 font-Lora">
+            Transaction History
+          </h1>
+          <div className="h-1 w-20 bg-forestgreen rounded"></div>
+        </div>
       </div>
       <div className="flex justify-center">
         <div className="m-5 w-1/3">

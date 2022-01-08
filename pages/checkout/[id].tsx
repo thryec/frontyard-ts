@@ -209,6 +209,8 @@ const Checkout: NextPage<itemProps> = () => {
       input.postalCode
     ) {
       if (walletAddress === currentItem.seller) {
+        console.log('item seller: ', currentItem.seller)
+        console.log('wallet add: ', walletAddress)
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -217,7 +219,7 @@ const Checkout: NextPage<itemProps> = () => {
         return
       }
       const jwt = decodeToken()
-      if (jwt.walletAddres !== walletAddress) {
+      if (jwt.walletAddress !== walletAddress) {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -272,11 +274,6 @@ const Checkout: NextPage<itemProps> = () => {
           ],
         })
         setIsLoading(true)
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'You own this item',
-        })
         setEthTxnId(txn)
         console.log('txn: ', txn)
         const receipt = await provider.waitForTransaction(txn)
