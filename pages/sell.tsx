@@ -118,7 +118,6 @@ const Sell = () => {
                 className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input>
               <br />
               {descriptionEmpty ? <h1>Please enter listing description</h1> : ''}
-
               <label htmlFor="image" className="block mb-1 font-Montserrat">
                 Image URL:{' '}
               </label>
@@ -131,7 +130,6 @@ const Sell = () => {
                 className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input>
               <br />
               {imageEmpty ? <h1>Please enter listing image</h1> : ''}
-
               <label htmlFor="price" className="block mb-1 font-Montserrat">
                 Price (ETH):{' '}
               </label>
