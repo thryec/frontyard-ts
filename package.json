@@ -12,6 +12,7 @@
     "@emotion/styled": "^11.6.0",
     "@mui/material": "^5.2.7",
     "ethers": "^5.5.2",
+    "ipfs-http-client": "^55.0.0",
     "jwt-decode": "^3.1.2",
     "netlify": "^10.0.0",
     "next": "12.0.7",
