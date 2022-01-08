@@ -87,7 +87,7 @@ const Signup: React.FC = () => {
         if (!passwordInputRef.current.value) {
             setPasswordEmpty(true)
         } else {
-            setUserNameEmpty(false)
+            setPasswordEmpty(false)
         }
 
         allValidCheck()
@@ -96,7 +96,7 @@ const Signup: React.FC = () => {
         if (!walletAddressInputRef.current.value) {
             setWalletAddressEmpty(true)
         } else {
-            setUserNameEmpty(false)
+            setWalletAddressEmpty(false)
         }
 
         allValidCheck()
