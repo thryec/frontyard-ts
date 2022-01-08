@@ -87,7 +87,7 @@ const Signup: React.FC = () => {
     if (!passwordInputRef.current.value) {
       setPasswordEmpty(true)
     } else {
-      setUserNameEmpty(false)
+      setPasswordEmpty(false)
     }
 
     allValidCheck()
@@ -96,7 +96,7 @@ const Signup: React.FC = () => {
     if (!walletAddressInputRef.current.value) {
       setWalletAddressEmpty(true)
     } else {
-      setUserNameEmpty(false)
+      setWalletAddressEmpty(false)
     }
 
     allValidCheck()
@@ -142,7 +142,8 @@ const Signup: React.FC = () => {
       timerProgressBar: true,
       didOpen: () => {
         Swal.showLoading()
-        const b: any = Swal.getHtmlContainer().querySelector('b')
+        const b1: any = Swal.getHtmlContainer()
+        const b: any = b1.querySelector('b')
         timerInterval = setInterval(() => {
           b.textContent = Swal.getTimerLeft()
         }, 100)
