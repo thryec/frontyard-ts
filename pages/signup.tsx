@@ -79,7 +79,7 @@ const Signup: React.FC = () => {
         } else {
             setUserNameEmpty(false)
         }
-
+        console.log("this is username blur: ", isUserNameEmpty)
         allValidCheck()
     }
 

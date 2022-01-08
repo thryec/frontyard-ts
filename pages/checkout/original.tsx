@@ -8,11 +8,38 @@ import Link from 'next/link'
 import jwtDecode from 'jwt-decode'
 import Swal from 'sweetalert2'
 
-const Checkout: NextPage<itemProps> = () => {
-  const userLoginState = useContext(UserContext)
-  const router = useRouter()
-  const { id } = router.query
+interface itemProps {
+  name: string
+  description: string
+  price: number
+  seller: string
+  _id: string
+  image?: string
+  quantity?: number
+  listingEndDate?: Date
+  ListingStartDate?: Date
+}
 
+interface shippingAddress {
+  firstName: String
+  lastName: String
+  emailAddress: String
+  country: String
+  streetAddress: String
+  city: String
+  state: String
+  postalCode: Number | null
+}
+
+const testItem: itemProps = {
+  _id: '0xtest',
+  name: 'Book of Spells',
+  description: 'Lets you conquer the universe',
+  price: 0.1,
+  seller: '0x78bCA437E8D6c961a1F1F7D97c81781044195bcF', // testing2
+}
+
+const Checkout: NextPage<itemProps> = () => {
   const [currentItem, setCurrentItem] = useState<itemProps | undefined>()
   const [walletAddress, setWalletAddress] = useState<string | Promise<string>>()
   const [isConnected, setIsConnected] = useState<String>('Connect Wallet')
@@ -21,96 +48,30 @@ const Checkout: NextPage<itemProps> = () => {
   const [error, setError] = useState<any>(null)
   const [provider, setProvider] = useState<any>()
   const [isLoading, setIsLoading] = useState<Boolean>(false)
+  const [shippingAddress, setShippingAddress] = useState<shippingAddress>({
+    firstName: '',
+    lastName: '',
+    emailAddress: '',
+    country: '',
+    streetAddress: '',
+    city: '',
+    state: '',
+    postalCode: 0,
+  })
   const [ethTxnId, setEthTxnId] = useState<String>()
   let txnId: String
-  const refFirstName = useRef<any>()
-  const refLastName = useRef<any>()
-  const refEmailAddress = useRef<any>()
-  const refCountry = useRef<any>()
-  const refStreetAddress = useRef<any>()
-  const refCity = useRef<any>()
-  const refState = useRef<any>()
-  const refPostalCode = useRef<any>()
-  const [input, setInput] = useState<any>({
-    firstName : "",
-    lastName : "",
-    emailAddress : "",
-    country : "",
-    streetAddress: "",
-    city: "",
-    state: "",
-    postalCode: 0,
-  });
-  const [firstNameEmpty, setFirstNameEmpty] = useState<boolean | null>(null);
-  const [lastNameEmpty, setLastNameEmpty] = useState<boolean | null>(null);
-  const [emailAddressEmpty, setEmailAddressEmpty] = useState<boolean | null>(null);
-  const [countryEmpty, setCountryEmpty] = useState<boolean | null>(null);
-  const [streetAddressEmpty, setStreetAddressEmpty] = useState<boolean | null>(null);
-  const [cityEmpty, setCityEmpty] = useState<boolean | null>(null);
-  const [stateEmpty, setStateEmpty] = useState<boolean | null>(null);
-  const [postalCodeEmpty, setPostalCodeEmpty] = useState<boolean | null>(null);
+  const firstName = useRef<any>()
+  const lastName = useRef<any>()
+  const emailAddress = useRef<any>()
+  const country = useRef<any>()
+  const streetAddress = useRef<any>()
+  const city = useRef<any>()
+  const state = useRef<any>()
+  const postalCode = useRef<any>()
+  const router = useRouter()
+  const userLoginState = useContext(UserContext)
 
-  const handleChange = (event: any) => {
-    const label = event.target.name;
-    const value = event.target.value;
-    setInput({...input, [label]:value})
-    console.log("this is the input: ", input)
-  }
-
-  //To validate Email
-  function validateEmail() {
-  const re =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(String(input.emailAddress).toLowerCase())
-}
-
-  ////to check if fields are empty
-  const handleFirstNameBlur = (): void => {
-    !refFirstName.current.value ? setFirstNameEmpty(true) : setFirstNameEmpty(false)
-    // console.log("this is FirstNameblur: ", FirstNameEmpty)
-  }
-  const handleLastNameBlur = (): void => {
-    !refLastName.current.value ? setLastNameEmpty(true) : setLastNameEmpty(false)
-    // console.log("this is descpblur: ", LastNameEmpty)
-  }
-  const handleEmailAddressBlur = (): void => {
-    !refEmailAddress.current.value ? setEmailAddressEmpty(true) : setEmailAddressEmpty(false)
-    // console.log("this is EmailAddressblur: ", EmailAddressEmpty)
-  }
-//   const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null)
-//   const handleEmailAddressBlur = () => {
-//     if (!refEmailAddress.current.value) {
-//       setEmailAddressEmpty(true)
-//     } else {
-//         const isValid = validateEmail(input.emailAddress)
-//         console.log("this is input email address",input.emailAddress)
-//         console.log("this is isvalid",isValid)
-        
-//         setIsEmailValid(isValid)
-//         console.log("this is isemailvalid ", isEmailValid)
-//         setEmailAddressEmpty(false)
-//     }
-// }
-
-  const handleCountryBlur = (): void => {
-    !refCountry.current.value ? setCountryEmpty(true) : setCountryEmpty(false)
-  }
-  const handleStreetAddressBlur = (): void => {
-    !refStreetAddress.current.value ? setStreetAddressEmpty(true) : setStreetAddressEmpty(false)
-    // console.log("this is StreetAddressblur: ", StreetAddressEmpty)
-  }
-  const handleCityBlur = (): void => {
-    !refCity.current.value ? setCityEmpty(true) : setCityEmpty(false)
-    // console.log("this is city blur: ", CityEmpty)
-  }
-  const handleStateBlur = (): void => {
-    !refState.current.value ? setStateEmpty(true) : setStateEmpty(false)
-    // console.log("this is Stateblur: ", StateEmpty)
-  }
-  const handlePostalCodeBlur = (): void => {
-    !refPostalCode.current.value ? setPostalCodeEmpty(true) : setPostalCodeEmpty(false)
-  }
-
+  const { id } = router.query
   // console.log('item id: ', id)
   // console.log('user login state: ', userLoginState)
 
@@ -183,7 +144,7 @@ const Checkout: NextPage<itemProps> = () => {
   }
 
   const handleConfirmButton = async () => {
-    if (currentItem !== undefined && validateEmail() && input.firstName && input.lastName && input.emailAddress && input.country && input.streetAddress && input.city && input.state && input.postalCode) {
+    if (currentItem !== undefined) {
       if (walletAddress === currentItem.seller) {
         Swal.fire({
           icon: 'error',
@@ -201,8 +162,17 @@ const Checkout: NextPage<itemProps> = () => {
         })
         return
       }
-      let shippingData = {...input}
-
+      const shippingData: shippingAddress = {
+        firstName: firstName.current.value,
+        lastName: lastName.current.value,
+        emailAddress: emailAddress.current.value,
+        country: country.current.value,
+        streetAddress: streetAddress.current.value,
+        city: city.current.value,
+        state: state.current.value,
+        postalCode: postalCode.current.value,
+      }
+      setShippingAddress(shippingData)
       const initialiseTxn = {
         seller: currentItem.seller,
         buyer: walletAddress,
@@ -362,18 +332,14 @@ const Checkout: NextPage<itemProps> = () => {
                         First name
                       </label>
                       <input
-                        onChange={handleChange}
-                        onBlur={handleFirstNameBlur}
-                        ref={refFirstName}
+                        ref={firstName}
                         type="text"
                         name="first-name"
                         id="first-name"
                         autoComplete="given-name"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {firstNameEmpty ? <h1>Please enter first name</h1> : ""}
                     </div>
-
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="last-name"
@@ -381,55 +347,44 @@ const Checkout: NextPage<itemProps> = () => {
                         Last name
                       </label>
                       <input
-                        onChange={handleChange}
-                        onBlur={handleLastNameBlur}
-                        ref={refLastName}
+                        ref={lastName}
                         type="text"
                         name="last-name"
                         id="last-name"
                         autoComplete="family-name"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                        {lastNameEmpty ? <h1>Please enter last name</h1> : ""}
                     </div>
                     <div className="col-span-6 sm:col-span-4">
                       <label
-                        htmlFor="emailAddress"
+                        htmlFor="email-address"
                         className="block text-md font-medium text-gray-700">
                         Email address
                       </label>
                       <input
-                        onChange={handleChange}
-                        onBlur={handleEmailAddressBlur}
-                        ref={refEmailAddress}
+                        ref={emailAddress}
                         type="text"
-                        name="emailAddress"
-                        id="emailAddress"
+                        name="email-address"
+                        id="email-address"
                         autoComplete="email"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {emailAddressEmpty ? <h1>Please enter email address</h1> : ""}
-                      {validateEmail() ? "" : <h1>Please enter email in proper format</h1>}
                     </div>
                     <div className="col-span-6 sm:col-span-3">
                       <label htmlFor="country" className="block text-md font-medium text-gray-700">
                         Country
                       </label>
                       <select
-                        onChange={handleChange}
-                        onBlur={handleCountryBlur}
-                        ref={refCountry}
+                        ref={country}
                         id="country"
                         name="country"
                         autoComplete="country-name"
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="">Choose country</option>
                         <option>Singapore</option>
                         <option>Australia</option>
                         <option>United States</option>
                         <option>Canada</option>
                       </select>
-                      {countryEmpty ? <h1>Please choose country</h1> : ""}
                     </div>
                     <div className="col-span-6">
                       <label
@@ -438,48 +393,39 @@ const Checkout: NextPage<itemProps> = () => {
                         Street address
                       </label>
                       <input
-                        onChange={handleChange}
-                        onBlur={handleStreetAddressBlur}
-                        ref={refStreetAddress}
+                        ref={streetAddress}
                         type="text"
                         name="street-address"
                         id="street-address"
                         autoComplete="street-address"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {streetAddressEmpty ? <h1>Please enter street address</h1> : ""}
                     </div>
                     <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                       <label htmlFor="city" className="block text-md font-medium text-gray-700">
                         City
                       </label>
                       <input
-                        onChange={handleChange}
-                        onBlur={handleCityBlur}
-                        ref={refCity}
+                        ref={city}
                         type="text"
                         name="city"
                         id="city"
                         autoComplete="address-level2"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {cityEmpty ? <h1>Please enter city</h1> : ""}
                     </div>
                     <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                       <label htmlFor="region" className="block text-md font-medium text-gray-700">
                         State / Province
                       </label>
                       <input
-                        onChange={handleChange}
-                        onBlur={handleStateBlur}
-                        ref={refState}
+                        ref={state}
                         type="text"
                         name="region"
                         id="region"
                         autoComplete="address-level1"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {stateEmpty ? <h1>Please enter state</h1> : ""}
                     </div>
                     <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                       <label
@@ -488,16 +434,13 @@ const Checkout: NextPage<itemProps> = () => {
                         ZIP / Postal code
                       </label>
                       <input
-                        onChange={handleChange}
-                        onBlur={handlePostalCodeBlur}
-                        ref={refPostalCode}
+                        ref={postalCode}
                         type="text"
                         name="postal-code"
                         id="postal-code"
                         autoComplete="postal-code"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      {postalCodeEmpty ? <h1>Please enter postal code</h1> : ""}
                     </div>
                   </div>
                 </div>

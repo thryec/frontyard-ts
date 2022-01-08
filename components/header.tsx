@@ -1,7 +1,7 @@
 import 'tailwindcss/tailwind.css'
 import { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+// import Image from 'next/image'
 import UserContext from '../context/LoginState'
 import jwtDecode from 'jwt-decode'
 import SearchBar from './searchbar'
@@ -47,28 +47,38 @@ const Header = () => {
     <header className="flex justify-center mt-10">
       <div className="logo">
         <Link href="/">
+          <a>
+          <h1 className='font-Lora text-4xl float-left text-forestgreen'>backyard.</h1>
+          </a>
+        </Link>
+        {/* <Link href="/">
           <a className="mr-10">
             <Image src="/backdoor.png" width="200px" height="100px" alt="backdoor" />
           </a>
-        </Link>
+        </Link> */}
       </div>
       <nav>
         <Link href="/items">
-          <a className="mr-10 text-dullred">All Items</a>
+          <a className="mr-10 text-white text-lg font-Montserrat text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-lightorange hover:bg-brightorange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brightorange-500">Buy</a>
         </Link>
         {userLoginState.isLoggedIn ? (
           <>
+              <Link href="/listeditems">
+              <a className="mr-10 font-Montserrat">
+                Listed Items
+              </a>
+            </Link>
+            <Link href="/sell">
+              <a className="mr-10 font-Montserrat">Sell</a>
+            </Link>
             <Link href="/">
-              <a onClick={handleLogoutClick} className="mr-10">
+              <a onClick={handleLogoutClick} className="mr-10 font-Montserrat">
                 Logout
               </a>
             </Link>
-            <Link href="/listItem">
-              <a className="mr-10">Sell</a>
-            </Link>
             {userRole == 'admin' ? (
               <Link href="/users">
-                <a className="mr-10">users</a>
+                <a className="mr-10 font-Montserrat">users</a>
               </Link>
             ) : (
               ''
@@ -77,10 +87,10 @@ const Header = () => {
         ) : (
           <>
             <Link href="/signup">
-              <a className="mr-10">Sign Up</a>
+              <a className="mr-10 font-Montserrat">Sign Up</a>
             </Link>
             <Link href="/login">
-              <a className="mr-10">Login</a>
+              <a className="mr-10 font-Montserrat">Login</a>
             </Link>
           </>
         )}

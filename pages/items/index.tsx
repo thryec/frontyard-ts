@@ -29,15 +29,29 @@ const Items = () => {
   }
 
   const renderItems = marketItems.map((item: itemProps) => (
-    <Link href={'/items/' + item._id} key={Date.now() + Math.random()}>
-      <div className="shadow-md w-1/6" key={item.name}>
+    <Link href={'/items/' + item._id} key={item._id}>
+        {/* <div className="relative items-center justify-center">
+    <div className="lg:flex items-center container mx-auto my-auto">
+      <div className="lg:m-4 shadow-md hover:shadow-lg hover:bg-gray-100 rounded-lg bg-white my-12 mx-8">
+        <img src={item.image} alt=""className="overflow-hidden"/>
+        <div className="p-4">
+          <h3 className="font-medium text-gray-600 text-lg my-2 uppercase font-OpenSans">{item.name}</h3>
+          <p className="text-justify font-OpenSans">{item.description}</p>
+          <p className="text-justify font-bold font-OpenSans">{item.price} ETH</p>
+          <div className="mt-5">
+            <a href="" className="hover:orange-600 rounded-full py-2 px-3 font-semibold bg-lightorange text-white font-OpenSans">Buy</a>
+          </div>
+        </div>
+      </div></div></div> */}
+
+
+      <div className="shadow-md w-1/6 cursor-pointer">
         <img src={item.image} alt="" className="min-w-full" />
         <div className="px-4 align-baseline">
-          <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2">{item.name}</h1>
-          <p className="text-gray-700 mb-2">{item.description}</p>
+          <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2 font-Montserrat">{item.name}</h1>
+          <p className="text-gray-700 mb-2 font-Montserrat">{item.description}</p>
           <div className="flex justify-between mt-4">
-            <span className="font-thin text-sm">May 20th 2022</span>
-            <span className="mb-2 text-gray-800 font-bold">{item.price} ETH</span>
+            <span className="mb-2 text-gray-800 font-bold font-Montserrat">{item.price} ETH</span>
           </div>
         </div>
       </div>
@@ -49,8 +63,15 @@ const Items = () => {
   }, [])
 
   return (
-    <div className="ml-10">
-      <div className="mt-6 flex space-x-6">{loaded ? renderItems : 'No Items'}</div>
+    <div className="ml-10 max-w-full">
+      {/* <h1 className="text-center text-2xl font-bold p-4 text-forestgreen font-Lora">All Items</h1> */}
+      <div className="flex flex-wrap w-full mb-8">
+      <div className="w-full mb-6 lg:mb-0">
+        <h1 className="sm:text-3xl text-3xl font-medium title-font mb-2 text-gray-900 font-Lora">All Listings</h1>
+        <div className="h-1 w-20 bg-forestgreen rounded"></div>
+      </div>
+    </div>
+      <div className="mt-6 flex space-x-6 ">{loaded ? renderItems : 'No Items'}</div>
     </div>
   )
 }
