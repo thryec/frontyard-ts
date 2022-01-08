@@ -1,8 +1,12 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useState, useContext, useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import UserContext from '../context/LoginState'
 import NotLoggedIn from '../components/userNotLoggedin'
 import jwtDecode from 'jwt-decode'
+import { create } from 'ipfs-http-client'
+
+const url: string | any = 'https://ipfs.infura.io:5001/api/v0'
+const client = create(url)
 
 const Sell = () => {
   const router = useRouter()
@@ -11,7 +15,6 @@ const Sell = () => {
   const refDescription = useRef<any>()
   const refImage = useRef<any>()
   const refPrice = useRef<any>()
-
   const [input, setInput] = useState<any>({
     name: '',
     description: '',
@@ -22,6 +25,22 @@ const Sell = () => {
   const [descriptionEmpty, setDescriptionEmpty] = useState<boolean | null>(null)
   const [imageEmpty, setImageEmpty] = useState<boolean | null>(null)
   const [priceEmpty, setPriceEmpty] = useState<boolean | null>(null)
+  const [fileUrl, setFileUrl] = useState('')
+  const [fileUploading, setFileUploading] = useState(false)
+
+  const onFileUpload = async (e: any) => {
+    setFileUploading(true)
+    const file = e.target.files[0]
+    try {
+      const addedFile = await client.add(file)
+      const url = `https://ipfs.infura.io/ipfs/${addedFile.path}`
+      console.log('ipfs url: ', url)
+      setFileUrl(url)
+      setFileUploading(false)
+    } catch (e) {
+      console.log('Error uploading file: ', e)
+    }
+  }
 
   const handleChange = (event: any) => {
     const label = event.target.name
@@ -57,10 +76,10 @@ const Sell = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
     let token: string | null = localStorage.getItem('token')
-    if (input.name && input.description && input.image && input.price && verifyPrice() && token) {
+    if (input.name && input.description && fileUrl && input.price && verifyPrice() && token) {
       let decodedToken: any = jwtDecode(token)
       let sellerWallet = decodedToken.walletAddress
-      let newItem = { ...input, seller: sellerWallet }
+      let newItem = { ...input, seller: sellerWallet, image: fileUrl }
 
       try {
         const res = await fetch(`${process.env.API_ENDPOINT}/items`, {
@@ -76,8 +95,14 @@ const Sell = () => {
         console.log(err)
         router.push('/failedlisting')
       }
+    } else {
+      console.log('error')
     }
   }
+
+  // useEffect(() => {
+  //   renderImage()
+  // }, fileUrl)
 
   return (
     <>
@@ -121,12 +146,22 @@ const Sell = () => {
                 Image URL:{' '}
               </label>
               <input
+                type="file"
+                onChange={onFileUpload}
+                className="mb-4 text-lg font-Montserrat text-center py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md"
+              />
+              {fileUploading ? (
+                <div className="font-Montserrat">Loading...</div>
+              ) : (
+                <img src={fileUrl} width="400px" />
+              )}
+              {/* <input
                 type="text"
                 name="image"
                 ref={refImage}
                 onChange={handleChange}
                 onBlur={handleImageBlur}
-                className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input>
+                className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input> */}
               <br />
               {imageEmpty ? <h1>Please enter listing image</h1> : ''}
               <label htmlFor="price" className="block mb-1 font-Montserrat">

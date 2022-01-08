@@ -163,7 +163,7 @@ const Transactions: NextPage = () => {
     }
     decodeToken()
     fetchTxns()
-  }, [userAddress])
+  }, [walletAddress])
 
   if (userLoginState.isLoggedIn === false) {
     return (
@@ -182,7 +182,7 @@ const Transactions: NextPage = () => {
 
   return (
     <div>
-      <div className="flex flex-wrap w-full mb-8 ml-10">
+      <div className="flex w-full mb-8 ml-10 ">
         <div className="w-full mb-6 lg:mb-0">
           <h1 className="sm:text-3xl text-3xl font-medium title-font mb-2 text-gray-900 font-Lora">
             Transaction History
