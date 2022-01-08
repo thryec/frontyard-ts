@@ -195,9 +195,10 @@ const Checkout: NextPage<itemProps> = () => {
   }
 
   const handleConfirmButton = async () => {
+    console.log('input: ', input, 'currentItem', currentItem, 'validation: ', validateEmail())
     if (
       currentItem !== undefined &&
-      validateEmail() &&
+      // validateEmail() &&
       input.firstName &&
       input.lastName &&
       input.emailAddress &&
@@ -249,6 +250,8 @@ const Checkout: NextPage<itemProps> = () => {
       } catch (err) {
         console.log('error posting transaction: ', err)
       }
+    } else {
+      console.log('error')
     }
   }
 
@@ -380,7 +383,7 @@ const Checkout: NextPage<itemProps> = () => {
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-6 sm:col-span-3">
                       <label
-                        htmlFor="first-name"
+                        htmlFor="firstName"
                         className="block text-md font-medium text-gray-700">
                         First name
                       </label>
@@ -389,18 +392,16 @@ const Checkout: NextPage<itemProps> = () => {
                         onBlur={handleFirstNameBlur}
                         ref={refFirstName}
                         type="text"
-                        name="first-name"
-                        id="first-name"
-                        autoComplete="given-name"
+                        name="firstName"
+                        id="firstName"
+                        autoComplete="givenName"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                       {firstNameEmpty ? <h1>Please enter first name</h1> : ''}
                     </div>
 
                     <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="last-name"
-                        className="block text-md font-medium text-gray-700">
+                      <label htmlFor="lastName" className="block text-md font-medium text-gray-700">
                         Last name
                       </label>
                       <input
@@ -408,9 +409,9 @@ const Checkout: NextPage<itemProps> = () => {
                         onBlur={handleLastNameBlur}
                         ref={refLastName}
                         type="text"
-                        name="last-name"
-                        id="last-name"
-                        autoComplete="family-name"
+                        name="lastName"
+                        id="lastName"
+                        autoComplete="familyName"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                       {lastNameEmpty ? <h1>Please enter last name</h1> : ''}
@@ -444,7 +445,7 @@ const Checkout: NextPage<itemProps> = () => {
                         ref={refCountry}
                         id="country"
                         name="country"
-                        autoComplete="country-name"
+                        autoComplete="country"
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         <option value="">Choose country</option>
                         <option>Singapore</option>
@@ -456,7 +457,7 @@ const Checkout: NextPage<itemProps> = () => {
                     </div>
                     <div className="col-span-6">
                       <label
-                        htmlFor="street-address"
+                        htmlFor="streetAddress"
                         className="block text-md font-medium text-gray-700">
                         Street address
                       </label>
@@ -465,9 +466,9 @@ const Checkout: NextPage<itemProps> = () => {
                         onBlur={handleStreetAddressBlur}
                         ref={refStreetAddress}
                         type="text"
-                        name="street-address"
-                        id="street-address"
-                        autoComplete="street-address"
+                        name="streetAddress"
+                        id="streetAddress"
+                        autoComplete="streetAddress"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                       {streetAddressEmpty ? <h1>Please enter street address</h1> : ''}
@@ -489,7 +490,7 @@ const Checkout: NextPage<itemProps> = () => {
                       {cityEmpty ? <h1>Please enter city</h1> : ''}
                     </div>
                     <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <label htmlFor="region" className="block text-md font-medium text-gray-700">
+                      <label htmlFor="state" className="block text-md font-medium text-gray-700">
                         State / Province
                       </label>
                       <input
@@ -497,8 +498,8 @@ const Checkout: NextPage<itemProps> = () => {
                         onBlur={handleStateBlur}
                         ref={refState}
                         type="text"
-                        name="region"
-                        id="region"
+                        name="state"
+                        id="state"
                         autoComplete="address-level1"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
@@ -506,7 +507,7 @@ const Checkout: NextPage<itemProps> = () => {
                     </div>
                     <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                       <label
-                        htmlFor="postal-code"
+                        htmlFor="postalCode"
                         className="block text-md font-medium text-gray-700">
                         ZIP / Postal code
                       </label>
@@ -515,9 +516,9 @@ const Checkout: NextPage<itemProps> = () => {
                         onBlur={handlePostalCodeBlur}
                         ref={refPostalCode}
                         type="text"
-                        name="postal-code"
-                        id="postal-code"
-                        autoComplete="postal-code"
+                        name="postalCode"
+                        id="postalCode"
+                        autoComplete="postalCode"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                       {postalCodeEmpty ? <h1>Please enter postal code</h1> : ''}

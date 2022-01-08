@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 
 const SearchBar = () => {
     const [itemList, setItemList] = useState<Array<any>>([]);
-    const [value, setValue] = useState("uwu");
+    const [value, setValue] = useState("Enter Item name");
     const [inputValue, setInputValue] = useState('');
 
     const router = useRouter();
@@ -65,7 +65,7 @@ const SearchBar = () => {
                 disabled={!value}
                 type="submit"
                 onClick={handleSearch}
-                className="text-center m-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                className="text-center ml-5 mt-2 mb-10 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 Search
             </button>
         </div>
