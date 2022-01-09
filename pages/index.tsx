@@ -9,14 +9,19 @@ const Home: NextPage = () => {
   const [loaded, setIsLoaded] = useState(false)
 
   const loadData = async () => {
-    const res = await fetch(`${process.env.API_ENDPOINT}/items/listed/newest`)
-    if (res.status !== 200) {
-      console.error('Failed to fetch items')
-      return
+    try {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/listed/newest`)
+      if (res.status !== 200) {
+        console.error('Failed to fetch items')
+        return
+      }
+      const data = await res.json()
+      setMarketItems(data)
+      setIsLoaded(true)
+    } catch (error: any) {
+      console.log(error.message);
     }
-    const data = await res.json()
-    setMarketItems(data)
-    setIsLoaded(true)
+
   }
 
   interface itemProps {
