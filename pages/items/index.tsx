@@ -7,15 +7,19 @@ const Items = () => {
   const [loaded, setIsLoaded] = useState(false)
 
   const loadData = async () => {
-    const res = await fetch(`${process.env.API_ENDPOINT}/items/listed`)
-    if (res.status !== 200) {
-      console.error('Failed to fetch items')
-      return
+    try {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/listed`)
+      if (res.status !== 200) {
+        console.error('Failed to fetch items')
+        return
+      }
+      const data = await res.json()
+      console.log('fetched data: ', data)
+      setMarketItems(data)
+      setIsLoaded(true)
+    } catch (err: any) {
+      console.log(err.message);
     }
-    const data = await res.json()
-    console.log('fetched data: ', data)
-    setMarketItems(data)
-    setIsLoaded(true)
   }
 
   interface itemProps {
