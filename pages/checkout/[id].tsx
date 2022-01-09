@@ -406,7 +406,7 @@ const Checkout: NextPage<itemProps> = () => {
               <div className="shadow sm:rounded-md bg-grey p-6">
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="firstName" className="block text-md font-medium text-gray-700">
+                    <label htmlFor="firstName" className="block text-md font-medium">
                       First name
                     </label>
                     <input
@@ -423,7 +423,7 @@ const Checkout: NextPage<itemProps> = () => {
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="lastName" className="block text-md font-medium text-gray-700">
+                    <label htmlFor="lastName" className="block text-md font-medium">
                       Last name
                     </label>
                     <input
@@ -439,9 +439,7 @@ const Checkout: NextPage<itemProps> = () => {
                     {lastNameEmpty ? <h1>Please enter last name</h1> : ''}
                   </div>
                   <div className="col-span-6 sm:col-span-4">
-                    <label
-                      htmlFor="emailAddress"
-                      className="block text-md font-medium text-gray-700">
+                    <label htmlFor="emailAddress" className="block text-md font-medium">
                       Email address
                     </label>
                     <input
@@ -458,7 +456,7 @@ const Checkout: NextPage<itemProps> = () => {
                     {validateEmail() ? '' : <h1>Please enter email in proper format</h1>}
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="country" className="block text-md font-medium text-gray-700">
+                    <label htmlFor="country" className="block text-md font-medium">
                       Country
                     </label>
                     <select
@@ -478,9 +476,7 @@ const Checkout: NextPage<itemProps> = () => {
                     {countryEmpty ? <h1>Please choose country</h1> : ''}
                   </div>
                   <div className="col-span-6">
-                    <label
-                      htmlFor="streetAddress"
-                      className="block text-md font-medium text-gray-700">
+                    <label htmlFor="streetAddress" className="block text-md font-medium">
                       Street address
                     </label>
                     <input
@@ -496,7 +492,7 @@ const Checkout: NextPage<itemProps> = () => {
                     {streetAddressEmpty ? <h1>Please enter street address</h1> : ''}
                   </div>
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                    <label htmlFor="city" className="block text-md font-medium text-gray-700">
+                    <label htmlFor="city" className="block text-md font-medium">
                       City
                     </label>
                     <input
@@ -512,7 +508,7 @@ const Checkout: NextPage<itemProps> = () => {
                     {cityEmpty ? <h1>Please enter city</h1> : ''}
                   </div>
                   <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                    <label htmlFor="state" className="block text-md font-medium text-gray-700">
+                    <label htmlFor="state" className="block text-md font-medium">
                       State / Province
                     </label>
                     <input
@@ -528,7 +524,7 @@ const Checkout: NextPage<itemProps> = () => {
                     {stateEmpty ? <h1>Please enter state</h1> : ''}
                   </div>
                   <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                    <label htmlFor="postalCode" className="block text-md font-medium text-gray-700">
+                    <label htmlFor="postalCode" className="block text-md font-medium">
                       ZIP / Postal code
                     </label>
                     <input
