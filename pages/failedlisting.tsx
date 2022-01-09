@@ -6,6 +6,14 @@ const Failed = () => {
     const router = useRouter();
 
     useEffect(() => {
+        let token = localStorage.getItem('token');
+        if (!token) {
+        router.push('/404');
+        return;
+    }
+    },[])
+
+    useEffect(() => {
         setTimeout(() => {
             router.push('/');
         }, 3000)
