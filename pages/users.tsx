@@ -19,16 +19,20 @@ const Users: React.FC = () => {
   let requestHeaders: any = {}
 
   async function checkAdmin(token: any) {
-    if (token.role !== 'admin') {
-      console.log(token.role);
-      try {
-        await Swal.fire('User has no authorization to view this page, redirecting back to home')
-        router.push('/')
-      } catch (error: any) {
-        console.log(error.message);
+    try {
+      if (token.role !== 'admin') {
+        console.log(token.role);
+        try {
+          await Swal.fire('User has no authorization to view this page, redirecting back to home')
+          router.push('/')
+        } catch (error: any) {
+          console.log(error.message);
+        }
+      } else {
+        fetchUsers()
       }
-    } else {
-      fetchUsers()
+    } catch (err: any) {
+      console.log(err.message);
     }
   }
   async function fetchUsers() {
@@ -139,7 +143,10 @@ const Users: React.FC = () => {
     }
 
     let tempToken: any = token
-    let decodedToken: any = jwtDecode(tempToken);
+    let decodedToken: any = ""
+    if (tempToken) {
+      decodedToken = jwtDecode(tempToken);
+    }
     console.log("-----------Before Checkadmin");
     checkAdmin(decodedToken)
     console.log("-----------After Checkadmin");
