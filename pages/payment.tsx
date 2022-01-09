@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import UserContext from '../context/LoginState'
@@ -10,10 +10,13 @@ const Payment = () => {
   const userLoginState = useContext(UserContext)
   const router = useRouter();
 
-  if (userLoginState.isLoggedIn === false) {
+  useEffect(() => {
+    if (userLoginState.isLoggedIn === false) {
       router.push('/404');
       return;
   }
+  },[])
+
     return (
       <div className="flex justify-center">
         <div className="bg-slate-200 m-10 p-10 w-1/2 border rounded-md shadow border-gray-300">
