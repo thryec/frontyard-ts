@@ -102,6 +102,11 @@ const Details = () => {
                       </div>
                   </div>
 
+                  {isSeller ? (
+                    <p  className="leading-relaxed font-Montserrat text-red-500">This is your listed item. </p>
+                    )
+                    : ""}
+
                   <div className="flex">
                     {userLoginState.isLoggedIn ? "" : (
                       <Link href={'/login'}>
