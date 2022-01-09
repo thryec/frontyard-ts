@@ -7,15 +7,19 @@ const Items = () => {
   const [loaded, setIsLoaded] = useState(false)
 
   const loadData = async () => {
-    const res = await fetch(`${process.env.API_ENDPOINT}/items/listed`)
-    if (res.status !== 200) {
-      console.error('Failed to fetch items')
-      return
+    try {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/listed`)
+      if (res.status !== 200) {
+        console.error('Failed to fetch items')
+        return
+      }
+      const data = await res.json()
+      console.log('fetched data: ', data)
+      setMarketItems(data)
+      setIsLoaded(true)
+    } catch (err: any) {
+      console.log(err.message);
     }
-    const data = await res.json()
-    console.log('fetched data: ', data)
-    setMarketItems(data)
-    setIsLoaded(true)
   }
 
   interface itemProps {
@@ -26,39 +30,29 @@ const Items = () => {
     price: number
     quantity: number
     listingEndDate: Date
-    ListingStartDate: Date
+    listingStartDate: Date | any
   }
 
-  const renderItems = marketItems.map((item: itemProps) => (
-    <Link href={'/items/' + item._id} key={item._id}>
-      {/* <div className="relative items-center justify-center">
-    <div className="lg:flex items-center container mx-auto my-auto">
-      <div className="lg:m-4 shadow-md hover:shadow-lg hover:bg-gray-100 rounded-lg bg-white my-12 mx-8">
-        <img src={item.image} alt=""className="overflow-hidden"/>
-        <div className="p-4">
-          <h3 className="font-medium text-gray-600 text-lg my-2 uppercase font-OpenSans">{item.name}</h3>
-          <p className="text-justify font-OpenSans">{item.description}</p>
-          <p className="text-justify font-bold font-OpenSans">{item.price} ETH</p>
-          <div className="mt-5">
-            <a href="" className="hover:orange-600 rounded-full py-2 px-3 font-semibold bg-lightorange text-white font-OpenSans">Buy</a>
+  const renderItems = marketItems.map((item: itemProps) => {
+    const dateListed = item.listingStartDate.slice(0, 10)
+    return (
+      <Link href={'/items/' + item._id} key={item._id}>
+        <div className="shadow-md cursor-pointer m-2">
+          <Image src={item.image} alt="" className="min-w-full" width="220px" height="220px" />
+          <div className="px-4 align-baseline">
+            <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2 font-Montserrat">
+              {item.name}
+            </h1>
+            <p className="text-gray-700 mb-2 font-Montserrat">{item.description}</p>
+            <div className="flex justify-between mt-4">
+              <span className="font-thin text-sm">{dateListed}</span>
+              <span className="mb-2 text-gray-800 font-bold font-Montserrat">{item.price} ETH</span>
+            </div>
           </div>
         </div>
-      </div></div></div> */}
-
-      <div className="shadow-md cursor-pointer m-2">
-        <Image src={item.image} alt="" className="min-w-full" width="220px" height="220px" />
-        <div className="px-4 align-baseline">
-          <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2 font-Montserrat">
-            {item.name}
-          </h1>
-          <p className="text-gray-700 mb-2 font-Montserrat">{item.description}</p>
-          <div className="flex justify-between mt-4">
-            <span className="mb-2 text-gray-800 font-bold font-Montserrat">{item.price} ETH</span>
-          </div>
-        </div>
-      </div>
-    </Link>
-  ))
+      </Link>
+    )
+  })
 
   useEffect(() => {
     loadData()

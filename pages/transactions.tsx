@@ -4,9 +4,7 @@ import Image from 'next/image'
 import UserContext from '../context/LoginState'
 import Link from 'next/link'
 import jwtDecode from 'jwt-decode'
-
-const userAddress = '0xe82d5C6B394D9C4dE32F0913e6cE82Dd8dc39226'
-const itemId = '61cfb6b18308bd18ab4b1a2e'
+import NotLoggedIn from '../components/userNotLoggedin'
 
 interface itemProps {
   name: string
@@ -45,12 +43,9 @@ interface transactions {
 const Transactions: NextPage = () => {
   const [purchaseData, setPurchaseData] = useState<transactions[]>([])
   const [salesData, setSalesData] = useState<transactions[]>([])
-  const [testItem, setTestItem] = useState<itemProps>()
   const [dataLoaded, setDataLoaded] = useState<Boolean>(false)
   const userLoginState = useContext(UserContext)
   const [walletAddress, setWalletAddress] = useState<String>()
-
-  // console.log('user login state, ', userLoginState)
 
   const fetchPurchases = async () => {
     try {
@@ -105,12 +100,11 @@ const Transactions: NextPage = () => {
       return purchaseData.map((txn: transactions | any) => {
         // console.log('purchase txn: ', txn)
         const date = txn.purchaseDate
-        // console.log('date: ', date)
         const dateFormatted = date.slice(0, 10)
         console.log('rendering')
         return (
           <div key={txn._id}>
-            <div className="flex border-b-2 p-5">
+            <div className="flex border-b-2 p-5 font-Montserrat">
               <Image src={txn.item.image} alt={txn.item.name} width="100px" height="100px" />
               <div className="ml-5">
                 <p>{txn.item.name}</p>
@@ -135,7 +129,7 @@ const Transactions: NextPage = () => {
         const dateFormatted = date.slice(0, 10)
         return (
           <div key={txn._id}>
-            <div className="flex border-b-2 p-5">
+            <div className="flex border-b-2 p-5 font-Montserrat">
               <Image src={txn.item.image} alt={txn.item.name} width="100px" height="100px" />
               <div className="ml-5">
                 <p>{txn.item.name}</p>
@@ -154,7 +148,7 @@ const Transactions: NextPage = () => {
 
   useEffect(() => {
     const fetchTxns = async () => {
-      if (userAddress !== undefined) {
+      if (walletAddress !== undefined) {
         await fetchPurchases()
         await fetchSales()
         setDataLoaded(true)
@@ -166,18 +160,7 @@ const Transactions: NextPage = () => {
   }, [walletAddress])
 
   if (userLoginState.isLoggedIn === false) {
-    return (
-      <div className="flex justify-center">
-        <div className="p-5 bg-slate-200 border rounded-md w-1/3">
-          <div className="flex justify-center mb-5">Please Log In to proceed</div>
-          <div className="flex justify-center">
-            <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
-              <Link href="/login">Go to Login </Link>
-            </button>
-          </div>
-        </div>
-      </div>
-    )
+    return <NotLoggedIn />
   }
 
   return (
@@ -192,14 +175,12 @@ const Transactions: NextPage = () => {
       </div>
       <div className="flex justify-center">
         <div className="m-5 w-1/3">
-          <h1 className="text-xl underline underline-offset-8 decoration-dotted">
-            Items Purchased
-          </h1>
+          <h1 className="text-xl underline underline-offset-8 font-Montserrat">Items Purchased</h1>
           <div>{dataLoaded ? renderPurchases() : <div>Loading...</div>}</div>
         </div>
         <div className="border-double border-l-4 border-slate-500"></div>
         <div className="m-5 w-1/3">
-          <h1 className="text-xl underline underline-offset-8 decoration-dotted">Items Sold</h1>
+          <h1 className="text-xl underline underline-offset-8 font-Montserrat">Items Sold</h1>
           <div>{dataLoaded ? renderSales() : <div>Loading...</div>}</div>
         </div>
       </div>

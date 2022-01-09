@@ -58,7 +58,7 @@ const Users: React.FC = () => {
       setErrorMessage(`Users Fetch Error: ${error.message}`)
       console.log(errorMessage)
       try {
-        const showErrorMessageModal = await Swal.fire(errorMessage)
+        const showErrorMessageModal = await Swal.fire(error.message)
         router.push('/')
       } catch (swalErrorMessage: any) {
         console.log(swalErrorMessage.message)
