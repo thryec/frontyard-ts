@@ -6,7 +6,8 @@ module.exports = {
         lightblack: '#0D0D0D',
         lightgrey: '#F3F3F3',
         forestgreen: '#0B1C03',
-        lightorange: '#F5AA5B',
+        lightorange: '#F3BA2F',
+        // lightorange: '#F5AA5B',
         sand: '#F4F2EC',
       },
       fontFamily: {

@@ -66,7 +66,7 @@ const Home: NextPage = () => {
 
   return (
   <div className="flex flex-wrap justify-center items-center w-full">
-  <div className="flex flex-wrap justify-center items-center w-9/12">
+  <div className="flex flex-wrap justify-center items-center w-10/12">
     <div className="flex flex-wrap justify-center items-center w-full"><img src="homebanner.png" width="75%" height="75%"/></div>
       <div className="flex flex-wrap justify-center items-center w-9/12">
         <div className="w-full mb-6 lg:mb-0">
@@ -76,7 +76,7 @@ const Home: NextPage = () => {
           <div className="h-1 w-20 bg-forestgreen rounded"></div>
         </div>
       </div>
-      <div className="flex justify-evenly w-9/12 items-center space-x-6">{loaded ? renderItems : 'No Items'}</div>
+      <div className="flex justify-evenly w-10/12 items-center space-x-6">{loaded ? renderItems : 'No Items'}</div>
     </div>
   </div>
   )
