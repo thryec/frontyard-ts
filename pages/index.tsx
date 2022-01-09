@@ -27,24 +27,27 @@ const Home: NextPage = () => {
     price: number
     quantity: number
     listingEndDate: Date
-    ListingStartDate: Date
+    listingStartDate: Date | any
   }
 
-  const renderItems = marketItems.map((item: itemProps) => (
-    <Link href={'/items/' + item._id} key={item._id}>
-      <div className="shadow-md w-1/6">
-        <Image src={item.image} alt="" className="min-w-full" width="200px" height="200px" />
-        <div className="px-4 align-baseline">
-          <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2">{item.name}</h1>
-          <p className="text-gray-700 mb-2">{item.description}</p>
-          <div className="flex justify-between mt-4">
-            <span className="font-thin text-sm">May 20th 2022</span>
-            <span className="mb-2 text-gray-800 font-bold">{item.price} ETH</span>
+  const renderItems = marketItems.map((item: itemProps) => {
+    const dateListed = item.listingStartDate.slice(0, 10)
+    return (
+      <Link href={'/items/' + item._id} key={item._id}>
+        <div className="shadow-md w-1/6">
+          <Image src={item.image} alt="" className="min-w-full" width="200px" height="200px" />
+          <div className="px-4 align-baseline">
+            <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2">{item.name}</h1>
+            <p className="text-gray-700 mb-2">{item.description}</p>
+            <div className="flex justify-between mt-4">
+              <span className="font-thin text-sm">{dateListed}</span>
+              <span className="mb-2 text-gray-800 font-bold">{item.price} ETH</span>
+            </div>
           </div>
         </div>
-      </div>
-    </Link>
-  ))
+      </Link>
+    )
+  })
 
   useEffect(() => {
     loadData()
@@ -52,7 +55,7 @@ const Home: NextPage = () => {
     let tempToken: any = token
     if (tempToken) {
       let decodedToken: any = jwtDecode(tempToken)
-      console.log('decoded token: ', decodedToken)
+      // console.log('decoded token: ', decodedToken)
     }
   }, [])
 
