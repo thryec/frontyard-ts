@@ -7,6 +7,7 @@ import UserContext from '../../context/LoginState'
 import Link from 'next/link'
 import jwtDecode from 'jwt-decode'
 import Swal from 'sweetalert2'
+import NotLoggedIn from '../../components/userNotLoggedin'
 
 interface itemProps {
   name: string
@@ -76,7 +77,6 @@ const Checkout: NextPage<itemProps> = () => {
     return re.test(String(input.emailAddress).toLowerCase())
   }
 
-  ////to check if fields are empty
   const handleFirstNameBlur = (): void => {
     !refFirstName.current.value ? setFirstNameEmpty(true) : setFirstNameEmpty(false)
     // console.log("this is FirstNameblur: ", FirstNameEmpty)
@@ -89,20 +89,6 @@ const Checkout: NextPage<itemProps> = () => {
     !refEmailAddress.current.value ? setEmailAddressEmpty(true) : setEmailAddressEmpty(false)
     // console.log("this is EmailAddressblur: ", EmailAddressEmpty)
   }
-  //   const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null)
-  //   const handleEmailAddressBlur = () => {
-  //     if (!refEmailAddress.current.value) {
-  //       setEmailAddressEmpty(true)
-  //     } else {
-  //         const isValid = validateEmail(input.emailAddress)
-  //         console.log("this is input email address",input.emailAddress)
-  //         console.log("this is isvalid",isValid)
-
-  //         setIsEmailValid(isValid)
-  //         console.log("this is isemailvalid ", isEmailValid)
-  //         setEmailAddressEmpty(false)
-  //     }
-  // }
 
   const handleCountryBlur = (): void => {
     !refCountry.current.value ? setCountryEmpty(true) : setCountryEmpty(false)
@@ -122,9 +108,6 @@ const Checkout: NextPage<itemProps> = () => {
   const handlePostalCodeBlur = (): void => {
     !refPostalCode.current.value ? setPostalCodeEmpty(true) : setPostalCodeEmpty(false)
   }
-
-  // console.log('item id: ', id)
-  // console.log('user login state: ', userLoginState)
 
   const fetchItemDetails = async () => {
     try {
@@ -347,20 +330,9 @@ const Checkout: NextPage<itemProps> = () => {
     // add cleanup function here
   }, [])
 
-  // if (userLoginState.isLoggedIn === false) {
-  //   return (
-  //     <div className="flex justify-center">
-  //       <div className="p-5 bg-slate-200 border rounded-md w-1/3">
-  //         <div className="flex justify-center mb-5">Please Log In to proceed</div>
-  //         <div className="flex justify-center">
-  //           <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
-  //             <Link href="/login">Go to Login </Link>
-  //           </button>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   )
-  // }
+  if (userLoginState.isLoggedIn === false) {
+    return <NotLoggedIn />
+  }
 
   return (
     <div className="font-Montserrat">
