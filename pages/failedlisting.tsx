@@ -1,10 +1,16 @@
 import Link from 'next/link'
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
+import UserContext from '../context/LoginState'
 
 const Failed = () => {
+    const userLoginState = useContext(UserContext)
     const router = useRouter();
-
+    
+  if (userLoginState.isLoggedIn === false) {
+    router.push('/404');
+    return;
+}
     useEffect(() => {
         setTimeout(() => {
             router.push('/');

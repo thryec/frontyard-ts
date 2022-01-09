@@ -1,4 +1,3 @@
-import type { NextPage } from 'next'
 import { useContext } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -13,6 +12,7 @@ const Payment = () => {
 
   if (userLoginState.isLoggedIn === false) {
       router.push('/404');
+      return;
   }
     return (
       <div className="flex justify-center">
