@@ -25,15 +25,19 @@ const Listed = () => {
   }
 
   const loadData = async () => {
-    const res = await fetch(`${process.env.API_ENDPOINT}/items/listed/${user}`)
-    if (res.status !== 200) {
-      console.error('Failed to fetch items')
-      return
+    try {
+      const res = await fetch(`${process.env.API_ENDPOINT}/items/listed/${user}`)
+      if (res.status !== 200) {
+        console.error('Failed to fetch items')
+        return
+      }
+      const data = await res.json()
+      console.log('fetched data: ', data)
+      setMarketItems(data)
+      setIsLoaded(true)
+    } catch (err: any) {
+      console.log(err.message);
     }
-    const data = await res.json()
-    console.log('fetched data: ', data)
-    setMarketItems(data)
-    setIsLoaded(true)
   }
   useEffect(() => {
     decodeToken()
@@ -85,16 +89,16 @@ const Listed = () => {
   return (
     <>
       {userLoginState.isLoggedIn ? (
-      <div className="ml-10  max-w-full">
-        <div className="flex flex-wrap w-full mb-8">
-        <div className="w-full mb-6 lg:mb-0">
-          <h1 className="sm:text-3xl text-3xl font-medium title-font mb-2 text-gray-900 font-Lora">Your Listed Items</h1>
-          <div className="h-1 w-20 bg-forestgreen rounded"></div>
+        <div className="ml-10  max-w-full">
+          <div className="flex flex-wrap w-full mb-8">
+            <div className="w-full mb-6 lg:mb-0">
+              <h1 className="sm:text-3xl text-3xl font-medium title-font mb-2 text-gray-900 font-Lora">Your Listed Items</h1>
+              <div className="h-1 w-20 bg-forestgreen rounded"></div>
+            </div>
+          </div>
+          <div className="mt-6 flex space-x-6">{loaded ? renderItems : <h1>no items</h1>}</div>
         </div>
-      </div>
-        <div className="mt-6 flex space-x-6">{loaded ? renderItems : <h1>no items</h1>}</div>
-      </div>
-    ) : <NotLoggedIn/>}
+      ) : <NotLoggedIn />}
     </>
   )
 }
