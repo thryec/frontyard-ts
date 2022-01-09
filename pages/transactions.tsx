@@ -43,12 +43,9 @@ interface transactions {
 const Transactions: NextPage = () => {
   const [purchaseData, setPurchaseData] = useState<transactions[]>([])
   const [salesData, setSalesData] = useState<transactions[]>([])
-  const [testItem, setTestItem] = useState<itemProps>()
   const [dataLoaded, setDataLoaded] = useState<Boolean>(false)
   const userLoginState = useContext(UserContext)
   const [walletAddress, setWalletAddress] = useState<String>()
-
-  // console.log('user login state, ', userLoginState)
 
   const fetchPurchases = async () => {
     try {
@@ -103,7 +100,6 @@ const Transactions: NextPage = () => {
       return purchaseData.map((txn: transactions | any) => {
         // console.log('purchase txn: ', txn)
         const date = txn.purchaseDate
-        // console.log('date: ', date)
         const dateFormatted = date.slice(0, 10)
         console.log('rendering')
         return (
