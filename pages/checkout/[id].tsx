@@ -253,7 +253,8 @@ const Checkout: NextPage<itemProps> = () => {
         console.log('error posting transaction: ', err)
       }
     } else {
-      console.log('error')
+      alert('Please fill in all the necessary fields')
+      return
     }
   }
 
@@ -372,9 +373,9 @@ const Checkout: NextPage<itemProps> = () => {
         </div>
       </div>
       {currentItem !== undefined ? (
-        <div>
+        <div className="grid grid-cols-2 ml-64 mr-64">
           <div>
-            <div className="p-5 ml-44 w-2/5">
+            <div className="p-5">
               <h1 className="font-extrabold text-2xl mb-2 ">Item Summary</h1>
               <div className="p-5 bg-grey border rounded-md relative shadow ">
                 <div className="table w-full">
@@ -400,7 +401,7 @@ const Checkout: NextPage<itemProps> = () => {
               </div>
             </div>
 
-            <div className="w-2/5 p-5 ml-44 shipping-info">
+            <div className="p-5 shipping-info">
               <h1 className="font-extrabold text-2xl mb-2">Shipping Information</h1>
               <div className="shadow sm:rounded-md bg-grey p-6">
                 <div className="grid grid-cols-6 gap-6">
@@ -547,67 +548,69 @@ const Checkout: NextPage<itemProps> = () => {
             </div>
           </div>
 
-          <div className="">
-            <h1 className="font-extrabold text-2xl mb-2">Payment</h1>
-            <div className="p-5 bg-grey shadow border rounded-md w-1/3">
-              <div>
-                <button
-                  onClick={initialiseWallet}
-                  className="bg-lightorange hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
-                  {isConnected}
-                </button>
+          <div>
+            <div className="p-5">
+              <h1 className="font-extrabold text-2xl mb-2">Payment</h1>
+              <div className="p-5 bg-grey shadow border rounded-md min-w-full">
                 <div>
-                  {isConnected === 'Disconnect' ? (
+                  <button
+                    onClick={initialiseWallet}
+                    className="bg-lightorange hover:bg-orange-400 text-white border rounded-md p-2 m-2">
+                    {isConnected}
+                  </button>
+                  <div>
+                    {isConnected === 'Disconnect' ? (
+                      <div>
+                        <p className="m-1">Wallet {shortenAddress(walletAddress)} is connected</p>
+                        <p className="m-1">Available ETH Balance: {ethBalance} ETH </p>
+                        {chainId !== '0x4' ? (
+                          <button onClick={changeNetwork}>Switch To Rinkeby</button>
+                        ) : ethBalance > currentItem.price ? (
+                          <div>
+                            <button
+                              onClick={handleConfirmButton}
+                              className="bg-lightorange hover:bg-orange-400 text-white border rounded-md p-2 m-2">
+                              Confirm Payment
+                            </button>
+                          </div>
+                        ) : (
+                          <p>Insufficient Funds</p>
+                        )}
+                      </div>
+                    ) : (
+                      <p>Wallet not connected</p>
+                    )}
+                  </div>
+                  {isLoading ? (
                     <div>
-                      <p>Wallet {shortenAddress(walletAddress)} is connected</p>
-                      <p>Available ETH Balance: {ethBalance} ETH </p>
-                      {chainId !== '0x4' ? (
-                        <button onClick={changeNetwork}>Switch To Rinkeby</button>
-                      ) : ethBalance > currentItem.price ? (
-                        <div>
-                          <button
-                            onClick={handleConfirmButton}
-                            className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
-                            Confirm Payment
-                          </button>
-                        </div>
-                      ) : (
-                        <p>Insufficient Funds</p>
-                      )}
+                      <button className="bg-yellow-300 p-3 rounded-md">Loading.... </button>
+                      <div>
+                        <a
+                          href={'https://rinkeby.etherscan.io/tx/' + ethTxnId}
+                          className="underline"
+                          target="_blank"
+                          rel="noreferrer">
+                          View transaction on Etherscan
+                        </a>
+                      </div>
                     </div>
                   ) : (
-                    <p>Wallet not connected</p>
+                    <div />
                   )}
                 </div>
-                {isLoading ? (
-                  <div>
-                    <button className="bg-yellow-300 p-3 rounded-md">Loading.... </button>
-                    <div>
-                      <a
-                        href={'https://rinkeby.etherscan.io/tx/' + ethTxnId}
-                        className="underline"
-                        target="_blank"
-                        rel="noreferrer">
-                        View transaction on Etherscan
-                      </a>
-                    </div>
-                  </div>
-                ) : (
-                  <div />
-                )}
               </div>
             </div>
+            {/* error starts here  */}
+            {error !== null ? (
+              <div className="flex justify-center">
+                <div className="mt-10 p-3 w-1/2 bg-red-100 border border-red-400 text-red-700 rounded">
+                  <span>{error}</span>
+                </div>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
-          {/* error starts here  */}
-          {error !== null ? (
-            <div className="flex justify-center">
-              <div className="mt-10 p-3 w-1/2 bg-red-100 border border-red-400 text-red-700 rounded">
-                <span>{error}</span>
-              </div>
-            </div>
-          ) : (
-            <div></div>
-          )}
         </div>
       ) : (
         <div className="flex justify-between ml-24">Loading...</div>
