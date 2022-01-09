@@ -8,6 +8,7 @@ module.exports = {
         forestgreen: '#0B1C03',
         lightorange: '#F5AA5B',
         sand: '#F4F2EC',
+        grey: '#ebebeb',
       },
       fontFamily: {
         Lato: ['Lato', 'sans-serif'],

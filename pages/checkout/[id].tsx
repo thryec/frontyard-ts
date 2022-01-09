@@ -333,10 +333,6 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }, [id])
 
-  // useEffect(() => {
-  //   decodeToken()
-  // })
-
   useEffect(() => {
     if (typeof window.ethereum !== 'undefined') {
       window.ethereum.on('accountsChanged', () => {
@@ -366,196 +362,198 @@ const Checkout: NextPage<itemProps> = () => {
   // }
 
   return (
-    <div>
-      <div className="m-5 flex justify-center">
-        <h1 className="text-2xl underline underline-offset-8">Checkout</h1>
+    <div className="font-Montserrat">
+      <div className="flex w-full mb-8 ml-10">
+        <div className="w-full mb-6 lg:mb-0">
+          <h1 className="sm:text-3xl text-3xl font-medium title-font mb-2 text-gray-900 font-Lora">
+            Checkout
+          </h1>
+          <div className="h-1 w-20 bg-forestgreen rounded"></div>
+        </div>
       </div>
       {currentItem !== undefined ? (
         <div>
-          <div className="flex justify-center">
-            <div className="md:mt-0 md:col-span-2">
-              <div className="shadow overflow-hidden sm:rounded-md">
-                <div className="p-5 bg-slate-200 sm:p-6">
-                  <h1 className="font-bold text-xl">Shipping Information</h1>
-                  <div className="grid grid-cols-6 gap-6">
-                    <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="firstName"
-                        className="block text-md font-medium text-gray-700">
-                        First name
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleFirstNameBlur}
-                        ref={refFirstName}
-                        type="text"
-                        name="firstName"
-                        id="firstName"
-                        autoComplete="givenName"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {firstNameEmpty ? <h1>Please enter first name</h1> : ''}
+          <div>
+            <div className="p-5 ml-44 w-2/5">
+              <h1 className="font-extrabold text-2xl mb-2 ">Item Summary</h1>
+              <div className="p-5 bg-grey border rounded-md relative shadow ">
+                <div className="table w-full">
+                  <div className="table-header-group">
+                    <div className="table-row">
+                      <div className="table-cell text-left underline underline-offset-4">Name</div>
+                      <div className="table-cell text-left underline underline-offset-4">
+                        Description
+                      </div>
+                      <div className="table-cell text-left underline underline-offset-4">
+                        Total Price
+                      </div>
                     </div>
-
-                    <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="lastName" className="block text-md font-medium text-gray-700">
-                        Last name
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleLastNameBlur}
-                        ref={refLastName}
-                        type="text"
-                        name="lastName"
-                        id="lastName"
-                        autoComplete="familyName"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {lastNameEmpty ? <h1>Please enter last name</h1> : ''}
-                    </div>
-                    <div className="col-span-6 sm:col-span-4">
-                      <label
-                        htmlFor="emailAddress"
-                        className="block text-md font-medium text-gray-700">
-                        Email address
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleEmailAddressBlur}
-                        ref={refEmailAddress}
-                        type="text"
-                        name="emailAddress"
-                        id="emailAddress"
-                        autoComplete="email"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {emailAddressEmpty ? <h1>Please enter email address</h1> : ''}
-                      {validateEmail() ? '' : <h1>Please enter email in proper format</h1>}
-                    </div>
-                    <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="country" className="block text-md font-medium text-gray-700">
-                        Country
-                      </label>
-                      <select
-                        onChange={handleChange}
-                        onBlur={handleCountryBlur}
-                        ref={refCountry}
-                        id="country"
-                        name="country"
-                        autoComplete="country"
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="">Choose country</option>
-                        <option>Singapore</option>
-                        <option>Australia</option>
-                        <option>United States</option>
-                        <option>Canada</option>
-                      </select>
-                      {countryEmpty ? <h1>Please choose country</h1> : ''}
-                    </div>
-                    <div className="col-span-6">
-                      <label
-                        htmlFor="streetAddress"
-                        className="block text-md font-medium text-gray-700">
-                        Street address
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleStreetAddressBlur}
-                        ref={refStreetAddress}
-                        type="text"
-                        name="streetAddress"
-                        id="streetAddress"
-                        autoComplete="streetAddress"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {streetAddressEmpty ? <h1>Please enter street address</h1> : ''}
-                    </div>
-                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                      <label htmlFor="city" className="block text-md font-medium text-gray-700">
-                        City
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleCityBlur}
-                        ref={refCity}
-                        type="text"
-                        name="city"
-                        id="city"
-                        autoComplete="address-level2"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {cityEmpty ? <h1>Please enter city</h1> : ''}
-                    </div>
-                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <label htmlFor="state" className="block text-md font-medium text-gray-700">
-                        State / Province
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleStateBlur}
-                        ref={refState}
-                        type="text"
-                        name="state"
-                        id="state"
-                        autoComplete="address-level1"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {stateEmpty ? <h1>Please enter state</h1> : ''}
-                    </div>
-                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <label
-                        htmlFor="postalCode"
-                        className="block text-md font-medium text-gray-700">
-                        ZIP / Postal code
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handlePostalCodeBlur}
-                        ref={refPostalCode}
-                        type="text"
-                        name="postalCode"
-                        id="postalCode"
-                        autoComplete="postalCode"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {postalCodeEmpty ? <h1>Please enter postal code</h1> : ''}
+                  </div>
+                  <div className="table-row-group">
+                    <div className="table-row m-5">
+                      <div className="table-cell m-5">{currentItem.name}</div>
+                      <div className="table-cell m-5">{currentItem.description}</div>
+                      <div className="table-cell m-5">{currentItem.price} ETH</div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="p-5 m-10 w-2/5 bg-slate-200 border rounded-md relative">
-              <h1 className="font-bold text-xl">Item Summary</h1>
-              <div className="table w-full">
-                <div className="table-header-group">
-                  <div className="table-row">
-                    <div className="table-cell text-left underline underline-offset-4">Name</div>
-                    <div className="table-cell text-left underline underline-offset-4">
-                      Description
-                    </div>
-                    <div className="table-cell text-left underline underline-offset-4">Price</div>
+
+            <div className="w-2/5 p-5 ml-44 shipping-info">
+              <h1 className="font-extrabold text-2xl mb-2">Shipping Information</h1>
+              <div className="shadow sm:rounded-md bg-grey p-6">
+                <div className="grid grid-cols-6 gap-6">
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="firstName" className="block text-md font-medium text-gray-700">
+                      First name
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleFirstNameBlur}
+                      ref={refFirstName}
+                      type="text"
+                      name="firstName"
+                      id="firstName"
+                      autoComplete="givenName"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {firstNameEmpty ? <h1>Please enter first name</h1> : ''}
+                  </div>
+
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="lastName" className="block text-md font-medium text-gray-700">
+                      Last name
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleLastNameBlur}
+                      ref={refLastName}
+                      type="text"
+                      name="lastName"
+                      id="lastName"
+                      autoComplete="familyName"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {lastNameEmpty ? <h1>Please enter last name</h1> : ''}
+                  </div>
+                  <div className="col-span-6 sm:col-span-4">
+                    <label
+                      htmlFor="emailAddress"
+                      className="block text-md font-medium text-gray-700">
+                      Email address
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleEmailAddressBlur}
+                      ref={refEmailAddress}
+                      type="text"
+                      name="emailAddress"
+                      id="emailAddress"
+                      autoComplete="email"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {emailAddressEmpty ? <h1>Please enter email address</h1> : ''}
+                    {validateEmail() ? '' : <h1>Please enter email in proper format</h1>}
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="country" className="block text-md font-medium text-gray-700">
+                      Country
+                    </label>
+                    <select
+                      onChange={handleChange}
+                      onBlur={handleCountryBlur}
+                      ref={refCountry}
+                      id="country"
+                      name="country"
+                      autoComplete="country"
+                      className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                      <option value="">Choose country</option>
+                      <option>Singapore</option>
+                      <option>Australia</option>
+                      <option>United States</option>
+                      <option>Canada</option>
+                    </select>
+                    {countryEmpty ? <h1>Please choose country</h1> : ''}
+                  </div>
+                  <div className="col-span-6">
+                    <label
+                      htmlFor="streetAddress"
+                      className="block text-md font-medium text-gray-700">
+                      Street address
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleStreetAddressBlur}
+                      ref={refStreetAddress}
+                      type="text"
+                      name="streetAddress"
+                      id="streetAddress"
+                      autoComplete="streetAddress"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {streetAddressEmpty ? <h1>Please enter street address</h1> : ''}
+                  </div>
+                  <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label htmlFor="city" className="block text-md font-medium text-gray-700">
+                      City
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleCityBlur}
+                      ref={refCity}
+                      type="text"
+                      name="city"
+                      id="city"
+                      autoComplete="address-level2"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {cityEmpty ? <h1>Please enter city</h1> : ''}
+                  </div>
+                  <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label htmlFor="state" className="block text-md font-medium text-gray-700">
+                      State / Province
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleStateBlur}
+                      ref={refState}
+                      type="text"
+                      name="state"
+                      id="state"
+                      autoComplete="address-level1"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {stateEmpty ? <h1>Please enter state</h1> : ''}
+                  </div>
+                  <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label htmlFor="postalCode" className="block text-md font-medium text-gray-700">
+                      ZIP / Postal code
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handlePostalCodeBlur}
+                      ref={refPostalCode}
+                      type="text"
+                      name="postalCode"
+                      id="postalCode"
+                      autoComplete="postalCode"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {postalCodeEmpty ? <h1>Please enter postal code</h1> : ''}
                   </div>
                 </div>
-                <div className="table-row-group">
-                  <div className="table-row m-5">
-                    <div className="table-cell m-5">{currentItem.name}</div>
-                    <div className="table-cell m-5">{currentItem.description}</div>
-                    <div className="table-cell m-5">{currentItem.price} ETH</div>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute bottom-5 font-bold text-xl">
-                Total Payment: {currentItem.price} ETH
               </div>
             </div>
           </div>
-          <div className="flex justify-center">
-            <div className="p-5 bg-slate-200 border rounded-md w-1/3">
-              <h1 className="font-bold text-xl">Payment</h1>
+
+          <div className="">
+            <h1 className="font-extrabold text-2xl mb-2">Payment</h1>
+            <div className="p-5 bg-grey shadow border rounded-md w-1/3">
               <div>
                 <button
                   onClick={initialiseWallet}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
+                  className="bg-lightorange hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
                   {isConnected}
                 </button>
                 <div>
@@ -600,6 +598,7 @@ const Checkout: NextPage<itemProps> = () => {
               </div>
             </div>
           </div>
+          {/* error starts here  */}
           {error !== null ? (
             <div className="flex justify-center">
               <div className="mt-10 p-3 w-1/2 bg-red-100 border border-red-400 text-red-700 rounded">
@@ -611,7 +610,7 @@ const Checkout: NextPage<itemProps> = () => {
           )}
         </div>
       ) : (
-        <div>Loading...</div>
+        <div className="flex justify-between ml-24">Loading...</div>
       )}
     </div>
   )
