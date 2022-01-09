@@ -48,7 +48,7 @@ const Header = () => {
       <div className=" float-left mr-10">
         <Link href="/">
           <a>
-            <h1 className='font-Lora text-4xl text-forestgreen mr-96'>backyard.</h1>
+            <h1 className='font-LogoFont font-semibold tracking-wider text-4xl text-mblue mr-96'>backyard.</h1>
 
           </a>
         </Link>
