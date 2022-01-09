@@ -6,9 +6,6 @@ import Link from 'next/link'
 import jwtDecode from 'jwt-decode'
 import NotLoggedIn from '../components/userNotLoggedin'
 
-const userAddress = '0xe82d5C6B394D9C4dE32F0913e6cE82Dd8dc39226'
-const itemId = '61cfb6b18308bd18ab4b1a2e'
-
 interface itemProps {
   name: string
   description: string
@@ -111,7 +108,7 @@ const Transactions: NextPage = () => {
         console.log('rendering')
         return (
           <div key={txn._id}>
-            <div className="flex border-b-2 p-5">
+            <div className="flex border-b-2 p-5 font-Montserrat">
               <Image src={txn.item.image} alt={txn.item.name} width="100px" height="100px" />
               <div className="ml-5">
                 <p>{txn.item.name}</p>
@@ -136,7 +133,7 @@ const Transactions: NextPage = () => {
         const dateFormatted = date.slice(0, 10)
         return (
           <div key={txn._id}>
-            <div className="flex border-b-2 p-5">
+            <div className="flex border-b-2 p-5 font-Montserrat">
               <Image src={txn.item.image} alt={txn.item.name} width="100px" height="100px" />
               <div className="ml-5">
                 <p>{txn.item.name}</p>
@@ -155,7 +152,7 @@ const Transactions: NextPage = () => {
 
   useEffect(() => {
     const fetchTxns = async () => {
-      if (userAddress !== undefined) {
+      if (walletAddress !== undefined) {
         await fetchPurchases()
         await fetchSales()
         setDataLoaded(true)
@@ -182,14 +179,12 @@ const Transactions: NextPage = () => {
       </div>
       <div className="flex justify-center">
         <div className="m-5 w-1/3">
-          <h1 className="text-xl underline underline-offset-8 decoration-dotted">
-            Items Purchased
-          </h1>
+          <h1 className="text-xl underline underline-offset-8 font-Montserrat">Items Purchased</h1>
           <div>{dataLoaded ? renderPurchases() : <div>Loading...</div>}</div>
         </div>
         <div className="border-double border-l-4 border-slate-500"></div>
         <div className="m-5 w-1/3">
-          <h1 className="text-xl underline underline-offset-8 decoration-dotted">Items Sold</h1>
+          <h1 className="text-xl underline underline-offset-8 font-Montserrat">Items Sold</h1>
           <div>{dataLoaded ? renderSales() : <div>Loading...</div>}</div>
         </div>
       </div>
