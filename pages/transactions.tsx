@@ -4,6 +4,7 @@ import Image from 'next/image'
 import UserContext from '../context/LoginState'
 import Link from 'next/link'
 import jwtDecode from 'jwt-decode'
+import NotLoggedIn from '../components/userNotLoggedin'
 
 const userAddress = '0xe82d5C6B394D9C4dE32F0913e6cE82Dd8dc39226'
 const itemId = '61cfb6b18308bd18ab4b1a2e'
@@ -166,18 +167,7 @@ const Transactions: NextPage = () => {
   }, [walletAddress])
 
   if (userLoginState.isLoggedIn === false) {
-    return (
-      <div className="flex justify-center">
-        <div className="p-5 bg-slate-200 border rounded-md w-1/3">
-          <div className="flex justify-center mb-5">Please Log In to proceed</div>
-          <div className="flex justify-center">
-            <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
-              <Link href="/login">Go to Login </Link>
-            </button>
-          </div>
-        </div>
-      </div>
-    )
+    return <NotLoggedIn />
   }
 
   return (
