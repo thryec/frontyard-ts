@@ -65,7 +65,7 @@ const Home: NextPage = () => {
   }, [])
 
   return (
-  <div className="flex flex-wrap justify-center items-center w-full">
+  <div className="flex flex-wrap justify-center items-center w-full pt-10 pb-10">
   <div className="flex flex-wrap justify-center items-center w-10/12">
     <div className="flex flex-wrap justify-center items-center w-full"><img src="homebanner.png" width="75%" height="75%"/></div>
       <div className="flex flex-wrap justify-center items-center w-9/12">

@@ -49,7 +49,6 @@ const Header = () => {
         <Link href="/">
           <a>
             <h1 className='font-LogoFont font-semibold tracking-wider text-4xl text-mblue mr-96'>backyard.</h1>
-
           </a>
         </Link>
         {/* <Link href="/">
@@ -83,7 +82,7 @@ const Header = () => {
             </Link>
             {userRole == 'admin' ? (
               <Link href="/users">
-                <a className="mr-10 font-Montserrat">users</a>
+                <a className="mr-10 font-Montserrat">Users</a>
               </Link>
             ) : (
               ''
