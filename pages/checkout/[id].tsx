@@ -391,7 +391,11 @@ const Checkout: NextPage<itemProps> = () => {
                       autoComplete="givenName"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
-                    {firstNameEmpty ? <h1>Please enter first name</h1> : ''}
+                    {firstNameEmpty ? (
+                      <h1 className="text-red-600">Please enter first name</h1>
+                    ) : (
+                      ''
+                    )}
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
@@ -408,7 +412,7 @@ const Checkout: NextPage<itemProps> = () => {
                       autoComplete="familyName"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
-                    {lastNameEmpty ? <h1>Please enter last name</h1> : ''}
+                    {lastNameEmpty ? <h1 className="text-red-600">Please enter last name</h1> : ''}
                   </div>
                   <div className="col-span-6 sm:col-span-4">
                     <label htmlFor="emailAddress" className="block text-md font-medium">
@@ -424,8 +428,18 @@ const Checkout: NextPage<itemProps> = () => {
                       autoComplete="email"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
-                    {emailAddressEmpty ? <h1>Please enter email address</h1> : ''}
-                    {validateEmail() ? '' : <h1>Please enter email in proper format</h1>}
+                    {emailAddressEmpty ? (
+                      <h1 className="text-red-600">Please enter email address</h1>
+                    ) : (
+                      ''
+                    )}
+                    {validateEmail() ? (
+                      ''
+                    ) : (
+                      <h1 className="text-red-600">
+                        Please enter email in proper format (e.g. example@email.com)
+                      </h1>
+                    )}
                   </div>
                   <div className="col-span-6 sm:col-span-3">
                     <label htmlFor="country" className="block text-md font-medium">
@@ -445,7 +459,7 @@ const Checkout: NextPage<itemProps> = () => {
                       <option>United States</option>
                       <option>Canada</option>
                     </select>
-                    {countryEmpty ? <h1>Please choose country</h1> : ''}
+                    {countryEmpty ? <h1 className="text-red-600">Please choose country</h1> : ''}
                   </div>
                   <div className="col-span-6">
                     <label htmlFor="streetAddress" className="block text-md font-medium">
@@ -461,7 +475,11 @@ const Checkout: NextPage<itemProps> = () => {
                       autoComplete="streetAddress"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
-                    {streetAddressEmpty ? <h1>Please enter street address</h1> : ''}
+                    {streetAddressEmpty ? (
+                      <h1 className="text-red-600">Please enter street address</h1>
+                    ) : (
+                      ''
+                    )}
                   </div>
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                     <label htmlFor="city" className="block text-md font-medium">
@@ -477,7 +495,7 @@ const Checkout: NextPage<itemProps> = () => {
                       autoComplete="address-level2"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
-                    {cityEmpty ? <h1>Please enter city</h1> : ''}
+                    {cityEmpty ? <h1 className="text-red-600">Please enter city</h1> : ''}
                   </div>
                   <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                     <label htmlFor="state" className="block text-md font-medium">
@@ -493,7 +511,7 @@ const Checkout: NextPage<itemProps> = () => {
                       autoComplete="address-level1"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
-                    {stateEmpty ? <h1>Please enter state</h1> : ''}
+                    {stateEmpty ? <h1 className="text-red-600">Please enter state</h1> : ''}
                   </div>
                   <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                     <label htmlFor="postalCode" className="block text-md font-medium">
@@ -509,7 +527,11 @@ const Checkout: NextPage<itemProps> = () => {
                       autoComplete="postalCode"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
-                    {postalCodeEmpty ? <h1>Please enter postal code</h1> : ''}
+                    {postalCodeEmpty ? (
+                      <h1 className="text-red-600">Please enter postal code</h1>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 </div>
               </div>
