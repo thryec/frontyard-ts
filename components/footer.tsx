@@ -1,12 +1,12 @@
 import 'tailwindcss/tailwind.css'
 
 const Footer = () => {
-    let footnote = " © Copyright " + new Date().getFullYear();
+    let footnote = " © Copyright " + new Date().getFullYear() + ", ";
     return (
-        <div className="pt-2 font-Montserrat">
+        <div className="pt-2 font-TitleFont">
             <div className="flex pb-5 px-3 m-auto pt-5 border-t text-gray-800 text-sm flex-col
                 md:flex-row w-10/12">
-                <div className="mt-2">{footnote}<span className="font-LogoFont">, backyard.</span></div>
+                <div className="mt-2">{footnote}<span className="font-LogoFont text-mblue font-semibold">backyard.</span></div>
                 <div className="md:flex-auto md:flex-row-reverse mt-2 flex-row flex">
 
                     <a href="https://www.linkedin.com/in/angshinyi" className="w-6 mx-1">
@@ -66,7 +66,7 @@ const Footer = () => {
                         </svg>
                     </a>
 
-                <span>Created by:&nbsp;</span>
+                <span className="flex items-center">Created by:&nbsp;</span>
                 </div>
             </div>
         </div>
