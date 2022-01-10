@@ -181,7 +181,7 @@ const Checkout: NextPage<itemProps> = () => {
     console.log('input: ', input, 'currentItem', currentItem, 'validation: ', validateEmail())
     if (
       currentItem !== undefined &&
-      // validateEmail() &&
+      validateEmail() &&
       input.firstName &&
       input.lastName &&
       input.emailAddress &&

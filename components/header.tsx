@@ -1,7 +1,5 @@
-import 'tailwindcss/tailwind.css'
 import { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
-// import Image from 'next/image'
 import UserContext from '../context/LoginState'
 import jwtDecode from 'jwt-decode'
 import SearchBar from './searchbar'
@@ -51,11 +49,6 @@ const Header = () => {
             <h1 className="font-Lora text-4xl text-forestgreen mr-96">backyard.</h1>
           </a>
         </Link>
-        {/* <Link href="/">
-          <a className="mr-10">
-            <Image src="/backdoor.png" width="200px" height="100px" alt="backdoor" />
-          </a>
-        </Link> */}
       </div>
       <SearchBar />
       <nav>
