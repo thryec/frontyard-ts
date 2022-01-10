@@ -39,7 +39,7 @@ const Home: NextPage = () => {
     const dateListed = item.listingStartDate.slice(0, 10)
     return (
       <Link href={'/items/' + item._id} key={item._id}>
-        <div className="shadow-md w-1/6">
+        <div className="shadow-md w-1/6 cursor-pointer">
           <Image src={item.image} alt="" className="min-w-full" width="200px" height="200px" />
           <div className="px-4 align-baseline">
             <h1 className="mt-3 text-gray-800 text-2xl font-bold my-2">{item.name}</h1>
