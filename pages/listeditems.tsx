@@ -29,6 +29,7 @@ const Listed = () => {
     try {
       const res = await fetch(`${process.env.API_ENDPOINT}/items/listed/${user}`)
       if (res.status !== 200) {
+        router.push('/failedlisting')
         console.error('Failed to fetch items')
         return
       }
@@ -37,6 +38,7 @@ const Listed = () => {
       setMarketItems(data)
       setIsLoaded(true)
     } catch (err: any) {
+      router.push('/failedlisting')
       console.log(err.message);
     }
   }
@@ -67,6 +69,7 @@ const Listed = () => {
       console.log("success")
       router.push("/listeditems");
     } catch (err) {
+      router.push('/failedlisting')
       console.log('delete failed: ', err)
     }
   }

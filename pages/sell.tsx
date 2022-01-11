@@ -39,6 +39,7 @@ const Sell = () => {
       setFileUploading(false)
       setImageEmpty(false)
     } catch (e) {
+      router.push('/failedlisting')
       console.log('Error uploading file: ', e)
     }
   }
@@ -98,6 +99,7 @@ const Sell = () => {
       }
     } else {
       console.log('error')
+      router.push('/failedlisting')
     }
   }
 

@@ -28,6 +28,7 @@ const Details = () => {
       setSeller(data.seller)
       setIsLoaded(true)
     } catch (err) {
+      router.push('/404')
       console.log('error fetching transactions: ', err)
     }
   }

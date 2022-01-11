@@ -5,6 +5,7 @@ import UserContext from '../context/LoginState'
 import Link from 'next/link'
 import jwtDecode from 'jwt-decode'
 import NotLoggedIn from '../components/userNotLoggedin'
+import { useRouter } from 'next/router'
 
 interface itemProps {
   name: string
@@ -46,6 +47,7 @@ const Transactions: NextPage = () => {
   const [dataLoaded, setDataLoaded] = useState<Boolean>(false)
   const userLoginState = useContext(UserContext)
   const [walletAddress, setWalletAddress] = useState<String>()
+  const router = useRouter();
 
   const fetchPurchases = async () => {
     try {
@@ -63,6 +65,7 @@ const Transactions: NextPage = () => {
       console.log('historical purchases: ', data)
     } catch (err) {
       console.log('error fetching transactions: ', err)
+      router.push('/failedlisting')
     }
   }
 
@@ -82,6 +85,7 @@ const Transactions: NextPage = () => {
       console.log('historical sales: ', data)
     } catch (err) {
       console.log('error fetching transactions: ', err)
+      router.push('/failedlisting')
     }
   }
 

@@ -21,7 +21,7 @@ const Failed = () => {
 
     return (
         <div>
-            <h1>Error, failed to list item. Try again later.</h1>
+            <h1>Server error, please try again later.</h1>
             <h2>Go back to <Link href='/'><a>backyard</a></Link></h2>
         </div>
     )

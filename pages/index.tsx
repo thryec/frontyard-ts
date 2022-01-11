@@ -3,15 +3,18 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import jwtDecode from 'jwt-decode'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 const Home: NextPage = () => {
   const [marketItems, setMarketItems] = useState([])
   const [loaded, setIsLoaded] = useState(false)
+  const router = useRouter();
 
   const loadData = async () => {
     try {
       const res = await fetch(`${process.env.API_ENDPOINT}/items/listed/newest`)
       if (res.status !== 200) {
+        router.push('/failedlisting')
         console.error('Failed to fetch items')
         return
       }
@@ -19,6 +22,7 @@ const Home: NextPage = () => {
       setMarketItems(data)
       setIsLoaded(true)
     } catch (error: any) {
+      router.push('/failedlisting')
       console.log(error.message)
     }
   }
