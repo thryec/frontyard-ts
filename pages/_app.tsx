@@ -15,12 +15,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     setLoginState: (state: boolean) => setLoginState(state)
   }
 
+  let tabTitle = Component.name;
+  console.log(typeof tabTitle)
+  console.log(typeof Component.name)
+
   return (
 
     <div>
       <UserContext.Provider value={userLoginData}>
         <Head>
-          <title>backyard. | {Component.name}</title>
+          <title>backyard. | {tabTitle}</title>
         </Head>
         <Layout>
           <Component {...pageProps} />
