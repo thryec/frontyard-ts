@@ -47,7 +47,7 @@ const Transactions: NextPage = () => {
   const [dataLoaded, setDataLoaded] = useState<Boolean>(false)
   const userLoginState = useContext(UserContext)
   const [walletAddress, setWalletAddress] = useState<String>()
-  const router = useRouter();
+  const router = useRouter()
 
   const fetchPurchases = async () => {
     try {
@@ -180,12 +180,40 @@ const Transactions: NextPage = () => {
       <div className="flex justify-center">
         <div className="m-5 w-1/3">
           <h1 className="text-xl underline underline-offset-8 font-Montserrat">Items Purchased</h1>
-          <div>{dataLoaded ? renderPurchases() : <div>Loading...</div>}</div>
+          <div>
+            {dataLoaded ? (
+              renderPurchases()
+            ) : (
+              <div className="flex justify-center  bg-white">
+                <Image
+                  className="h-16 w-16"
+                  src="https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif"
+                  alt="loading"
+                  width="100px"
+                  height="100px"
+                />
+              </div>
+            )}
+          </div>
         </div>
         <div className="border-double border-l-4 border-slate-500"></div>
         <div className="m-5 w-1/3">
           <h1 className="text-xl underline underline-offset-8 font-Montserrat">Items Sold</h1>
-          <div>{dataLoaded ? renderSales() : <div>Loading...</div>}</div>
+          <div>
+            {dataLoaded ? (
+              renderSales()
+            ) : (
+              <div className="flex justify-center  bg-white">
+                <Image
+                  className="h-16 w-16"
+                  src="https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif"
+                  alt="loading"
+                  width="100px"
+                  height="100px"
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
