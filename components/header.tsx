@@ -74,32 +74,32 @@ return (
                         </button>
                         <nav className="border border-2 bg-white invisible border-gray-800 rounded w-30 static left-0 top-full transition-all opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-1">
                             <ul className="py-1">
-                                <li className="hover:bg-lightorange hover:text-white">
                                     <Link href="/listeditems">
-                                        <a className="mr-10 font-TitleFont hover:bg-gray">Listed Items</a>
+                                    <li className="hover:bg-lightorange hover:text-white cursor-pointer">
+                                          <a className="mr-10 font-TitleFont hover:bg-gray">Listed Items</a>
+                                      </li>
                                     </Link>
-                                </li>
-                                <li className="hover:bg-lightorange hover:text-white">
                                     <Link href="/transactions">
-                                        <a className="mr-10 font-TitleFont">History</a>
+                                    <li className="hover:bg-lightorange hover:text-white cursor-pointer">
+                                          <a className="mr-10 font-TitleFont">History</a>
+                                      </li>
                                     </Link>
-                                </li>
-                                <li className="hover:bg-lightorange hover:text-white">
                                 {userRole == 'admin' ? (
                                     <Link href="/users">
+                                    <li className="hover:bg-lightorange hover:text-white cursor-pointer">
                                         <a className="mr-10 font-TitleFont">Users</a>
+                                      </li>
                                     </Link>
                                 ) : (
                                 ''
                                 )}
-                                </li>
-                                <li className="hover:bg-lightorange hover:text-white">
-                                    <Link href="/">
-                                        <a onClick={handleLogoutClick} className="mr-10 font-TitleFont">
-                                            Logout
-                                        </a>
-                                    </Link>
-                                </li>
+                                  <Link href="/">
+                                  <li className="hover:bg-lightorange hover:text-white cursor-pointer">
+                                      <a onClick={handleLogoutClick} className="mr-10 font-TitleFont">
+                                          Logout
+                                      </a>
+                                    </li>
+                                  </Link>
                             </ul>
                         </nav>
                     </div>
@@ -119,16 +119,16 @@ return (
                         </button>
                         <nav className="border border-2 bg-white invisible border-gray-800 rounded w-30 static left-0 top-full transition-all opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-1">
                             <ul className="py-1">
-                                <li className="hover:bg-lightorange hover:text-white">
                                 <Link href="/login">
-                                    <a className="mr-10 font-TitleFont">Login</a>
+                                <li className="hover:bg-lightorange hover:text-white cursor-pointer">
+                                      <a className="mr-10 font-TitleFont">Login</a>
+                                    </li>
                                 </Link>
-                                </li>
-                                <li className="hover:bg-lightorange hover:text-white">
                                 <Link href="/signup">
-                                    <a className="mr-10 font-TitleFont">Sign Up</a>
+                                    <li className="hover:bg-lightorange hover:text-white cursor-pointer">
+                                      <a className="mr-10 font-TitleFont">Sign Up</a>
+                                    </li>
                                 </Link>
-                                </li>
                             </ul>
                         </nav>
                     </div>
