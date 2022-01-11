@@ -7,6 +7,7 @@ import UserContext from '../../context/LoginState'
 import Link from 'next/link'
 import jwtDecode from 'jwt-decode'
 import Swal from 'sweetalert2'
+import NotLoggedIn from '../../components/userNotLoggedin'
 
 interface itemProps {
   name: string
@@ -76,7 +77,6 @@ const Checkout: NextPage<itemProps> = () => {
     return re.test(String(input.emailAddress).toLowerCase())
   }
 
-  ////to check if fields are empty
   const handleFirstNameBlur = (): void => {
     !refFirstName.current.value ? setFirstNameEmpty(true) : setFirstNameEmpty(false)
     // console.log("this is FirstNameblur: ", FirstNameEmpty)
@@ -89,20 +89,6 @@ const Checkout: NextPage<itemProps> = () => {
     !refEmailAddress.current.value ? setEmailAddressEmpty(true) : setEmailAddressEmpty(false)
     // console.log("this is EmailAddressblur: ", EmailAddressEmpty)
   }
-  //   const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null)
-  //   const handleEmailAddressBlur = () => {
-  //     if (!refEmailAddress.current.value) {
-  //       setEmailAddressEmpty(true)
-  //     } else {
-  //         const isValid = validateEmail(input.emailAddress)
-  //         console.log("this is input email address",input.emailAddress)
-  //         console.log("this is isvalid",isValid)
-
-  //         setIsEmailValid(isValid)
-  //         console.log("this is isemailvalid ", isEmailValid)
-  //         setEmailAddressEmpty(false)
-  //     }
-  // }
 
   const handleCountryBlur = (): void => {
     !refCountry.current.value ? setCountryEmpty(true) : setCountryEmpty(false)
@@ -122,9 +108,6 @@ const Checkout: NextPage<itemProps> = () => {
   const handlePostalCodeBlur = (): void => {
     !refPostalCode.current.value ? setPostalCodeEmpty(true) : setPostalCodeEmpty(false)
   }
-
-  // console.log('item id: ', id)
-  // console.log('user login state: ', userLoginState)
 
   const fetchItemDetails = async () => {
     try {
@@ -198,7 +181,7 @@ const Checkout: NextPage<itemProps> = () => {
     console.log('input: ', input, 'currentItem', currentItem, 'validation: ', validateEmail())
     if (
       currentItem !== undefined &&
-      // validateEmail() &&
+      validateEmail() &&
       input.firstName &&
       input.lastName &&
       input.emailAddress &&
@@ -253,7 +236,8 @@ const Checkout: NextPage<itemProps> = () => {
         console.log('error posting transaction: ', err)
       }
     } else {
-      console.log('error')
+      alert('Please fill in all the necessary fields')
+      return
     }
   }
 
@@ -333,10 +317,6 @@ const Checkout: NextPage<itemProps> = () => {
     }
   }, [id])
 
-  // useEffect(() => {
-  //   decodeToken()
-  // })
-
   useEffect(() => {
     if (typeof window.ethereum !== 'undefined') {
       window.ethereum.on('accountsChanged', () => {
@@ -350,268 +330,280 @@ const Checkout: NextPage<itemProps> = () => {
     // add cleanup function here
   }, [])
 
-  // if (userLoginState.isLoggedIn === false) {
-  //   return (
-  //     <div className="flex justify-center">
-  //       <div className="p-5 bg-slate-200 border rounded-md w-1/3">
-  //         <div className="flex justify-center mb-5">Please Log In to proceed</div>
-  //         <div className="flex justify-center">
-  //           <button className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2">
-  //             <Link href="/login">Go to Login </Link>
-  //           </button>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   )
-  // }
+  if (userLoginState.isLoggedIn === false) {
+    return <NotLoggedIn />
+  }
 
   return (
-    <div>
-      <div className="m-5 flex justify-center">
-        <h1 className="text-2xl underline underline-offset-8">Checkout</h1>
+    <div className="font-Montserrat">
+      <div className="flex w-full mb-8 ml-10">
+        <div className="w-full mb-6 lg:mb-0">
+          <h1 className="sm:text-3xl text-3xl font-medium title-font mb-2 text-gray-900 font-Lora">
+            Checkout
+          </h1>
+          <div className="h-1 w-20 bg-forestgreen rounded"></div>
+        </div>
       </div>
       {currentItem !== undefined ? (
-        <div>
-          <div className="flex justify-center">
-            <div className="md:mt-0 md:col-span-2">
-              <div className="shadow overflow-hidden sm:rounded-md">
-                <div className="p-5 bg-slate-200 sm:p-6">
-                  <h1 className="font-bold text-xl">Shipping Information</h1>
-                  <div className="grid grid-cols-6 gap-6">
-                    <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="firstName"
-                        className="block text-md font-medium text-gray-700">
-                        First name
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleFirstNameBlur}
-                        ref={refFirstName}
-                        type="text"
-                        name="firstName"
-                        id="firstName"
-                        autoComplete="givenName"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {firstNameEmpty ? <h1>Please enter first name</h1> : ''}
+        <div className="grid grid-cols-2 ml-64 mr-64">
+          <div>
+            <div className="p-5">
+              <h1 className="font-extrabold text-2xl mb-2 ">Item Summary</h1>
+              <div className="p-5 bg-grey border rounded-md relative shadow ">
+                <div className="table w-full">
+                  <div className="table-header-group">
+                    <div className="table-row">
+                      <div className="table-cell text-left underline underline-offset-4">Name</div>
+                      <div className="table-cell text-left underline underline-offset-4">
+                        Description
+                      </div>
+                      <div className="table-cell text-left underline underline-offset-4">
+                        Total Price
+                      </div>
                     </div>
-
-                    <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="lastName" className="block text-md font-medium text-gray-700">
-                        Last name
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleLastNameBlur}
-                        ref={refLastName}
-                        type="text"
-                        name="lastName"
-                        id="lastName"
-                        autoComplete="familyName"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {lastNameEmpty ? <h1>Please enter last name</h1> : ''}
-                    </div>
-                    <div className="col-span-6 sm:col-span-4">
-                      <label
-                        htmlFor="emailAddress"
-                        className="block text-md font-medium text-gray-700">
-                        Email address
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleEmailAddressBlur}
-                        ref={refEmailAddress}
-                        type="text"
-                        name="emailAddress"
-                        id="emailAddress"
-                        autoComplete="email"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {emailAddressEmpty ? <h1>Please enter email address</h1> : ''}
-                      {validateEmail() ? '' : <h1>Please enter email in proper format</h1>}
-                    </div>
-                    <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="country" className="block text-md font-medium text-gray-700">
-                        Country
-                      </label>
-                      <select
-                        onChange={handleChange}
-                        onBlur={handleCountryBlur}
-                        ref={refCountry}
-                        id="country"
-                        name="country"
-                        autoComplete="country"
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="">Choose country</option>
-                        <option>Singapore</option>
-                        <option>Australia</option>
-                        <option>United States</option>
-                        <option>Canada</option>
-                      </select>
-                      {countryEmpty ? <h1>Please choose country</h1> : ''}
-                    </div>
-                    <div className="col-span-6">
-                      <label
-                        htmlFor="streetAddress"
-                        className="block text-md font-medium text-gray-700">
-                        Street address
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleStreetAddressBlur}
-                        ref={refStreetAddress}
-                        type="text"
-                        name="streetAddress"
-                        id="streetAddress"
-                        autoComplete="streetAddress"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {streetAddressEmpty ? <h1>Please enter street address</h1> : ''}
-                    </div>
-                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                      <label htmlFor="city" className="block text-md font-medium text-gray-700">
-                        City
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleCityBlur}
-                        ref={refCity}
-                        type="text"
-                        name="city"
-                        id="city"
-                        autoComplete="address-level2"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {cityEmpty ? <h1>Please enter city</h1> : ''}
-                    </div>
-                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <label htmlFor="state" className="block text-md font-medium text-gray-700">
-                        State / Province
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handleStateBlur}
-                        ref={refState}
-                        type="text"
-                        name="state"
-                        id="state"
-                        autoComplete="address-level1"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {stateEmpty ? <h1>Please enter state</h1> : ''}
-                    </div>
-                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <label
-                        htmlFor="postalCode"
-                        className="block text-md font-medium text-gray-700">
-                        ZIP / Postal code
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        onBlur={handlePostalCodeBlur}
-                        ref={refPostalCode}
-                        type="text"
-                        name="postalCode"
-                        id="postalCode"
-                        autoComplete="postalCode"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      {postalCodeEmpty ? <h1>Please enter postal code</h1> : ''}
+                  </div>
+                  <div className="table-row-group">
+                    <div className="table-row m-5">
+                      <div className="table-cell m-5">{currentItem.name}</div>
+                      <div className="table-cell m-5">{currentItem.description}</div>
+                      <div className="table-cell m-5">{currentItem.price} ETH</div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="p-5 m-10 w-2/5 bg-slate-200 border rounded-md relative">
-              <h1 className="font-bold text-xl">Item Summary</h1>
-              <div className="table w-full">
-                <div className="table-header-group">
-                  <div className="table-row">
-                    <div className="table-cell text-left underline underline-offset-4">Name</div>
-                    <div className="table-cell text-left underline underline-offset-4">
-                      Description
-                    </div>
-                    <div className="table-cell text-left underline underline-offset-4">Price</div>
+
+            <div className="p-5 shipping-info">
+              <h1 className="font-extrabold text-2xl mb-2">Shipping Information</h1>
+              <div className="shadow sm:rounded-md bg-grey p-6">
+                <div className="grid grid-cols-6 gap-6">
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="firstName" className="block text-md font-medium">
+                      First name
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleFirstNameBlur}
+                      ref={refFirstName}
+                      type="text"
+                      name="firstName"
+                      id="firstName"
+                      autoComplete="givenName"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {firstNameEmpty ? (
+                      <h1 className="text-red-600">Please enter first name</h1>
+                    ) : (
+                      ''
+                    )}
+                  </div>
+
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="lastName" className="block text-md font-medium">
+                      Last name
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleLastNameBlur}
+                      ref={refLastName}
+                      type="text"
+                      name="lastName"
+                      id="lastName"
+                      autoComplete="familyName"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {lastNameEmpty ? <h1 className="text-red-600">Please enter last name</h1> : ''}
+                  </div>
+                  <div className="col-span-6 sm:col-span-4">
+                    <label htmlFor="emailAddress" className="block text-md font-medium">
+                      Email address
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleEmailAddressBlur}
+                      ref={refEmailAddress}
+                      type="text"
+                      name="emailAddress"
+                      id="emailAddress"
+                      autoComplete="email"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {emailAddressEmpty ? (
+                      <h1 className="text-red-600">Please enter email address</h1>
+                    ) : (
+                      ''
+                    )}
+                    {validateEmail() ? (
+                      ''
+                    ) : (
+                      <h1 className="text-red-600">
+                        Please enter email in proper format (e.g. example@email.com)
+                      </h1>
+                    )}
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="country" className="block text-md font-medium">
+                      Country
+                    </label>
+                    <select
+                      onChange={handleChange}
+                      onBlur={handleCountryBlur}
+                      ref={refCountry}
+                      id="country"
+                      name="country"
+                      autoComplete="country"
+                      className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                      <option value="">Choose country</option>
+                      <option>Singapore</option>
+                      <option>Australia</option>
+                      <option>United States</option>
+                      <option>Canada</option>
+                    </select>
+                    {countryEmpty ? <h1 className="text-red-600">Please choose country</h1> : ''}
+                  </div>
+                  <div className="col-span-6">
+                    <label htmlFor="streetAddress" className="block text-md font-medium">
+                      Street address
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleStreetAddressBlur}
+                      ref={refStreetAddress}
+                      type="text"
+                      name="streetAddress"
+                      id="streetAddress"
+                      autoComplete="streetAddress"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {streetAddressEmpty ? (
+                      <h1 className="text-red-600">Please enter street address</h1>
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                  <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label htmlFor="city" className="block text-md font-medium">
+                      City
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleCityBlur}
+                      ref={refCity}
+                      type="text"
+                      name="city"
+                      id="city"
+                      autoComplete="address-level2"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {cityEmpty ? <h1 className="text-red-600">Please enter city</h1> : ''}
+                  </div>
+                  <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label htmlFor="state" className="block text-md font-medium">
+                      State / Province
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handleStateBlur}
+                      ref={refState}
+                      type="text"
+                      name="state"
+                      id="state"
+                      autoComplete="address-level1"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {stateEmpty ? <h1 className="text-red-600">Please enter state</h1> : ''}
+                  </div>
+                  <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label htmlFor="postalCode" className="block text-md font-medium">
+                      ZIP / Postal code
+                    </label>
+                    <input
+                      onChange={handleChange}
+                      onBlur={handlePostalCodeBlur}
+                      ref={refPostalCode}
+                      type="text"
+                      name="postalCode"
+                      id="postalCode"
+                      autoComplete="postalCode"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    {postalCodeEmpty ? (
+                      <h1 className="text-red-600">Please enter postal code</h1>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 </div>
-                <div className="table-row-group">
-                  <div className="table-row m-5">
-                    <div className="table-cell m-5">{currentItem.name}</div>
-                    <div className="table-cell m-5">{currentItem.description}</div>
-                    <div className="table-cell m-5">{currentItem.price} ETH</div>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute bottom-5 font-bold text-xl">
-                Total Payment: {currentItem.price} ETH
               </div>
             </div>
           </div>
-          <div className="flex justify-center">
-            <div className="p-5 bg-slate-200 border rounded-md w-1/3">
-              <h1 className="font-bold text-xl">Payment</h1>
-              <div>
-                <button
-                  onClick={initialiseWallet}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
-                  {isConnected}
-                </button>
+
+          <div>
+            <div className="p-5">
+              <h1 className="font-extrabold text-2xl mb-2">Payment</h1>
+              <div className="p-5 bg-grey shadow border rounded-md min-w-full">
                 <div>
-                  {isConnected === 'Disconnect' ? (
+                  <button
+                    onClick={initialiseWallet}
+                    className="bg-lightorange hover:bg-orange-400 text-white border rounded-md p-2 m-2">
+                    {isConnected}
+                  </button>
+                  <div>
+                    {isConnected === 'Disconnect' ? (
+                      <div>
+                        <p className="m-1">Wallet {shortenAddress(walletAddress)} is connected</p>
+                        <p className="m-1">Available ETH Balance: {ethBalance} ETH </p>
+                        {chainId !== '0x4' ? (
+                          <button onClick={changeNetwork}>Switch To Rinkeby</button>
+                        ) : ethBalance > currentItem.price ? (
+                          <div>
+                            <button
+                              onClick={handleConfirmButton}
+                              className="bg-lightorange hover:bg-orange-400 text-white border rounded-md p-2 m-2">
+                              Confirm Payment
+                            </button>
+                          </div>
+                        ) : (
+                          <p>Insufficient Funds</p>
+                        )}
+                      </div>
+                    ) : (
+                      <p>Wallet not connected</p>
+                    )}
+                  </div>
+                  {isLoading ? (
                     <div>
-                      <p>Wallet {shortenAddress(walletAddress)} is connected</p>
-                      <p>Available ETH Balance: {ethBalance} ETH </p>
-                      {chainId !== '0x4' ? (
-                        <button onClick={changeNetwork}>Switch To Rinkeby</button>
-                      ) : ethBalance > currentItem.price ? (
-                        <div>
-                          <button
-                            onClick={handleConfirmButton}
-                            className="bg-indigo-600 hover:bg-indigo-700 text-white border rounded-md p-2 m-2">
-                            Confirm Payment
-                          </button>
-                        </div>
-                      ) : (
-                        <p>Insufficient Funds</p>
-                      )}
+                      <button className="bg-yellow-300 p-3 rounded-md">Loading.... </button>
+                      <div>
+                        <a
+                          href={'https://rinkeby.etherscan.io/tx/' + ethTxnId}
+                          className="underline"
+                          target="_blank"
+                          rel="noreferrer">
+                          View transaction on Etherscan
+                        </a>
+                      </div>
                     </div>
                   ) : (
-                    <p>Wallet not connected</p>
+                    <div />
                   )}
                 </div>
-                {isLoading ? (
-                  <div>
-                    <button className="bg-yellow-300 p-3 rounded-md">Loading.... </button>
-                    <div>
-                      <a
-                        href={'https://rinkeby.etherscan.io/tx/' + ethTxnId}
-                        className="underline"
-                        target="_blank"
-                        rel="noreferrer">
-                        View transaction on Etherscan
-                      </a>
-                    </div>
-                  </div>
-                ) : (
-                  <div />
-                )}
               </div>
             </div>
+            {/* error starts here  */}
+            {error !== null ? (
+              <div className="flex justify-center">
+                <div className="mt-10 p-3 w-1/2 bg-red-100 border border-red-400 text-red-700 rounded">
+                  <span>{error}</span>
+                </div>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
-          {error !== null ? (
-            <div className="flex justify-center">
-              <div className="mt-10 p-3 w-1/2 bg-red-100 border border-red-400 text-red-700 rounded">
-                <span>{error}</span>
-              </div>
-            </div>
-          ) : (
-            <div></div>
-          )}
         </div>
       ) : (
-        <div>Loading...</div>
+        <div className="flex justify-between ml-24">Loading...</div>
       )}
     </div>
   )

@@ -19,9 +19,8 @@ const Home: NextPage = () => {
       setMarketItems(data)
       setIsLoaded(true)
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error.message)
     }
-
   }
 
   interface itemProps {
