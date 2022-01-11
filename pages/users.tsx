@@ -23,15 +23,18 @@ const Users: React.FC = () => {
       if (token.role !== 'admin') {
         console.log(token.role);
         try {
-          await Swal.fire('User has no authorization to view this page, redirecting back to home')
-          router.push('/')
+          console.log('this is actually error 401 :>')
+          // await Swal.fire('User has no authorization to view this page, redirecting back to home')
+          router.push('/401')
         } catch (error: any) {
+          router.push('/401')
           console.log(error.message);
         }
       } else {
         fetchUsers()
       }
     } catch (err: any) {
+      router.push('/404')
       console.log(err.message);
     }
   }

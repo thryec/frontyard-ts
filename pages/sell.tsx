@@ -37,7 +37,9 @@ const Sell = () => {
       console.log('ipfs url: ', url)
       setFileUrl(url)
       setFileUploading(false)
+      setImageEmpty(false)
     } catch (e) {
+      router.push('/failedlisting')
       console.log('Error uploading file: ', e)
     }
   }
@@ -66,7 +68,7 @@ const Sell = () => {
     // console.log("this is descpblur: ", descriptionEmpty)
   }
   const handleImageBlur = (): void => {
-    !refImage.current.value ? setImageEmpty(true) : setImageEmpty(false)
+    !fileUrl ? setImageEmpty(true) : setImageEmpty(false)
     // console.log("this is imageblur: ", imageEmpty)
   }
   const handlePriceBlur = (): void => {
@@ -97,6 +99,7 @@ const Sell = () => {
       }
     } else {
       console.log('error')
+      router.push('/failedlisting')
     }
   }
 
@@ -107,7 +110,7 @@ const Sell = () => {
   return (
     <>
       {userLoginState.isLoggedIn ? (
-        <div>
+        <div className="font-Montserrat">
           <div className="flex flex-wrap w-full mb-8 ml-10">
             <div className="w-full mb-6 lg:mb-0">
               <h1 className="sm:text-3xl text-3xl font-medium title-font mb-2 text-gray-900 font-Lora">
@@ -128,8 +131,8 @@ const Sell = () => {
                 onChange={handleChange}
                 onBlur={handleNameBlur}
                 className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input>
+              {nameEmpty ? <><span className="font-bold text-red-600">Please enter listing title</span><br/></> : ''}
               <br />
-              {nameEmpty ? <h1>Please enter listing title</h1> : ''}
               <label htmlFor="description" className="block mb-1 font-Montserrat">
                 Description:{' '}
               </label>
@@ -140,14 +143,15 @@ const Sell = () => {
                 onChange={handleChange}
                 onBlur={handleDescriptionBlur}
                 className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input>
+              {descriptionEmpty ? <><span className="font-bold text-red-600">Please enter listing description</span><br/></>: ''}
               <br />
-              {descriptionEmpty ? <h1>Please enter listing description</h1> : ''}
               <label htmlFor="image" className="block mb-1 font-Montserrat">
                 Image URL:{' '}
               </label>
               <input
                 type="file"
                 onChange={onFileUpload}
+                onClick={handleImageBlur}
                 className="mb-4 text-lg font-Montserrat text-center py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md"
               />
               {fileUploading ? (
@@ -162,8 +166,8 @@ const Sell = () => {
                 onChange={handleChange}
                 onBlur={handleImageBlur}
                 className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input> */}
+              {imageEmpty ? <><span className="font-bold text-red-600">Please upload listing image</span><br/></> : ''}
               <br />
-              {imageEmpty ? <h1>Please enter listing image</h1> : ''}
               <label htmlFor="price" className="block mb-1 font-Montserrat">
                 Price (ETH):{' '}
               </label>
@@ -174,9 +178,9 @@ const Sell = () => {
                 onChange={handleChange}
                 onBlur={handlePriceBlur}
                 className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input>
-              <br />
-              {priceEmpty ? <h1>Please enter listing price</h1> : ''}
-              {verifyPrice() ? true : <h1>Please enter price in numbers</h1>}
+              {priceEmpty ? <><span className="font-bold text-red-600">Please enter listing price</span><br/></> : ''}
+              {verifyPrice() ? true : <><span className="font-bold text-red-600">Please enter price in numbers</span><br/></>}
+              <br/>
               <input
                 type="submit"
                 value="List Item"

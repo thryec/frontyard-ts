@@ -121,6 +121,7 @@ const Checkout: NextPage<itemProps> = () => {
       setCurrentItem(data)
       console.log('sent database txn: ', data)
     } catch (err) {
+      router.push('/404')
       console.log('error fetching transactions: ', err)
     }
   }
@@ -160,6 +161,7 @@ const Checkout: NextPage<itemProps> = () => {
         params: [{ chainId: '0x4' }],
       })
     } catch (err: any) {
+      router.push('/404')
       setError(err.message)
       console.log('error changing network: ', err.message)
     }
@@ -233,6 +235,7 @@ const Checkout: NextPage<itemProps> = () => {
         console.log('sent database txn: ', txnId)
         await executeTransaction()
       } catch (err) {
+        router.push('/failedlisting')
         console.log('error posting transaction: ', err)
       }
     } else {
