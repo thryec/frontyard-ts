@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useState, useEffect, useContext } from 'react'
 import UserContext from '../../context/LoginState'
 import jwtDecode from 'jwt-decode'
+import Image from 'next/image'
 
 const Details = () => {
   const [currentItem, setCurrentItem] = useState<any>()
@@ -159,7 +160,17 @@ const Details = () => {
           </section>
         </div>
       ) : (
-        <div>Loading...</div>
+        <div className="h-screen bg-white">
+          <div className="flex justify-center items-center h-full">
+            <Image
+              className="h-16 w-16"
+              src="https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif"
+              alt="loading"
+              width="200px"
+              height="200px"
+            />
+          </div>
+        </div>
       )}
     </div>
   )

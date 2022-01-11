@@ -4,6 +4,7 @@ import UserContext from '../context/LoginState'
 import NotLoggedIn from '../components/userNotLoggedin'
 import jwtDecode from 'jwt-decode'
 import { create } from 'ipfs-http-client'
+import Image from 'next/image'
 
 const url: string | any = 'https://ipfs.infura.io:5001/api/v0'
 const client = create(url)
@@ -103,10 +104,6 @@ const Sell = () => {
     }
   }
 
-  // useEffect(() => {
-  //   renderImage()
-  // }, fileUrl)
-
   return (
     <>
       {userLoginState.isLoggedIn ? (
@@ -131,7 +128,14 @@ const Sell = () => {
                 onChange={handleChange}
                 onBlur={handleNameBlur}
                 className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input>
-              {nameEmpty ? <><span className="font-bold text-red-600">Please enter listing title</span><br/></> : ''}
+              {nameEmpty ? (
+                <>
+                  <span className="font-bold text-red-600">Please enter listing title</span>
+                  <br />
+                </>
+              ) : (
+                ''
+              )}
               <br />
               <label htmlFor="description" className="block mb-1 font-Montserrat">
                 Description:{' '}
@@ -143,7 +147,14 @@ const Sell = () => {
                 onChange={handleChange}
                 onBlur={handleDescriptionBlur}
                 className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input>
-              {descriptionEmpty ? <><span className="font-bold text-red-600">Please enter listing description</span><br/></>: ''}
+              {descriptionEmpty ? (
+                <>
+                  <span className="font-bold text-red-600">Please enter listing description</span>
+                  <br />
+                </>
+              ) : (
+                ''
+              )}
               <br />
               <label htmlFor="image" className="block mb-1 font-Montserrat">
                 Image URL:{' '}
@@ -155,18 +166,26 @@ const Sell = () => {
                 className="mb-4 text-lg font-Montserrat text-center py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md"
               />
               {fileUploading ? (
-                <div className="font-Montserrat">Loading...</div>
+                <div className="bg-white flex justify-center">
+                  <Image
+                    className="h-4 w-4"
+                    src="https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif"
+                    alt="loading"
+                    width="50px"
+                    height="50px"
+                  />
+                </div>
               ) : (
                 <img src={fileUrl} width="400px" />
               )}
-              {/* <input
-                type="text"
-                name="image"
-                ref={refImage}
-                onChange={handleChange}
-                onBlur={handleImageBlur}
-                className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input> */}
-              {imageEmpty ? <><span className="font-bold text-red-600">Please upload listing image</span><br/></> : ''}
+              {imageEmpty ? (
+                <>
+                  <span className="font-bold text-red-600">Please upload listing image</span>
+                  <br />
+                </>
+              ) : (
+                ''
+              )}
               <br />
               <label htmlFor="price" className="block mb-1 font-Montserrat">
                 Price (ETH):{' '}
@@ -178,9 +197,23 @@ const Sell = () => {
                 onChange={handleChange}
                 onBlur={handlePriceBlur}
                 className="py-2 px-3 border border-gray-300 focus:border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full font-Montserrat"></input>
-              {priceEmpty ? <><span className="font-bold text-red-600">Please enter listing price</span><br/></> : ''}
-              {verifyPrice() ? true : <><span className="font-bold text-red-600">Please enter price in numbers</span><br/></>}
-              <br/>
+              {priceEmpty ? (
+                <>
+                  <span className="font-bold text-red-600">Please enter listing price</span>
+                  <br />
+                </>
+              ) : (
+                ''
+              )}
+              {verifyPrice() ? (
+                true
+              ) : (
+                <>
+                  <span className="font-bold text-red-600">Please enter price in numbers</span>
+                  <br />
+                </>
+              )}
+              <br />
               <input
                 type="submit"
                 value="List Item"
