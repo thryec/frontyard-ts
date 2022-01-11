@@ -43,7 +43,7 @@ const Listed = () => {
   useEffect(() => {
     decodeToken()
     loadData()
-  }, [loaded])
+  }, [loaded, marketItems])
 
   interface itemProps {
     name: string
