@@ -13,6 +13,7 @@ module.exports = {
         sand: '#FFFFFF',
         mblue: '#006097',
         footerbg: '#262626',
+        grey: '#ebebeb',
       },
       fontFamily: {
         // Lato: ['Lato', 'sans-serif'],
